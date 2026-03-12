@@ -1,21 +1,20 @@
-# Nome do projeto
+# Jardim Magnólia
 
 Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 5
-* Nome completo do aluno 6
+- Ana Luiza Cavalcante Oliveira
+- Andre Fortini de Mello
+- Cauã Thomarco Thomaz Teixeira
+- Guilherme Augusto Silva Machado
+- Júlia Fonseca Lasmar
+- Sofia Figueiredo de Oliveira
 
 ## Professor
 
-* Nome completo do professor 1
-* Nome completo do professor 2
-* Nome completo do professor 3
+- Lucca Soares de Paiva Lacerda
+- Michelle Hanne Soares de Andrade
 
 ## Instruções de utilização
 
