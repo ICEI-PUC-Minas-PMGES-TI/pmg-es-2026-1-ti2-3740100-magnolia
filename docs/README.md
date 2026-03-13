@@ -80,9 +80,9 @@ Administrador (Equipe Jardim Magnólia)
 - Perfil: Profissionais do setor de floricultura que buscam migrar do modelo tradicional/manual para uma solução digital organizada.
 
 Cliente (Comprador Final)
--Papel: Usuário da plataforma online.
--Responsabilidades: Navegar pelo catálogo virtual, realizar o cadastro pessoal, selecionar produtos, efetuar o pagamento e acompanhar seus pedidos.
--Perfil: Consumidores que buscam rapidez e praticidade na compra de flores, preferindo a autonomia de um shopping virtual ao atendimento manual via redes sociais.
+- Papel: Usuário da plataforma online.
+- Responsabilidades: Navegar pelo catálogo virtual, realizar o cadastro pessoal, selecionar produtos, efetuar o pagamento e acompanhar seus pedidos.
+- Perfil: Consumidores que buscam rapidez e praticidade na compra de flores, preferindo a autonomia de um shopping virtual ao atendimento manual via redes sociais.
 ## 3. Modelagem do processo de negócio
 
 ### 3.1. Análise da situação atual
