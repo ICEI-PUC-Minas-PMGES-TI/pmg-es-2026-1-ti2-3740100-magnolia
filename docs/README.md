@@ -48,10 +48,10 @@ O Jardim Magnólia é definido como uma floricultura autoral que se estrutura at
 ### 1.2 Problema
 
 O projeto visa resolver limitações comuns no mercado de floriculturas tradicionais, tais como:
- -Limitação de Canais de Venda: Muitas floriculturas operam apenas com atendimento presencial.
- -Dependência de Processos Manuais: As vendas costumam ficar restritas ao WhatsApp, Instagram ou outros métodos de atendimento manual.
- -Baixo Alcance: Existe uma dificuldade natural desses estabelecimentos em alcançar um número maior de clientes devido à falta de uma estrutura digital robusta.
- -Falta de Automatização: A ausência de sistemas para automatizar pedidos e vendas dificulta a escalabilidade do negócio.
+ - Limitação de Canais de Venda: Muitas floriculturas operam apenas com atendimento presencial.
+ - Dependência de Processos Manuais: As vendas costumam ficar restritas ao WhatsApp, Instagram ou outros métodos de atendimento manual.
+ - Baixo Alcance: Existe uma dificuldade natural desses estabelecimentos em alcançar um número maior de clientes devido à falta de uma estrutura digital robusta.
+ - Falta de Automatização: A ausência de sistemas para automatizar pedidos e vendas dificulta a escalabilidade do negócio.
 
 ### 1.3 Objetivo geral
 
@@ -75,9 +75,9 @@ Como justificativa, usamos a dificuldade que é evidenciada nas vendas das flori
 ## 2. Participantes do processo
 
 Administrador (Equipe Jardim Magnólia)
--Papel: Responsável pela gestão operacional.
--Responsabilidades: Efetuar o cadastro de produtos, gerenciar o controle de estoque, visualizar o registro de clientes e monitorar o fluxo de vendas e pagamentos.
--Perfil: Profissionais do setor de floricultura que buscam migrar do modelo tradicional/manual para uma solução digital organizada.
+- Papel: Responsável pela gestão operacional.
+- Responsabilidades: Efetuar o cadastro de produtos, gerenciar o controle de estoque, visualizar o registro de clientes e monitorar o fluxo de vendas e pagamentos.
+- Perfil: Profissionais do setor de floricultura que buscam migrar do modelo tradicional/manual para uma solução digital organizada.
 
 Cliente (Comprador Final)
 -Papel: Usuário da plataforma online.
