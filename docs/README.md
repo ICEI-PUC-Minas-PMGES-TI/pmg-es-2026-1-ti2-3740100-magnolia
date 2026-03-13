@@ -1,25 +1,25 @@
-# TITULO DO PROJETO
+# JARDIM MAGNOLIA
 
 
-**Nome completo do Aluno 1, email do aluno 1**
+**Ana Luiza Cavalcante Oliveira, anacavalcateluiza39@gmail.com**
 
-**Nome completo do Aluno 2, email do aluno 2**
+**Andre Fortini de Mello, andrefortini098@gmail.com**
 
-**Nome completo do Aluno 3, email do aluno 3**
+**Cauã Thomarco Thomaz Teixeira, cauathomarco@gmail.com**
 
-**Nome completo do Aluno 4, email do aluno 4**
+**Guilherme Augusto Silva Machado, guilhermemachado822@gmail.com**
 
-**Nome completo do Aluno 5, email do aluno 5**
+**Júlia Fonseca Lasmar, juliafon.lasmar@gmail.com**
 
-**Nome completo do Aluno 6, email do aluno 6**
+**Sofia Figueiredo de Oliveira, sofiafo804@gmail.com**
 
 ---
 
 Professores:
 
-** Prof. Nome do Prof 1 **
+** Lucca Soares de Paiva Lacerda **
 
-** Prof. Nome do Prof 2 **
+** Michelle Hanne Soares de Andrade **
 
 ** Prof. Nome do Prof 3 **
 
@@ -31,48 +31,58 @@ _Instituto de Informática e Ciências Exatas – Pontifícia Universidade Cató
 
 ---
 
-_**Resumo**. Escrever aqui o resumo. O resumo deve contextualizar rapidamente o trabalho, descrever seu objetivo e, ao final, 
-mostrar algum resultado relevante do trabalho (até 10 linhas)._
+_**Resumo**.Este trabalho apresenta a criação de um e-commerce de floricultura que conecta floriculturas parceiras a clientes em um só lugar. A plataforma permite que as lojas cadastrem e vendam seus produtos e serviços, como buquês e arranjos, de forma simples e online. O objetivo é facilitar as vendas e tornar a compra de flores mais prática e acessível. Como resultado, foi desenvolvido um sistema funcional que amplia a visibilidade das lojas e melhora a experiência do cliente.
 
 ---
 
 
 ## 1. Introdução
 
-_Apresente uma frase introdutória definindo o que será apresentado._
+Nosso projeto busca ser um e-commerce, ou seja, uma plataforma online que funciona como um shopping virtual, reunindo itens disponibilizados pela floricultura cadastrada. 
+A floricultura cadastra seus itens e serviços na plataforma e o cliente que se interessar deverá adquirir.
 
 ### 1.1 Contextualização
 
-_Na **contextualização**, o aluno deve dizer do que se trata o trabalho, em que área ou contexto se insere.
-A **contextualização** deve ser desenvolvida de algo mais genérico para algo mais específico. 
-A citação de pesquisas quantitativas é bem aceita aqui (corretamente referenciadas)._
+O Jardim Magnólia é definido como uma floricultura autoral que se estrutura através de uma plataforma online. O projeto funciona como um shopping virtual de flores , permitindo que os clientes realizem compras de maneira prática e rápida. A proposta central é aplicar tecnologia a um modelo de comércio tradicional , tornando a venda de flores mais organizada e acessível
 
 ### 1.2 Problema
 
-_Em seguida o aluno deve caminhar a contextualização para descrever o **problema** que o trabalho trata. 
-O **problema** pode ser algo vivido em uma empresa específica. Neste caso, o aluno deve rapidamente apresentar 
-o cenário de problema da empresa. A empresa só deve ser citada explicitamente se o aluno tiver autorização 
-para tal._
+O projeto visa resolver limitações comuns no mercado de floriculturas tradicionais, tais como:
+ -Limitação de Canais de Venda: Muitas floriculturas operam apenas com atendimento presencial.
+ -Dependência de Processos Manuais: As vendas costumam ficar restritas ao WhatsApp, Instagram ou outros métodos de atendimento manual.
+ -Baixo Alcance: Existe uma dificuldade natural desses estabelecimentos em alcançar um número maior de clientes devido à falta de uma estrutura digital robusta.
+ -Falta de Automatização: A ausência de sistemas para automatizar pedidos e vendas dificulta a escalabilidade do negócio.
 
 ### 1.3 Objetivo geral
 
-_O aluno deve escrever um pequeno parágrafo ou frase com o **objetivo geral** do trabalho. 
-O objetivo deve ser bem direto, específico e definido com verbos de ação (elaborar, propor, avaliar, comparar, desenvolver, etc.). No caso específico deste projeto, o objetivo deste trabalho é desenvolver um sistema para automação de processos para um problema específico._
+O nosso objetivo é desenvolver uma plataforma digital que reduza o tempo de atendimento manual, aumente a participação das floriculturas no mercado e fortaleça sua presença online.
 
 #### 1.3.1 Objetivos específicos
 
-_Apresente também alguns (pelo menos 4) **objetivos específicos** dependendo de onde você vai querer 
-concentrar sua prática investigativa, ou como você irá aprofundar seu trabalho._
+- Aumentar as vendas das floriculturas parceiras por meio da centralização dos produtos em um único ambiente digital.
+
+- Automatizar pedidos e processos, reduzindo o tempo gasto com negociações individuais via mensagens.
+
+- Proporcionar mais praticidade e agilidade ao cliente no momento da compra.
+
+- Expandir a visibilidade das floriculturas além das redes sociais, criando um canal próprio de vendas online.
+
 
 ### 1.4 Justificativas
 
-_Mostre também as **justificativas** para o 
-desenvolvimento do seu trabalho e, caso deseje, destaque alguma contribuição do trabalho._
+Como justificativa, usamos a dificuldade que é evidenciada nas vendas das floriculturas de vender e alcançar mais clientes. Onde muitas dependem de redes socias como instagram ou whatsApp
 
 ## 2. Participantes do processo
 
-_Apresente aqui os perfis dos usuários-chave do sistema. Diversas são as informações que podem ser relevantes para a definição dos perfis dos usuários, tais como idade, gênero, aspectos culturais, nível de educação, entre outros. A pesquisa de mercado pode ser uma ferramenta poderosa para se identificar e caracterizar os perfis de usuários. Apresente claramente o papel a ser desempenhado por cada usuário._
+Administrador (Equipe Jardim Magnólia)
+-Papel: Responsável pela gestão operacional.
+-Responsabilidades: Efetuar o cadastro de produtos, gerenciar o controle de estoque, visualizar o registro de clientes e monitorar o fluxo de vendas e pagamentos.
+-Perfil: Profissionais do setor de floricultura que buscam migrar do modelo tradicional/manual para uma solução digital organizada.
 
+Cliente (Comprador Final)
+-Papel: Usuário da plataforma online.
+-Responsabilidades: Navegar pelo catálogo virtual, realizar o cadastro pessoal, selecionar produtos, efetuar o pagamento e acompanhar seus pedidos.
+-Perfil: Consumidores que buscam rapidez e praticidade na compra de flores, preferindo a autonomia de um shopping virtual ao atendimento manual via redes sociais.
 ## 3. Modelagem do processo de negócio
 
 ### 3.1. Análise da situação atual
