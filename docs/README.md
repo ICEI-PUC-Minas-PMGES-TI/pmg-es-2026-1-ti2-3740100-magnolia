@@ -31,7 +31,7 @@ _Instituto de Informática e Ciências Exatas – Pontifícia Universidade Cató
 
 ---
 
-**Resumo**  Este trabalho apresenta a criação de um e-commerce de floricultura que conecta floriculturas parceiras a clientes em um só lugar. A plataforma permite que as lojas cadastrem e vendam seus produtos e serviços, como buquês e arranjos, de forma simples e online. O objetivo é facilitar as vendas e tornar a compra de flores mais prática e acessível. Como resultado, foi desenvolvido um sistema funcional que amplia a visibilidade das lojas e melhora a experiência do cliente.
+**Resumo**:  Este trabalho apresenta a criação de um e-commerce de floricultura que conecta floriculturas parceiras a clientes em um só lugar. A plataforma permite que as lojas cadastrem e vendam seus produtos e serviços, como buquês e arranjos, de forma simples e online. O objetivo é facilitar as vendas e tornar a compra de flores mais prática e acessível. Como resultado, foi desenvolvido um sistema funcional que amplia a visibilidade das lojas e melhora a experiência do cliente.
 
 ---
 
