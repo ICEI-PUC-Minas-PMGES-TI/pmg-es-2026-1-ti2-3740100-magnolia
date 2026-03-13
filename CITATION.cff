@@ -2,29 +2,29 @@ cff-version: 1.0.1
 message: Please cite this software using these metadata.
 title: 
 authors:
-  - family-names: sobrenome do aluno 1
-    given-names: Nome do aluno 1 
-  - family-names: sobrenome do aluno 2
-    given-names: Nome do aluno 2 
-  - family-names: sobrenome do aluno 3
-    given-names: Nome do aluno 3 
-  - family-names: sobrenome do aluno 4
-    given-names: Nome do aluno 4 
-  - family-names: sobrenome do aluno 5
-    given-names: Nome do aluno 5 
-  - family-names: sobrenome do aluno 6
-    given-names: Nome do aluno 6 
-  - name-suffix: Professora
+  - family-names: Luiza Cavalcante
+    given-names: Ana
+  - family-names: Fortini
+    given-names: André
+  - family-names: Thomarco Thomaz Teixeira
+    given-names: Cauã
+  - family-names: Machado
+    given-names: Guilherme
+  - family-names: Figueiredo
+    given-names: Sofia
+  - family-names: Fonseca
+    given-names: Júlia
+  - name-suffix: Lucca Soares de Paiva Lacerda
     affiliation: PUC Minas
     family-names: Alonso Veloso
     given-names: Eveline 
-  - name-suffix: Professora
+  - name-suffix: Michelle Hanne Soares de Andrade
     affiliation: PUC Minas
     family-names: Baroni De Carvalho
     given-names: Juliana Amaral 
 keywords:
-  - 
-  - 
+  - Jardim
+  - Flores
 repository-code: 
 license: CC-BY-4.0
 version: 1.0.0
