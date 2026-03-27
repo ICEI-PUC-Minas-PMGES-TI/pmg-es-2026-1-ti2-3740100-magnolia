@@ -2,7 +2,7 @@
 
 _O processo de entrega contempla desde a confirmação do pedido até a finalização da entrega ao cliente._
 
-![Exemplo de um Modelo BPMN do PROCESSO DE ENTREGA](<img width="1627" height="756" alt="image" src="https://github.com/user-attachments/assets/f738bd4a-de45-4268-b131-54619513fce1" />)
+![Modelo BPMN](images/ProcessoEntrega.png)
 
 
 #### Detalhamento das atividades
