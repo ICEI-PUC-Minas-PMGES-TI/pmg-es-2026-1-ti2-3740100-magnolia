@@ -1,6 +1,8 @@
 # Jardim Magnólia
 
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
+O projeto Jardim Magnólia tem como objetivo desenvolver uma plataforma de e-commerce voltada para floriculturas, reunindo diferentes lojas em um único ambiente digital. A proposta busca transformar o modelo tradicional de vendas, permitindo que floriculturas cadastrem seus produtos e serviços, como buquês e arranjos, e os disponibilizem de forma prática e organizada para os clientes. Dessa forma, a plataforma atua como um shopping virtual, facilitando a conexão entre vendedores e consumidores.
+
+Além disso, o sistema pretende reduzir a dependência de processos manuais, como atendimentos via redes sociais, automatizando pedidos, pagamentos e gestão de estoque. Com isso, o projeto visa ampliar o alcance das floriculturas parceiras, aumentar suas vendas e proporcionar uma experiência mais ágil, acessível e eficiente para os clientes que desejam comprar flores online.
 
 ## Integrantes
 
