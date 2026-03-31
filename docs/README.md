@@ -102,7 +102,7 @@ Como limites, a solução depende do acesso à internet e da adaptação dos usu
 
 [PROCESSO 1 - Estoque](processo-1-processoEstoque.md)
 
-[PROCESSO 2 - Venda](processo-2-nome-processoVenda.md)
+[PROCESSO 2 - Venda](processo-2-processoVenda.md)
 
 [PROCESSO 3 - Pagamento](processo-3-processoPagamento.md)
 
