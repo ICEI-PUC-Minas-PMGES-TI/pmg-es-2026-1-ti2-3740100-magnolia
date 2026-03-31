@@ -14,6 +14,7 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 ## Professor
 
 - Lucca Soares de Paiva Lacerda
+- Luiz Carlos da Silva
 - Michelle Hanne Soares de Andrade
 
 ## Instruções de utilização
