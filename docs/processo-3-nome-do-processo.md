@@ -1,67 +1,108 @@
-### 3.3.3 Processo 3 – NOME DO PROCESSO
+### 3.3.3 Processo 3 – Processo de Pagamento
 
-_Apresente aqui o nome e as oportunidades de melhoria para o processo 3. 
-Em seguida, apresente o modelo do processo 3, descrito no padrão BPMN._
+O processo de pagamento contempla a seleção do método de pagamento, validação da transação e confirmação do pagamento para liberação do pedido.
 
-![Exemplo de um Modelo BPMN do PROCESSO 3](images/process.png "Modelo BPMN do Processo 3.")
-
+![ Modelo BPMN do PROCESSO DE PAGAMENTO](images/processo-de-pagamento.png")
 
 #### Detalhamento das atividades
 
-_Descreva aqui cada uma das propriedades das atividades do processo 3. 
-Devem estar relacionadas com o modelo de processo apresentado anteriormente._
+O processo de pagamento se inicia quando o cliente seleciona o método de pagamento desejado. Essa escolha direciona todo o fluxo subsequente, podendo seguir pelos caminhos de PIX, cartão de crédito, cartão de débito ou boleto bancário.
 
-_Os tipos de dados a serem utilizados são:_
+No pagamento via PIX, o sistema gera um QR Code e aguarda a confirmação da transação. Caso o pagamento seja realizado com sucesso, o processo segue para a etapa final. No entanto, se o PIX não for pago dentro do prazo ou não for confirmado, o fluxo não avança e retorna para a etapa de escolha do método de pagamento, permitindo que o cliente tente novamente com o mesmo ou outro método.
 
-_* **Área de texto** - campo texto de múltiplas linhas_
+Para pagamentos com cartão de crédito, o cliente informa os dados do cartão, que são enviados para a operadora para análise. O sistema verifica se a transação foi autorizada. Caso seja aprovada, o processo continua normalmente. Porém, se a operadora não autorizar o pagamento, o fluxo é interrompido e retorna à etapa de seleção do método de pagamento, permitindo a correção dos dados ou a escolha de outra forma de pagamento.
 
-_* **Caixa de texto** - campo texto de uma linha_
+No caso do cartão de débito, o cliente também informa seus dados, e o banco realiza a verificação da transação. Se o pagamento for aprovado, o processo segue. Caso contrário, ou seja, se o pagamento for negado, o sistema não dá continuidade ao fluxo e redireciona o cliente para tentar novamente ou selecionar outro método de pagamento.
 
-_* **Número** - campo numérico_
+Para o boleto bancário, o sistema gera o documento e aguarda o pagamento. O processo só avança quando o boleto é quitado. Caso o pagamento não seja realizado, o fluxo não é concluído e retorna para a etapa inicial, permitindo uma nova tentativa.
 
-_* **Data** - campo do tipo data (dd-mm-aaaa)_
+Em todos os cenários, existe um ponto de decisão que verifica se o pagamento foi confirmado, autorizado ou aprovado. Quando a resposta é positiva, o fluxo segue para a unificação do processo, onde o pedido é marcado como aprovado e o cliente é notificado.
 
-_* **Hora** - campo do tipo hora (hh:mm:ss)_
+Por outro lado, sempre que o pagamento não é aprovado, autorizado ou confirmado, o processo não avança para a finalização e retorna à etapa de seleção do método de pagamento. Isso garante que o cliente tenha a oportunidade de corrigir erros ou escolher outra forma de pagamento.
 
-_* **Data e Hora** - campo do tipo data e hora (dd-mm-aaaa, hh:mm:ss)_
+Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a aprovação do pedido e segue para a etapa de entrega, encerrando o processo de pagamento.
 
-_* **Imagem** - campo contendo uma imagem_
+**Selecionar método de pagamento**
 
-_* **Seleção única** - campo com várias opções de valores que são mutuamente exclusivas (tradicional radio button ou combobox)_
-
-_* **Seleção múltipla** - campo com várias opções que podem ser selecionadas mutuamente (tradicional checkbox ou listbox)_
-
-_* **Arquivo** - campo de upload de documento_
-
-_* **Link** - campo que armazena uma URL_
-
-_* **Tabela** - campo formado por uma matriz de valores_
-
-**Nome da atividade 1**
-
-| **Campo**       | **Tipo**         | **Restrições** | **Valor default** |
-| ---             | ---              | ---            | ---               |
-| [Nome do campo] | [tipo de dados]  |                |                   |
-| ***Exemplo:***  |                  |                |                   |
-| login           | Caixa de Texto   | formato de e-mail |                |
-| senha           | Caixa de Texto   | mínimo de 8 caracteres |           |
-
-| **Comandos**         |  **Destino**                   | **Tipo** |
-| ---                  | ---                            | ---               |
-| [Nome do botão/link] | Atividade/processo de destino  | (default/cancel  ) |
-| ***Exemplo:***       |                                |                   |
-| entrar               | Fim do Processo 1              | default           |
-| cadastrar            | Início do proceso de cadastro  |                   |
+| **Campo**       | **Tipo**       | **Restrições**                             | **Valor default** |
+| --------------- | -------------- | ------------------------------------------ | ----------------- |
+| metodoPagamento | Lista suspensa | obrigatório (PIX, Crédito, Débito, Boleto) |                   |
 
 
-**Nome da atividade 2**
+| **Comandos** | **Destino**                  | **Tipo** |
+| ------------ | ---------------------------- | -------- |
+| continuar    | Verificar tipo de pagamento  | default  |
+| cancelar     | Fim do processo de pagamento | cancel   |
 
-| **Campo**       | **Tipo**         | **Restrições** | **Valor default** |
-| ---             | ---              | ---            | ---               |
-| [Nome do campo] | [tipo de dados]  |                |                   |
-|                 |                  |                |                   |
 
-| **Comandos**         |  **Destino**                   | **Tipo**          |
-| ---                  | ---                            | ---               |
-| [Nome do botão/link] | Atividade/processo de destino  | (default/cancel/  ) |
-|                      |                                |                   |
+**Pagamento via PIX**
+
+| **Campo**       | **Tipo** | **Restrições**         | **Valor default** |
+| --------------- | -------- | ---------------------- | ----------------- |
+| qrCode          | Exibição | gerado automaticamente | automático        |
+| statusPagamento | Texto    | somente leitura        | aguardando        |
+
+
+| **Comandos**        | **Destino**                    | **Tipo** |
+| ------------------- | ------------------------------ | -------- |
+| confirmar pagamento | Verificar pagamento PIX        | default  |
+| cancelar            | Selecionar método de pagamento | cancel   |
+
+
+**Pagamento via Cartão de Crédito**
+
+| **Campo**    | **Tipo**       | **Restrições**          | **Valor default** |
+| ------------ | -------------- | ----------------------- | ----------------- |
+| numeroCartao | Caixa de Texto | obrigatório, 16 dígitos |                   |
+| nomeTitular  | Caixa de Texto | obrigatório             |                   |
+| validade     | Caixa de Texto | formato MM/AA           |                   |
+| cvv          | Caixa de Texto | 3 dígitos               |                   |
+
+
+| **Comandos** | **Destino**                    | **Tipo** |
+| ------------ | ------------------------------ | -------- |
+| pagar        | Verificar autorização crédito  | default  |
+| cancelar     | Selecionar método de pagamento | cancel   |
+
+
+**Pagamento via Cartão de Débito**
+
+| **Campo**    | **Tipo**       | **Restrições**          | **Valor default** |
+| ------------ | -------------- | ----------------------- | ----------------- |
+| numeroCartao | Caixa de Texto | obrigatório, 16 dígitos |                   |
+| nomeTitular  | Caixa de Texto | obrigatório             |                   |
+| validade     | Caixa de Texto | formato MM/AA           |                   |
+| senha        | Caixa de Texto | obrigatório             |                   |
+
+
+| **Comandos** | **Destino**                    | **Tipo** |
+| ------------ | ------------------------------ | -------- |
+| pagar        | Verificar aprovação débito     | default  |
+| cancelar     | Selecionar método de pagamento | cancel   |
+
+
+**Pagamento via Boleto**
+
+| **Campo**       | **Tipo** | **Restrições**         | **Valor default** |
+| --------------- | -------- | ---------------------- | ----------------- |
+| codigoBarras    | Exibição | gerado automaticamente | automático        |
+| statusPagamento | Texto    | somente leitura        | aguardando        |
+
+
+| **Comandos**        | **Destino**                    | **Tipo** |
+| ------------------- | ------------------------------ | -------- |
+| confirmar pagamento | Verificar pagamento boleto     | default  |
+| cancelar            | Selecionar método de pagamento | cancel   |
+
+
+**Notificar pedido aprovado**
+
+| **Campo** | **Tipo** | **Restrições** | **Valor default**  |
+| --------- | -------- | -------------- | ------------------ |
+| mensagem  | Texto    | informativo    | pagamento aprovado |
+
+
+| **Comandos** | **Destino**         | **Tipo** |
+| ------------ | ------------------- | -------- |
+| continuar    | Seguir para entrega | default  |
+
