@@ -31,45 +31,56 @@ O cliente executa a tarefa “Finalizar compra”, consolidando o pedido. Neste 
 um evento de mensagem: “Enviar pedido para pagamento”, marcando a transição entre o processo de 
 venda e o processo de pagamento.
 
+---
 
 **Selecionar produto / Adicionar ao carrinho**
 
 |       **Campo**      |    **Tipo**   |      **Restrições**      | **Valor default** |
+|----------------------|---------------|--------------------------|-------------------|
 |  Quantidade          | Número        | Maior que 0              |        1          |
 |  Opções de embalagem | Seleção única | Obrigatório              |      Padrão       |
 |  Mensagem do cartão  | Área de texto | Máximo de 250 caracteres |                   |
 
 | **Camandos** |                  **Destino**                     | **Tipo** |
+|--------------|--------------------------------------------------|----------|
 | Adicionar    | Ir para o carrinho / Deseja continuar comprando? | Default  |
 | Cancelar     | Visualizar produtos no site | Obrigatório        | Cancel   |
 
+---
 
 **Revisar Pedido**
 
 |     **Campo**     |     **Tipo**   |        **Restrições**          | 
+|-------------------|----------------|--------------------------------|
 | Lista de Produtos | Tabela         | Não editável (exceto exclusão) |    
 | Quantidade        | Número         | Maior que 0                    | 
 | Cupom de desconto | Caixa de texto |                                | 
 
 | **Camandos** |                  **Destino**                     | **Tipo** |
+|--------------|--------------------------------------------------|----------|
 | Adicionar    | Ir para o carrinho / Deseja continuar comprando? | Default  |
 | Cancelar     | Visualizar produtos no site | Obrigatório        | Cancel   |
 
+---
 
 **Indentificar cliente (login ou cadastro)**
 
 |      **Campo**     |     **Tipo**     |        **Restrições**       |
+|--------------------|------------------|-----------------------------|
 | e-mail             | Caixa de texto   | Formato de e-mail           |                   
 | senha              | Caixa de texto   | Mínimo de 8 caracteres      |                  
 
 |  **Comandos** |        **Destino**              |  **Tipo**  | 
+|---------------|---------------------------------|------------|
 | Entrar        | Confirmar dados para entrega    | Default    | 
 | Cadastrar     | Cadastrar Cliente               |            |
 
+---
 
 **Cadastrar Cliente**
 
-|      **Campo**     |     **Tipo**     |      **Restrições**     | 
+|      **Campo**     |     **Tipo**     |      **Restrições**     |
+|--------------------|------------------|-------------------------|
 | Nome Completo      | Caixa de texto   | Obrigatório             |
 | CPF                | Caixa de texto   | Formato 000.000.000-00  |                   
 | E-mail             | Caixa de texto   | Formato de e-mail       |                    
@@ -77,12 +88,16 @@ venda e o processo de pagamento.
 | Senha              | Caixa de texto   | Mínimo de 8 caracteres  |   
 
 |  **Comandos** |               **Destino**               |  **Tipo**  | 
+|---------------|-----------------------------------------|------------|
 | Salvar        | Confirmar dados para entrega            | Default    | 
 | Cancelar      | Identificar cliente (login ou cadastro) | Cancel     |
+
+---
 
 **Confirmar dados para entrega**
 
 |      **Campo**     |     **Tipo**     |    **Restrições**   | **Valor default** | 
+|--------------------|------------------|---------------------|-------------------|
 | CEP                | Caixa de texto   | Formato 00000-000   |                   | 
 | Endereço           | Caixa de texto   | Obrigatório         |                   | 
 | Número             | Número           | Maior que 0         |                   | 
@@ -90,16 +105,23 @@ venda e o processo de pagamento.
 | Tipo de Frete      | Seleção única    | Obrigatório         | Padrão            |
 
 |  **Comandos** |      **Destino**  |  **Tipo**  | 
+|---------------|-------------------|------------|
 | Confirmar     | Finalizar compra  | Default    | 
 | Voltar        | Revisar Pedido    | Cancel     |
 
+---
 
 **Finalizar compra**
 
 |      **Campo**     |   **Tipo**    |     **Restrições**    | **Valor default** | 
+|--------------------|---------------|-----------------------|-------------------|
 | Resumo da Venda    | Tabela        | Não editável          |                   | 
 | Forma de Pagamento | Seleção única | Cartão, Pix ou Boleto | Pix               |
 
 |  **Comandos** |          **Destino**          |  **Tipo**  | 
+|---------------|-------------------------------|------------|
 | Pagar         | Enviar pedido para pagamento  | Default    | 
 | Cancelar      | Início da venda               | Cancel     |
+
+---
+
