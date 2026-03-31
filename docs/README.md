@@ -83,21 +83,26 @@ Cliente (Comprador Final)
 - Papel: Usuário da plataforma online.
 - Responsabilidades: Navegar pelo catálogo virtual, realizar o cadastro pessoal, selecionar produtos, efetuar o pagamento e acompanhar seus pedidos.
 - Perfil: Consumidores que buscam rapidez e praticidade na compra de flores, preferindo a autonomia de um shopping virtual ao atendimento manual via redes sociais.
+
 ## 3. Modelagem do processo de negócio
 
 ### 3.1. Análise da situação atual
 
-_Apresente uma descrição textual de como os sistemas atuais resolvem o problema que seu projeto se propõe a resolver. Caso sua proposta seja inovadora e não existam processos claramente definidos, **apresente como as tarefas que o seu sistema pretende implementar são executadas atualmente**, mesmo que não se utilize tecnologia computacional._
+Atualmente, a maioria das floriculturas realiza suas vendas de forma manual ou semiestruturada, utilizando principalmente redes sociais como Instagram e aplicativos de mensagens como WhatsApp. Nesse modelo, os clientes entram em contato diretamente com a loja para consultar produtos, preços e disponibilidade, o que torna o processo mais demorado e dependente do atendimento humano. Além disso, o controle de pedidos, estoque e pagamentos costuma ser feito de maneira informal, muitas vezes sem o apoio de sistemas integrados.
+
+Esse formato limita a escalabilidade do negócio, pois o atendimento simultâneo a vários clientes se torna difícil e sujeito a erros. A ausência de um catálogo organizado e de um sistema automatizado também dificulta a visualização dos produtos disponíveis, reduzindo a experiência do cliente e o alcance das vendas. Dessa forma, as tarefas que o sistema proposto pretende implementar, como cadastro de produtos, gerenciamento de pedidos e pagamentos online, são atualmente realizadas de maneira manual, descentralizada e pouco eficiente.
 
 ### 3.2. Descrição geral da proposta de solução
 
-_Apresente aqui uma descrição da sua proposta abordando seus limites e suas ligações com as estratégias do negócio e os objetivos geral e específicos do projeto. Apresente aqui as oportunidades de melhorias._
+A proposta do projeto Jardim Magnólia consiste no desenvolvimento de uma plataforma de e-commerce que centraliza a venda de produtos de floriculturas em um único ambiente digital. O sistema permitirá que as floriculturas parceiras realizem o cadastro de seus produtos e serviços, gerenciem seus estoques e acompanhem os pedidos em tempo real, enquanto os clientes poderão navegar por um catálogo organizado, realizar compras online e efetuar pagamentos de forma prática e segura.
+
+Como limites, a solução depende do acesso à internet e da adaptação dos usuários ao ambiente digital, tanto por parte das floriculturas quanto dos clientes. Ainda assim, a proposta está diretamente alinhada com os objetivos do projeto ao reduzir processos manuais, aumentar a visibilidade das lojas e melhorar a experiência de compra. Como oportunidades de melhoria, destacam-se a possibilidade de integração com sistemas de entrega, implementação de recomendações personalizadas e expansão da plataforma para novos segmentos de mercado, ampliando ainda mais o alcance e a eficiência do negócio.
 
 ### 3.3. Modelagem dos processos
 
 [PROCESSO 1 - Estoque](processo-1-processoEstoque.md)
 
-[PROCESSO 2 - Nome do Processo](processo-2-nome-do-processo.md "Detalhamento do Processo 2.")
+[PROCESSO 2 - Venda](processo-2-nome-processoVenda.md)
 
 [PROCESSO 3 - Pagamento](processo-3-processoPagamento.md)
 
