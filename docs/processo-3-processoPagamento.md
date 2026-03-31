@@ -22,6 +22,8 @@ Por outro lado, sempre que o pagamento não é aprovado, autorizado ou confirmad
 
 Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a aprovação do pedido e segue para a etapa de entrega, encerrando o processo de pagamento.
 
+---
+
 **Selecionar método de pagamento**
 
 | **Campo**       | **Tipo**       | **Restrições**                             | **Valor default** |
@@ -34,6 +36,7 @@ Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a a
 | continuar    | Verificar tipo de pagamento  | default  |
 | cancelar     | Fim do processo de pagamento | cancel   |
 
+---
 
 **Pagamento via PIX**
 
@@ -48,6 +51,7 @@ Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a a
 | confirmar pagamento | Verificar pagamento PIX        | default  |
 | cancelar            | Selecionar método de pagamento | cancel   |
 
+---
 
 **Pagamento via Cartão de Crédito**
 
@@ -64,6 +68,7 @@ Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a a
 | pagar        | Verificar autorização crédito  | default  |
 | cancelar     | Selecionar método de pagamento | cancel   |
 
+---
 
 **Pagamento via Cartão de Débito**
 
@@ -80,6 +85,7 @@ Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a a
 | pagar        | Verificar aprovação débito     | default  |
 | cancelar     | Selecionar método de pagamento | cancel   |
 
+---
 
 **Pagamento via Boleto**
 
@@ -94,6 +100,7 @@ Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a a
 | confirmar pagamento | Verificar pagamento boleto     | default  |
 | cancelar            | Selecionar método de pagamento | cancel   |
 
+---
 
 **Notificar pedido aprovado**
 
