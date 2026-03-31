@@ -99,9 +99,9 @@ _Apresente aqui uma descrição da sua proposta abordando seus limites e suas li
 
 [PROCESSO 2 - Nome do Processo](processo-2-nome-do-processo.md "Detalhamento do Processo 2.")
 
-[PROCESSO 3 - Nome do Processo](processo-3-nome-do-processo.md "Detalhamento do Processo 3.")
+[PROCESSO 3 - Pagamento](processo-3-nome-do-processo.md "Detalhamento do Processo 3.")
 
-[PROCESSO 4 - Nome do Processo](processo-4-nome-do-processo.md "Detalhamento do Processo 4.")
+[PROCESSO 4 - Entrega](processo-4-nome-do-processo.md "Detalhamento do Processo 4.")
 
 ## 4. Projeto da solução
 
