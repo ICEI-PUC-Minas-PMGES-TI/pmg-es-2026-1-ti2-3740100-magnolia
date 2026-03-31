@@ -95,13 +95,13 @@ _Apresente aqui uma descrição da sua proposta abordando seus limites e suas li
 
 ### 3.3. Modelagem dos processos
 
-[PROCESSO 1 - Estoque](processo-1-nome-do-processo.md "Detalhamento do Processo 1.")
+[PROCESSO 1 - Estoque](processo-1-processoEstoque.md)
 
 [PROCESSO 2 - Nome do Processo](processo-2-nome-do-processo.md "Detalhamento do Processo 2.")
 
-[PROCESSO 3 - Pagamento](processo-3-nome-do-processo.md "Detalhamento do Processo 3.")
+[PROCESSO 3 - Pagamento](processo-3-processoPagamento.md)
 
-[PROCESSO 4 - Entrega](processo-4-nome-do-processo.md "Detalhamento do Processo 4.")
+[PROCESSO 4 - Entrega](processo-4-processoEntrega.md)
 
 ## 4. Projeto da solução
 
