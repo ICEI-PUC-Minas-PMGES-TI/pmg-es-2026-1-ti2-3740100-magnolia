@@ -1,8 +1,8 @@
 ### 3.3.3 Processo 3 – Processo de Pagamento
 
-O processo de pagamento contempla a seleção do método de pagamento, validação da transação e confirmação do pagamento para liberação do pedido.
+_O processo de pagamento contempla a seleção do método de pagamento, validação da transação e confirmação do pagamento para liberação do pedido._
 
-![ Modelo BPMN do PROCESSO DE PAGAMENTO](images/processo-de-pagamento.png")
+![ Modelo BPMN](images/processo-de-pagamento.png")
 
 #### Detalhamento das atividades
 
