@@ -108,6 +108,9 @@ Como limites, a solução depende do acesso à internet e da adaptação dos usu
 
 [PROCESSO 4 - Entrega](processo-4-processoEntrega.md)
 
+[PROCESSO 5 - Cliente](processo-5-processoCliente.md)
+
+
 ## 4. Projeto da solução
 
 _O documento a seguir apresenta o detalhamento do projeto da solução. São apresentadas duas seções que descrevem, respectivamente: modelo relacional e tecnologias._
