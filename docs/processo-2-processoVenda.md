@@ -1,6 +1,8 @@
 ### 3.3.2 Processo 2 – Processo de Venda
 
-<img width="1262" height="435" alt="image" src="https://github.com/user-attachments/assets/666bd45b-bcb9-49c6-a0aa-d3bfb1d609f8" />
+
+<img width="1147" height="538" alt="image" src="https://github.com/user-attachments/assets/043bdf9a-9eb8-4df2-a4b8-3ba9c257510c" />
+
 
 1. Início e Navegação no Site 
 O processo de venda se inicia quando o cliente acessa o site da floricultura e visualiza os produtos 
@@ -8,28 +10,34 @@ disponíveis. O sistema apresenta a interface de navegação, permitindo que o u
 de flores, arranjos e presentes. O cliente então executa a tarefa “Selecionar produto”, escolhendo o item 
 desejado e adicionando-o ao carrinho por meio da tarefa “Adicionar ao carrinho”.
 
-3. Montagem do Carrinho de Compras 
+2. Montagem do Carrinho de Compras 
 Após adicionar um item, o sistema direciona o fluxo para uma decisão: “Deseja continuar comprando?”. 
 • Caso a resposta seja sim, o cliente retorna à navegação de produtos.  
 • Caso seja não, o fluxo segue para a tarefa “Ir para o carrinho”.  
-No carrinho, o cliente realiza a tarefa “Revisar pedido”, onde pode verificar quantidades, valores e itens 
-selecionados. 
 
-4. Validação do Pedido 
-O sistema apresenta uma decisão: “Pedido está correto?”. 
-• Caso o cliente identifique erros, ele retorna ao carrinho para ajustes.  
-• Caso esteja tudo correto, o processo continua.  
+3. Identificação do Cliente
+Ao acessar o carrinho, o sistema solicita a identificação do cliente por meio de login ou cadastro.
+• Caso o cliente não esteja cadastrado, ele executa a tarefa “Cadastrar cliente”. Após o cadastro,
+  o sistema envia os dados para o processo de cliente, gerando um evento de “Cadastro enviado para o Processo Cliente”.  
+• Caso já possua cadastro, o processo segue normalmente para a próxima etapa.
 
-5. Identificação do Cliente 
-O sistema solicita a identificação do usuário por meio de login ou cadastro. 
-• Caso o cliente não esteja cadastrado, ele executa a tarefa “Cadastrar cliente”.  
-• Caso já possua cadastro, o processo segue normalmente.  
-Após isso, o cliente confirma os dados necessários para entrega. 
+4. Dados de Entrega
+Após a identificação do cliente, ele confirma os dados necessários para entrega.
+O sistema apresenta a tarefa “Confirmar dados para entrega”, onde o cliente informa endereço, tipo de frete e demais informações.
+O sistema então verifica a decisão “Dados de entrega corretos?”.
+• Caso não estejam corretos, o cliente permanece na mesma etapa para realizar os ajustes necessários.  
+• Caso estejam corretos, o processo segue para a próxima etapa.
 
-6. Finalização da Venda 
-O cliente executa a tarefa “Finalizar compra”, consolidando o pedido. Neste momento, o sistema gera 
-um evento de mensagem: “Enviar pedido para pagamento”, marcando a transição entre o processo de 
-venda e o processo de pagamento.
+5. Revisão e Validação do Pedido
+Após a confirmação dos dados de entrega, o cliente realiza a tarefa “Revisar pedido”, onde pode verificar quantidades, valores e itens selecionados.
+Em seguida, o sistema apresenta a decisão “Pedido está correto?”.
+• Caso não esteja correto, o fluxo retorna para a etapa de confirmação dos dados de entrega para ajustes.
+• Caso esteja tudo correto, o processo continua para a finalização da compra.
+
+6. Finalização da Venda
+Na etapa final, o cliente executa a tarefa “Finalizar compra”, consolidando o pedido.
+Neste momento, o sistema envia o pedido para o processo de pagamento, gerando um evento de mensagem que
+representa a transição entre o processo de venda e o processo de pagamento.
 
 ---
 
