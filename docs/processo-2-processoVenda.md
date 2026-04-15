@@ -1,7 +1,9 @@
 ### 3.3.2 Processo 2 – Processo de Venda
 
 
-<img width="1147" height="538" alt="image" src="https://github.com/user-attachments/assets/043bdf9a-9eb8-4df2-a4b8-3ba9c257510c" />
+<img width="1230" height="537" alt="image" src="https://github.com/user-attachments/assets/8770ce6b-0001-44e0-86ed-665a825c3a6b" />
+
+
 
 
 **1. Início e Navegação no Site** 
@@ -17,7 +19,8 @@ desejado e adicionando-o ao carrinho por meio da tarefa “Adicionar ao carrinho
 
 Após adicionar um item, o sistema direciona o fluxo para uma decisão: “Deseja continuar comprando?”. 
 
-• Caso a resposta seja sim, o cliente retorna à navegação de produtos.  
+• Caso a resposta seja sim, o cliente retorna à navegação de produtos. 
+
 • Caso seja não, o fluxo segue para a tarefa “Ir para o carrinho”.  
 
 
@@ -26,7 +29,7 @@ Após adicionar um item, o sistema direciona o fluxo para uma decisão: “Desej
 
 Ao acessar o carrinho, o sistema solicita a identificação do cliente por meio de login ou cadastro.
 
-• Caso o cliente não esteja cadastrado, ele executa a tarefa “Cadastrar cliente”. Após o cadastro, o sistema envia os dados para o processo de cliente, gerando um evento de “Cadastro enviado para o Processo Cliente”.
+• Caso o cliente não esteja cadastrado, ele executa a tarefa “Cadastrar cliente”, representada como um subprocesso. Após a conclusão do cadastro, o fluxo retorna ao processo principal, seguindo para a etapa de confirmação dos dados de entrega.
 
 • Caso já possua cadastro, o processo segue normalmente para a próxima etapa.
 
@@ -55,9 +58,13 @@ Em seguida, o sistema apresenta a decisão “Pedido está correto?”.
 
 **6. Finalização da Venda**
 
-Na etapa final, o cliente executa a tarefa “Finalizar compra”, consolidando o pedido.
-Neste momento, o sistema envia o pedido para o processo de pagamento, gerando um evento de mensagem que
-representa a transição entre o processo de venda e o processo de pagamento.
+Na etapa final, após a verificação do pedido, o cliente prossegue conforme a validação:
+
+• Caso o pedido não esteja correto, o fluxo retorna para a atividade “Revisar pedido”, permitindo ajustes antes da finalização.
+
+• Caso o pedido esteja correto, o cliente executa a tarefa “Realizar pagamento”, representada como um subprocesso.
+
+Após essa etapa, o sistema considera a venda concluída, sendo encaminhada para o processo de pagamento.
 
 
 ---
