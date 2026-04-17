@@ -73,7 +73,7 @@ Após essa etapa, o sistema considera a venda concluída, sendo encaminhada para
 
 ![Modelo Wireflame do Processo 1](images/CatalagoDeProdutos.jpg)
 
-![Modelo Wireflame do Processo 1](images/LoginECadastro (1).jpg)
+![Modelo Wireflame do Processo 1](images/LoginECadastro.jpg)
 
 ---
 
