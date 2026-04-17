@@ -15,6 +15,7 @@ Para clientes já cadastrados, o fluxo segue para **O cliente insere suas creden
 
 Por fim, após a autenticação ou conclusão do cadastro, o cliente chega à etapa de **Visualizar e gerenciar perfil**. Nesta área, o usuário tem autonomia para editar seus dados pessoais, gerenciar endereços de entrega e consultar seu histórico completo de pedidos, encerrando o processo ao finalizar suas interações na conta.
 ![ Modelo WireFlame](images/LoginECadastro.jpg)
+
 ![ Modelo WireFlame](images/AdministradorControladoCliente.jpg)
 -----
 
