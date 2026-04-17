@@ -67,6 +67,14 @@ Na etapa final, após a verificação do pedido, o cliente prossegue conforme a 
 Após essa etapa, o sistema considera a venda concluída, sendo encaminhada para o processo de pagamento.
 
 
+![Modelo Wireflame do Processo 1](images/PaginaDoProduto.jpg)
+
+![Modelo Wireflame do Processo 1](images/PaginadoCarrinho.jpg)
+
+![Modelo Wireflame do Processo 1](images/CatalagoDeProdutos.jpg)
+
+![Modelo Wireflame do Processo 1](images/LoginECadastro (1).jpg)
+
 ---
 
 
