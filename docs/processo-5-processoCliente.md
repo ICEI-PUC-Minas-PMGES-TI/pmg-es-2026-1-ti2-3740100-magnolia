@@ -17,6 +17,7 @@ Por fim, após a autenticação ou conclusão do cadastro, o cliente chega à et
 ![ Modelo WireFlame](images/LoginECadastro.jpg)
 
 ![ Modelo WireFlame](images/AdministradorControladoCliente.jpg)
+
 -----
 
 ### **Solicitar acesso a conta**
