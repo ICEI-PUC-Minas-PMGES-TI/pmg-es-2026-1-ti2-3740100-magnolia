@@ -3,7 +3,7 @@
 
 *O processo do cliente compreende a jornada de identificação, autenticação e a gestão da área logada, onde o usuário mantém seus dados de entrega e histórico de interações com o Jardim Magnólia.*
 
-![ Modelo BPMN](images/Cliente.jpg)
+![ Modelo BPMN](images/Processos/Cliente.jpg)
 
 #### Detalhamento das atividades
 
