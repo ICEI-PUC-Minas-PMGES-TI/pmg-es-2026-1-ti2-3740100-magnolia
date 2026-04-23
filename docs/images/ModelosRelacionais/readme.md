@@ -1,1 +1,1 @@
-Criar pasta ModelosRelacionais
+Pasta que concentra os Modelos Relacionais.
