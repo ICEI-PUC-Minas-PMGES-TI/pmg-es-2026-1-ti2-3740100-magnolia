@@ -24,8 +24,8 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 
 ![Modelo Wireflame do Processo 1](images/Telas/ValidaçãoAdministrador.jpg)
 
-
 ![Modelo Wireflame do Processo 1](images/Telas/ControleDeEstoque.jpg)
+
 ---
 
 **Acessar aba Produtos**
