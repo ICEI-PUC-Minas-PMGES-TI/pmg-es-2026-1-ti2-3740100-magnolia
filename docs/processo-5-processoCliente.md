@@ -15,7 +15,7 @@ Para clientes já cadastrados, o fluxo segue para **O cliente insere suas creden
 
 Por fim, após a autenticação ou conclusão do cadastro, o cliente chega à etapa de **Visualizar e gerenciar perfil**. Nesta área, o usuário tem autonomia para editar seus dados pessoais, gerenciar endereços de entrega e consultar seu histórico completo de pedidos, encerrando o processo ao finalizar suas interações na conta.
 
-![Modelo Wireframe do Processo 1](images/Telas/LoginECadastro (1).jpg)
+![Modelo Wireframe do Processo 1](images/Telas/LoginECadastro1.jpg)
 
 
 
