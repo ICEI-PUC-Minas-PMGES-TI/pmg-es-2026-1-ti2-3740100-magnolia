@@ -21,6 +21,7 @@ Por fim, após a autenticação ou conclusão do cadastro, o cliente chega à et
 
 ![Modelo Wireframe do Processo 1](images/Telas/AdministradorControledeCliente.jpg)
 
+![Modelo Wireframe do Processo 1](images/Telas/EdicaodeCliente.jpg)
 -----
 
 ### **Solicitar acesso a conta**
