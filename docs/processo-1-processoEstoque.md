@@ -22,7 +22,7 @@ O processo inicia quando o administrador acessa a área de produtos. Em seguida,
 
 As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN do processo de estoque.
 
-![Modelo Wireflame do Processo 2](images/Telas/ValidaçãoAdministrador.jpg)
+![Modelo Wireflame do Processo 2](images/Telas/ValidacaoAdministrador.jpg)
 
 ![Modelo Wireflame do Processo 1](images/Telas/ControleDeEstoque.jpg)
 
