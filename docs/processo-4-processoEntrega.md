@@ -25,11 +25,11 @@ Na etapa de confirmação de entrega, o entregador registra no sistema se a entr
 
 Por fim, com a entrega realizada, o pedido é concluído. O cliente recebe a confirmação final e pode avaliar o serviço prestado, contribuindo para a melhoria contínua da plataforma.
 
-![Modelo Wireflime](images/AcompanharEntrega.jpg)
+![Modelo Wireflime](images/Telas/AcompanharEntrega.jpg)
 
-![Modelo Wireflime](images/AdministradorDePedidos.jpg)
+![Modelo Wireflime](images/Telas/AdministradorDePedidos.jpg)
 
-![Modelo Wireflime](images/AcompanharEntrega.jpg)
+![Modelo Wireflime](images/Telas/AcompanharEntrega.jpg)
 
 ### **Cliente faz o pedido**
 
