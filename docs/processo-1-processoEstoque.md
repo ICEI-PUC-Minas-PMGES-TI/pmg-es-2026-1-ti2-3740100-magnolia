@@ -1,6 +1,6 @@
 ### 3.3.1 Processo 1 – Controle de Estoque de Produtos
 
-O **Processo 1** corresponde ao **controle de estoque de produtos** do sistema **Jardim Magnólia**. Esse processo representa as atividades realizadas pelo administrador na aba **Produtos**, responsável por consultar os itens cadastrados, visualizar o estoque disponível, selecionar um produto e alterar sua quantidade em estoque. No sistema, os produtos possuem atributos como **nome**, **preço**, **imagem**, **estoque**, **status ativo/inativo**, **categoria** e **descrição**, o que fundamenta a modelagem deste processo. Além disso, a área administrativa permite carregar a lista de produtos e salvar alterações no backend, mantendo as informações do catálogo atualizadas.
+O **Processo 1** corresponde ao **controle de estoque de produtos** do sistema **Jardim Magnólia**. Esse processo representa as atividades realizadas pelo administrador na aba **Produtos**, responsável por verificar sua permissão de acesso, consultar os itens cadastrados, visualizar o estoque disponível, selecionar um produto e alterar sua quantidade em estoque. No sistema, os produtos possuem atributos como **nome**, **preço**, **imagem**, **estoque**, **status ativo/inativo**, **categoria** e **descrição**, o que fundamenta a modelagem deste processo. Além disso, a área administrativa permite carregar a lista de produtos e salvar alterações no backend, mantendo as informações do catálogo atualizadas.
 
 As principais **oportunidades de melhoria** identificadas para esse processo são:
 
@@ -16,17 +16,18 @@ Em seguida, apresenta-se o modelo BPMN do processo de estoque.
 
 #### Descrição do modelo BPMN
 
-O processo inicia quando o administrador acessa a área de produtos. Em seguida, ele consulta o estoque atual e seleciona o produto que deseja analisar. Depois disso, verifica se há necessidade de ajuste na quantidade disponível. Caso não haja necessidade de alteração, o processo é encerrado. Caso exista necessidade, o administrador informa a nova quantidade em estoque, salva a alteração e, por fim, consulta novamente a listagem para confirmar a atualização dos dados.
+O processo inicia quando o administrador acessa a aba de produtos. O sistema então verifica se o usuário possui permissão de administrador. Caso a permissão seja inválida, o acesso é negado e o processo é encerrado. Caso a permissão seja válida, o sistema carrega a listagem de produtos do backend. Em seguida, o administrador seleciona o produto que deseja analisar e verifica se há necessidade de ajuste na quantidade disponível. Caso não haja necessidade de alteração, o processo é encerrado sem modificações. Caso exista necessidade, o administrador informa a nova quantidade em estoque. O sistema então valida a quantidade informada — se os dados forem inválidos, o processo é encerrado com erro. Se os dados forem válidos, o administrador confirma a alteração, o sistema salva a modificação no backend, recarrega a listagem atualizada e exibe o estoque corrigido, encerrando o processo com sucesso.
 
 #### Detalhamento das atividades
 
 As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN do processo de estoque.
 
-![Modelo Wireflame do Processo 2](images/Telas/ValidacaoAdministrador.jpg)
+![Modelo Wireframe do Processo 1](images/Telas/ValidacaoAdministrador.jpg)
 
-![Modelo Wireflame do Processo 1](images/Telas/ControleDeEstoque.jpg)
+![Modelo Wireframe do Processo 1](images/Telas/ControleDeEstoque.jpg)
 
-![Modelo Wireflame do Processo 1](images/Telas/Edicao.png.jpg)
+![Modelo Wireframe do Processo 1](images/Telas/Edicao.png.jpg)
+
 ---
 
 **Acessar aba Produtos**
@@ -38,12 +39,25 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
-| entrar | Consultar estoque atual | default |
+| entrar | Verificar permissão de administrador | default |
 | cancelar | Fim do Processo 1 | cancel |
 
 ---
 
-**Consultar estoque atual**
+**Verificar permissão de administrador**
+
+| **Campo** | **Tipo** | **Restrições** | **Valor default** |
+| --- | --- | --- | --- |
+| perfil do usuário autenticado | Seleção única | somente leitura | conforme sessão ativa |
+
+| **Comandos** | **Destino** | **Tipo** |
+| --- | --- | --- |
+| permissão válida | Carregar produtos do backend | default |
+| permissão inválida | Fim do Processo 1 (acesso negado) | cancel |
+
+---
+
+**Carregar produtos do backend**
 
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --- | --- | --- | --- |
@@ -73,7 +87,7 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
 | continuar | Verificar necessidade de ajuste | default |
-| voltar | Consultar estoque atual | cancel |
+| voltar | Carregar produtos do backend | cancel |
 
 ---
 
@@ -88,7 +102,7 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
 | ajustar estoque | Informar nova quantidade | default |
-| encerrar | Fim do Processo 1 | cancel |
+| encerrar | Fim do Processo 1 (sem alteração) | cancel |
 
 ---
 
@@ -103,27 +117,65 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
-| salvar alteração | Salvar alteração de estoque | default |
-| cancelar | Consultar estoque atual | cancel |
+| salvar alteração | Validar quantidade informada | default |
+| cancelar | Carregar produtos do backend | cancel |
 
 ---
 
-**Salvar alteração de estoque**
+**Validar quantidade informada**
+
+| **Campo** | **Tipo** | **Restrições** | **Valor default** |
+| --- | --- | --- | --- |
+| nova quantidade | Número | somente leitura | valor informado |
+
+| **Comandos** | **Destino** | **Tipo** |
+| --- | --- | --- |
+| quantidade válida | Confirmar alteração | default |
+| quantidade inválida | Fim do Processo 1 (dados inválidos) | cancel |
+
+---
+
+**Confirmar alteração**
 
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --- | --- | --- | --- |
 | nome do produto | Caixa de texto | somente leitura | item selecionado |
-| nova quantidade | Número | obrigatório | valor informado |
-| data e hora da alteração | Data e Hora | gerado automaticamente | data e hora atual |
+| nova quantidade | Número | somente leitura | valor validado |
 
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
-| confirmar | Visualizar estoque atualizado | default |
+| confirmar | Salvar alteração no backend | default |
 | cancelar | Informar nova quantidade | cancel |
 
 ---
 
-**Visualizar estoque atualizado**
+**Salvar alteração no backend**
+
+| **Campo** | **Tipo** | **Restrições** | **Valor default** |
+| --- | --- | --- | --- |
+| nome do produto | Caixa de texto | somente leitura | item selecionado |
+| nova quantidade | Número | obrigatório | valor confirmado |
+| data e hora da alteração | Data e Hora | gerado automaticamente | data e hora atual |
+
+| **Comandos** | **Destino** | **Tipo** |
+| --- | --- | --- |
+| salvo com sucesso | Recarregar listagem atualizada | default |
+
+---
+
+**Recarregar listagem atualizada**
+
+| **Campo** | **Tipo** | **Restrições** | **Valor default** |
+| --- | --- | --- | --- |
+| lista de produtos atualizada | Tabela | somente leitura | carregada do sistema |
+
+| **Comandos** | **Destino** | **Tipo** |
+| --- | --- | --- |
+| listagem carregada | Exibir estoque atualizado | default |
+
+---
+
+**Exibir estoque atualizado**
 
 | **Campo** | **Tipo** | **Restrições** | **Valor default** |
 | --- | --- | --- | --- |
@@ -135,7 +187,7 @@ As atividades apresentadas abaixo estão diretamente relacionadas ao modelo BPMN
 | **Comandos** | **Destino** | **Tipo** |
 | --- | --- | --- |
 | finalizar | Fim do Processo 1 | default |
-| novo ajuste | Consultar estoque atual | cancel |
+| novo ajuste | Carregar produtos do backend | cancel |
 
 ---
 
