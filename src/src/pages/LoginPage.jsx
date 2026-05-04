@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Footer from '../components/Footer.jsx';
-import { IMAGES } from '../data/index.js';
+import { IMAGES } from '../data';
 import { API } from '../hooks/useProdutos.js';
 
 function EyeIcon({ open }) {
