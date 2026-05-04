@@ -229,19 +229,19 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
               Comprar agora
             </button>
           </div>
-
-          {/* Produtos relacionados */}
-          <div className="related">
-            <h2 className="related__title">Você também pode gostar</h2>
-            <div className="related__divider" />
-            <div className="related__grid">
-              {RELATED.map((p) => (
-                <MiniCard key={p.id} item={p} onAddToCart={onAddToCart} onClick={() => onNavigate('product')} />
-              ))}
-            </div>
-          </div>
         </div>
 
+      </div>
+
+      {/* Produtos relacionados — fora do grid para não conflitar com o painel sticky */}
+      <div className="related">
+        <h2 className="related__title">Você também pode gostar</h2>
+        <div className="related__divider" />
+        <div className="related__grid">
+          {RELATED.map((p) => (
+            <MiniCard key={p.id} item={p} onAddToCart={onAddToCart} onClick={() => onNavigate('product')} />
+          ))}
+        </div>
       </div>
 
       <Footer onNavigate={onNavigate} />
