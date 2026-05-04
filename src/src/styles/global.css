@@ -2818,6 +2818,36 @@ img { max-width: 100%; display: block; }
     color: #9f1239;
 }
 
+.cep-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 10px;
+}
+
+.cep-row .form-input {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.btn-cep {
+    flex-shrink: 0;
+    padding: 0 18px;
+    background: #1B3A2D;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+
+.btn-cep:hover { background: #2D6A4F; }
+.btn-cep:disabled { background: #9caf9e; cursor: not-allowed; }
+
 .cliente-page__metrics {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

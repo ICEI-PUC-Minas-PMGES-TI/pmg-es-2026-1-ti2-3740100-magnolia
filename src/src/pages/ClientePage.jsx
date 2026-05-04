@@ -363,9 +363,9 @@ export default function ClientePage({ cliente, onNavigate, onLogout }) {
               </h3>
               <div style={{ display: 'grid', gap: 10 }}>
                 <input className="form-input" placeholder="Apelido (ex: Casa, Trabalho)" value={formEndereco.apelido} onChange={(e) => updateCampo('apelido', e.target.value)} style={{ marginBottom: 0 }} />
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <input className="form-input" placeholder="CEP" value={formEndereco.cep} onChange={(e) => updateCampo('cep', e.target.value)} maxLength={9} style={{ marginBottom: 0, flex: 1 }} />
-                  <button type="button" className="btn-register" style={{ marginTop: 0, whiteSpace: 'nowrap' }} onClick={() => buscarCep()} disabled={cepLoading}>
+                <div className="cep-row">
+                  <input className="form-input" placeholder="CEP" value={formEndereco.cep} onChange={(e) => updateCampo('cep', e.target.value)} maxLength={9} />
+                  <button type="button" className="btn-cep" onClick={() => buscarCep()} disabled={cepLoading}>
                     {cepLoading ? 'Buscando...' : 'Buscar CEP'}
                   </button>
                 </div>

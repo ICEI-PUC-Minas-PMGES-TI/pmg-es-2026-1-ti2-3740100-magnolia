@@ -38,13 +38,18 @@ export const REVIEWS = [
     text: 'Muito obrigado, foi maravilhoso, meu amor amou as rosas, dois buquês muito lindos.' },
 ];
 
-export const DELIVERY_DATES = [
-  { short: 'Ter', date: '17/03', available: true },
-  { short: 'Qua', date: '18/03', available: false },
-  { short: 'Qui', date: '19/03', available: false },
-  { short: 'Sex', date: '20/03', available: false },
-  { short: 'Sáb', date: '21/03', available: false },
-];
+const DAY_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+export const DELIVERY_DATES = (() => {
+  const today = new Date();
+  return Array.from({ length: 5 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i + 1);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return { short: DAY_NAMES[d.getDay()], date: `${dd}/${mm}`, available: true };
+  });
+})();
 
 export const RELATED = [
   {

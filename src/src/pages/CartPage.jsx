@@ -95,9 +95,9 @@ function CheckoutForm({ cliente, onChange, cepLoading, enderecos, enderecoSeleci
 
       {mostrarFormEndereco && (
         <>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input className="form-input" placeholder="CEP" value={cliente.cep || ''} onChange={(e) => onChange('cep', e.target.value)} required style={{ marginBottom: 0 }} />
-            <button type="button" className="btn-register" style={{ marginTop: 0, whiteSpace: 'nowrap' }} onClick={() => onChange('buscarCep')} disabled={cepLoading}>
+          <div className="cep-row">
+            <input className="form-input" placeholder="CEP" value={cliente.cep || ''} onChange={(e) => onChange('cep', e.target.value)} required />
+            <button type="button" className="btn-cep" onClick={() => onChange('buscarCep')} disabled={cepLoading}>
               {cepLoading ? 'Buscando...' : 'Buscar CEP'}
             </button>
           </div>

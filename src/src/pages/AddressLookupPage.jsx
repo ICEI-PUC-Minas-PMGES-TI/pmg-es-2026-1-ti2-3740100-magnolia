@@ -41,21 +41,22 @@ export default function AddressLookupPage({ onNavigate }) {
             Verifique o endereço correspondente a um CEP brasileiro.
           </p>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', gap: 10 }}>
-            <input
-              className="form-input"
-              placeholder="00000-000"
-              value={cep}
-              onChange={(e) => {
-                const v = e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d{1,3})$/, '$1-$2');
-                setCep(v);
-              }}
-              maxLength={9}
-              style={{ marginBottom: 0, flex: 1 }}
-            />
-            <button type="submit" className="btn-login" style={{ width: 'auto', padding: '10px 24px', marginTop: 0 }} disabled={loading}>
-              {loading ? 'Consultando...' : 'Buscar'}
-            </button>
+          <form onSubmit={handleSubmit}>
+            <div className="cep-row">
+              <input
+                className="form-input"
+                placeholder="00000-000"
+                value={cep}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/\D/g, '').slice(0, 8).replace(/^(\d{5})(\d{1,3})$/, '$1-$2');
+                  setCep(v);
+                }}
+                maxLength={9}
+              />
+              <button type="submit" className="btn-cep" disabled={loading}>
+                {loading ? 'Consultando...' : 'Buscar'}
+              </button>
+            </div>
           </form>
 
           {error && (
