@@ -22,7 +22,7 @@ Por outro lado, sempre que o pagamento não é aprovado, autorizado ou confirmad
 
 Por fim, após a confirmação bem-sucedida do pagamento, o sistema notifica a aprovação do pedido e segue para a etapa de entrega, encerrando o processo de pagamento.
 
-![ Modelo Wireflame](images/PaginadoPagamento.jpg)
+![ Modelo Wireflame](images/Telas/PaginadoPagamento.jpg)
 
 
 ---
