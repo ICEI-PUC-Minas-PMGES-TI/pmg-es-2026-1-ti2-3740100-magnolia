@@ -106,4 +106,5 @@ export const CATEGORIA_OPTIONS = Object.entries(CATEGORIA_LABELS).map(([value, l
   label,
 }));
 
+
 export { API };

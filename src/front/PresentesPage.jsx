@@ -239,4 +239,5 @@ export default function PresentesPage({ onNavigate, onAddToCart, initialCategori
       <Footer onNavigate={onNavigate} />
     </div>
   );
+  
 }
