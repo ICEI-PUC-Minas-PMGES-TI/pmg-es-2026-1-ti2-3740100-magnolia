@@ -1,6 +1,0 @@
-#FileLock
-#Thu May 07 13:18:07 BRT 2026
-hostName=192.168.15.16
-id=19e033b6c078fb3f7042af988ef0d4929d977cd372b
-method=file
-server=192.168.15.16\:65453

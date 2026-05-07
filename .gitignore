@@ -1,0 +1,44 @@
+# ─── IntelliJ IDEA ───────────────────────────────────────────
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries/
+.idea/shelf/
+*.iml
+*.ipr
+*.iws
+
+# ─── Maven build output ───────────────────────────────────────
+src/backend/target/
+target/
+
+# ─── H2 database files (dados locais de desenvolvimento) ──────
+src/backend/data/
+*.mv.db
+*.lock.db
+*.trace.db
+
+# ─── Node / npm ───────────────────────────────────────────────
+node_modules/
+src/node_modules/
+dist/
+src/dist/
+.vite/
+
+# ─── Claude Code (configurações locais) ───────────────────────
+.claude/settings.local.json
+
+# ─── Variáveis de ambiente ────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── Uploads gerados em runtime ───────────────────────────────
+src/backend/uploads/
+
+# ─── Sistema operacional ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
