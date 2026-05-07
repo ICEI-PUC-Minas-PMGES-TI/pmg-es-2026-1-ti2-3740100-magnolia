@@ -3,7 +3,20 @@ import Stars from '../components/Stars.jsx';
 import MiniCard from '../components/MiniCard.jsx';
 import Footer from '../components/Footer.jsx';
 import { API } from '../hooks/useProdutos.js';
-import { IMAGES, RELATED, DELIVERY_DATES } from '../data/index.js';
+import { IMAGES, RELATED } from '../data/index.js';
+
+const DAY_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+function buildDates(offset) {
+  const today = new Date();
+  return Array.from({ length: 5 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() + offset * 5 + i + 1);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    return { short: DAY_NAMES[d.getDay()], date: `${dd}/${mm}`, available: true };
+  });
+}
 
 const THUMBS = [IMAGES.rose6, IMAGES.rose12, IMAGES.rose14];
 
@@ -21,6 +34,8 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
   const [activeThumb, setActiveThumb] = useState(0);
   const [qty, setQty]                 = useState(1);
   const [selectedDate, setSelectedDate] = useState(0);
+  const [weekOffset, setWeekOffset]     = useState(0);
+  const deliveryDates = buildDates(weekOffset);
   const [avaliacoes, setAvaliacoes]   = useState([]);
   const [nota, setNota]               = useState(5);
   const [comentario, setComentario]   = useState('');
@@ -202,7 +217,14 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
 
             {/* Datas */}
             <div className="dates">
-              {DELIVERY_DATES.map((d, i) => (
+              <button
+                className="date-more"
+                onClick={() => { setWeekOffset(o => o - 1); setSelectedDate(0); }}
+                disabled={weekOffset === 0}
+                title="Datas anteriores"
+              >‹</button>
+
+              {deliveryDates.map((d, i) => (
                 <button
                   key={i}
                   className={`date-btn ${selectedDate === i ? 'selected' : ''} ${!d.available ? 'disabled' : ''}`}
@@ -214,6 +236,12 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
                   <div>{d.date}</div>
                 </button>
               ))}
+
+              <button
+                className="date-more"
+                onClick={() => { setWeekOffset(o => o + 1); setSelectedDate(0); }}
+                title="Datas futuras"
+              >›</button>
             </div>
 
             {/* Quantidade */}

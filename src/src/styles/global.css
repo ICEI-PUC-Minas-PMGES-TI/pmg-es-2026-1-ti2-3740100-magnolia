@@ -888,13 +888,13 @@ img { max-width: 100%; display: block; }
 
 .dates {
     display: flex;
-    gap: 6px;
+    gap: 10px;
     align-items: stretch;
 }
 
 .date-btn {
     flex: 1;
-    padding: 8px 3px;
+    padding: 8px 6px;
     border-radius: var(--radius-md);
     border: 1.5px solid var(--gray-300);
     background: var(--white);
@@ -928,16 +928,21 @@ img { max-width: 100%; display: block; }
 .date-more {
     flex: 0 0 32px;
     height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: var(--radius-md);
     border: 1.5px solid var(--gray-300);
     background: var(--white);
     color: var(--green-700);
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-.date-more:hover { border-color: var(--green-700); }
+.date-more:hover:not(:disabled) { border-color: var(--green-700); background: var(--green-50, #f0fdf4); }
+
+.date-more:disabled { opacity: 0.25; cursor: not-allowed; }
 
 .quantity {
     display: flex;
