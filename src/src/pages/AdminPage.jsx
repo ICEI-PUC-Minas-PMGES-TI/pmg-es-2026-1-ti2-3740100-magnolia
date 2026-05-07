@@ -1064,7 +1064,7 @@ function AdminLogin({ onLogin }) {
           <svg width="54" height="54" viewBox="0 0 118 118" fill="none">
             <ellipse cx="59" cy="59" rx="55" ry="55" stroke="#1B3A2D" strokeWidth="1.8"/>
             <ellipse cx="59" cy="59" rx="50" ry="50" stroke="#1B3A2D" strokeWidth="0.8"/>
-            <text x="59" y="65" textAnchor="middle" fontFamily="Georgia,serif" fontSize="22" fontWeight="700" fill="#1B3A2D">JM</text>
+            <text x="59" y="65" textAnchor="middle" fontFamily="Raleway, DM Sans, sans-serif" fontSize="22" fontWeight="700" fill="#1B3A2D">JM</text>
           </svg>
         </div>
         <h2 className="adm-login-title">Área do Administrador</h2>
@@ -1106,7 +1106,7 @@ export default function AdminPage({ onNavigate }) {
         <div className="adm-sidebar__brand">
           <svg width="36" height="36" viewBox="0 0 118 118" fill="none">
             <ellipse cx="59" cy="59" rx="55" ry="55" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8"/>
-            <text x="59" y="66" textAnchor="middle" fontFamily="Georgia,serif" fontSize="24" fontWeight="700" fill="#fff">JM</text>
+            <text x="59" y="66" textAnchor="middle" fontFamily="Raleway, DM Sans, sans-serif" fontSize="24" fontWeight="700" fill="#fff">JM</text>
           </svg>
           <div>
             <div style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>Jardim Magnólia</div>

@@ -61,7 +61,6 @@ public class AuthController {
                 .nome(nome)
                 .email(email)
                 .senhaHash(hashSenha(senha))
-                .senhaPlana(senha)
                 .build();
 
         Cliente salvo = clienteRepository.save(cliente);
@@ -106,7 +105,7 @@ public class AuthController {
                     m.put("id",        c.getId());
                     m.put("nome",      c.getNome());
                     m.put("email",     c.getEmail());
-                    m.put("senha",     c.getSenhaPlana() != null ? c.getSenhaPlana() : "(cadastrado antes desta versão)");
+                    m.put("criadoEm",  c.getCriadoEm());
                     m.put("enderecos", enderecoRepository.findByClienteId(c.getId()));
                     return m;
                 })

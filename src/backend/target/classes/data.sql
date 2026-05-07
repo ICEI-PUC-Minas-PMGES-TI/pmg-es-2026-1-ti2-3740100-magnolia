@@ -1,0 +1,2 @@
+-- Seed inicial gerenciado pelo DataInitializer.java (executa apenas quando o banco está vazio).
+-- Produtos, clientes e pedidos são persistidos automaticamente pelo banco H2 em arquivo.

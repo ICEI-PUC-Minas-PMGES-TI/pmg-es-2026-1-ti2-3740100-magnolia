@@ -22,9 +22,9 @@
     --gold:      #E6A817;
     --red:       #C41E3A;
 
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-serif: Georgia, serif;
     --font-sans:  'DM Sans', system-ui, sans-serif;
-    --font-title: 'Cormorant Garamond', Georgia, serif;
+    --font-title: 'Raleway', 'DM Sans', sans-serif;
 
     --radius-sm:  6px;
     --radius-md:  10px;
@@ -245,7 +245,7 @@ img { max-width: 100%; display: block; }
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 12px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -760,7 +760,7 @@ img { max-width: 100%; display: block; }
 }
 
 .product-desc__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 21px;
     color: var(--green-800);
     margin-bottom: 10px;
@@ -805,7 +805,7 @@ img { max-width: 100%; display: block; }
 .purchase-panel__source-count { font-size: 12px; color: var(--gray-500); }
 
 .purchase-panel__name {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 22px;
     color: var(--green-800);
     font-weight: 600;
@@ -994,7 +994,7 @@ img { max-width: 100%; display: block; }
 }
 
 .reviews-section__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 22px;
     text-align: center;
     margin-bottom: 6px;
@@ -1055,7 +1055,7 @@ img { max-width: 100%; display: block; }
 .related { margin-top: 8px; }
 
 .related__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 24px;
     text-align: center;
     color: var(--green-800);
@@ -1114,7 +1114,7 @@ img { max-width: 100%; display: block; }
 }
 
 .login-page__tagline {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 50px;
     font-weight: 600;
     line-height: 1.12;
@@ -1147,7 +1147,7 @@ img { max-width: 100%; display: block; }
 }
 
 .login-form__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 24px;
     font-weight: 600;
     color: var(--green-800);
@@ -1156,7 +1156,7 @@ img { max-width: 100%; display: block; }
 }
 
 .login-form__subtitle {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 17px;
     font-weight: 600;
     color: var(--green-800);
@@ -1294,7 +1294,7 @@ img { max-width: 100%; display: block; }
 }
 
 .contact-page__tagline {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 50px;
     font-weight: 600;
     line-height: 1.15;
@@ -1399,7 +1399,7 @@ img { max-width: 100%; display: block; }
 }
 
 .cart-page__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 26px;
     font-weight: 600;
     color: var(--green-800);
@@ -1585,7 +1585,7 @@ img { max-width: 100%; display: block; }
 }
 
 .cart-summary__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 20px;
     font-weight: 600;
     color: var(--green-800);
@@ -1749,7 +1749,7 @@ img { max-width: 100%; display: block; }
 }
 
 .cart-empty__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 22px;
     color: var(--green-800);
     margin-bottom: 8px;
@@ -1788,7 +1788,7 @@ img { max-width: 100%; display: block; }
 .cart-success__icon { font-size: 56px; margin-bottom: 20px; }
 
 .cart-success__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 26px;
     color: var(--green-800);
     margin-bottom: 12px;
@@ -1839,7 +1839,7 @@ img { max-width: 100%; display: block; }
 .adm-login-logo { margin-bottom: 4px; }
 
 .adm-login-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 22px;
     font-weight: 600;
     color: var(--green-800);
@@ -2012,7 +2012,7 @@ img { max-width: 100%; display: block; }
 }
 
 .adm-main__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 22px;
     font-weight: 600;
     color: var(--green-800);
@@ -2075,7 +2075,7 @@ img { max-width: 100%; display: block; }
 }
 
 .adm-section-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 17px;
     font-weight: 600;
     color: var(--green-800);
@@ -2273,7 +2273,7 @@ img { max-width: 100%; display: block; }
 }
 
 .adm-modal__header h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 18px;
     color: var(--green-800);
 }
@@ -2583,7 +2583,7 @@ img { max-width: 100%; display: block; }
 }
 
 .pres-main__title {
-    font-family: var(--font-serif);
+    font-family: var(--font-title);
     font-size: 20px;
     color: var(--green-800);
     margin-bottom: 3px;
@@ -2668,7 +2668,7 @@ img { max-width: 100%; display: block; }
     color: var(--gray-700);
 }
 
-.pres-empty h3 { font-family: var(--font-serif); font-size: 20px; color: var(--green-800); }
+.pres-empty h3 { font-family: var(--font-title); font-size: 20px; color: var(--green-800); }
 .pres-empty p  { font-size: 14px; color: var(--gray-500); }
 
 .home-loading-spinner {

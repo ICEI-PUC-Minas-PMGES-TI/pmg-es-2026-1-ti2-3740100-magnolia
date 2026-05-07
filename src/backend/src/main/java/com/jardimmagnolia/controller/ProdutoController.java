@@ -59,7 +59,6 @@ public class ProdutoController {
             @RequestParam("nome")       String nome,
             @RequestParam("descricao")  String descricao,
             @RequestParam("preco")      BigDecimal preco,
-            @RequestParam("estoque")    Integer estoque,
             @RequestParam("categoria")  CategoriaProduto categoria,
             @RequestParam(value = "imagem", required = false) MultipartFile imagem,
             @RequestParam(value = "imagensExtras", required = false) List<MultipartFile> imagensExtras,
@@ -77,7 +76,7 @@ public class ProdutoController {
                 .nome(nome)
                 .descricao(descricao)
                 .preco(preco)
-                .estoque(estoque)
+                .estoque(0)
                 .categoria(categoria)
                 .ativo(true)
                 .imagemUrl(imagemUrl)
@@ -93,7 +92,6 @@ public class ProdutoController {
             @RequestParam("nome")       String nome,
             @RequestParam("descricao")  String descricao,
             @RequestParam("preco")      BigDecimal preco,
-            @RequestParam("estoque")    Integer estoque,
             @RequestParam("categoria")  CategoriaProduto categoria,
             @RequestParam(value = "imagem", required = false) MultipartFile imagem,
             @RequestParam(value = "imagensExtras", required = false) List<MultipartFile> imagensExtras,
@@ -104,7 +102,7 @@ public class ProdutoController {
             p.setNome(nome);
             p.setDescricao(descricao);
             p.setPreco(preco);
-            p.setEstoque(estoque);
+            // estoque não é alterado aqui — exclusivo da movimentação de estoque
             p.setCategoria(categoria);
 
             if (imagem != null && !imagem.isEmpty()) {
