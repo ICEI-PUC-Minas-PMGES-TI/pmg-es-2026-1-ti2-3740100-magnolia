@@ -244,6 +244,124 @@ function TabEntregas() {
 }
 
 const EMPTY = { nome: '', preco: '', estoque: '', descricao: '', categoria: 'BUQUES', imgFile: null, imgPreview: null };
+const EMPTY_MOV = { tipo: 'ENTRADA', quantidade: '', observacao: '' };
+
+function MovimentacaoModal({ produto, onClose, onSaved }) {
+  const [form, setForm] = useState(EMPTY_MOV);
+  const [saving, setSaving] = useState(false);
+  const [erro, setErro] = useState('');
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    setErro('');
+    if (!form.quantidade || Number(form.quantidade) < 1) {
+      setErro('Informe uma quantidade válida (mínimo 1).');
+      return;
+    }
+    setSaving(true);
+    try {
+      const res = await fetch(`${API}/movimentacoes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          produtoId: produto.id,
+          tipo: form.tipo,
+          quantidade: Number(form.quantidade),
+          observacao: form.observacao || null,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErro(data.erro || 'Erro ao registrar movimentação.');
+        return;
+      }
+      onSaved();
+      onClose();
+    } catch {
+      setErro('Erro de conexão. Verifique o servidor.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="adm-modal-bg">
+      <div className="adm-modal" style={{ maxWidth: 440 }}>
+        <div className="adm-modal__header">
+          <h3>Movimentar Estoque</h3>
+          <button className="adm-modal__close" onClick={onClose}>✕</button>
+        </div>
+        <div style={{ padding: '0 4px 8px', color: '#555', fontSize: 13 }}>
+          <strong>{produto.name}</strong>
+          <span style={{ marginLeft: 10, color: '#888' }}>
+            Estoque atual: <strong style={{ color: produto.estoque < 5 ? '#856404' : '#155724' }}>{produto.estoque} un.</strong>
+          </span>
+        </div>
+        <form onSubmit={handleSave} className="adm-form">
+          <div className="adm-form__group adm-form__group--full">
+            <label>Tipo de movimentação *</label>
+            <div style={{ display: 'flex', gap: 10 }}>
+              {['ENTRADA', 'SAIDA'].map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setForm((f) => ({ ...f, tipo: t }))}
+                  style={{
+                    flex: 1, padding: '10px 0', borderRadius: 9, fontWeight: 700, fontSize: 14, cursor: 'pointer',
+                    border: '2px solid',
+                    borderColor: form.tipo === t ? (t === 'ENTRADA' ? '#1B8A4F' : '#c0392b') : '#ddd',
+                    background: form.tipo === t ? (t === 'ENTRADA' ? '#d4edda' : '#f8d7da') : '#fff',
+                    color: form.tipo === t ? (t === 'ENTRADA' ? '#155724' : '#721c24') : '#888',
+                  }}
+                >
+                  {t === 'ENTRADA' ? '⬆ Entrada' : '⬇ Saída'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="adm-form__group adm-form__group--full">
+            <label>Quantidade *</label>
+            <input
+              type="number" min="1" value={form.quantidade}
+              onChange={(e) => setForm((f) => ({ ...f, quantidade: e.target.value }))}
+              required placeholder="Ex: 10"
+            />
+          </div>
+
+          <div className="adm-form__group adm-form__group--full">
+            <label>Observação</label>
+            <textarea
+              rows={3} value={form.observacao}
+              onChange={(e) => setForm((f) => ({ ...f, observacao: e.target.value }))}
+              placeholder="Ex: Reposição semanal, ajuste de inventário..."
+            />
+          </div>
+
+          {erro && (
+            <div style={{ background: '#f8d7da', color: '#721c24', padding: '8px 12px', borderRadius: 8, fontSize: 13, fontWeight: 600 }}>
+              {erro}
+            </div>
+          )}
+
+          <div className="adm-form__actions">
+            <button type="button" className="adm-btn-outline" onClick={onClose}>Cancelar</button>
+            <button
+              type="submit" disabled={saving}
+              style={{
+                background: form.tipo === 'ENTRADA' ? '#1B8A4F' : '#c0392b',
+                color: '#fff', border: 'none', borderRadius: 9, padding: '10px 22px',
+                fontWeight: 700, fontSize: 14, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1,
+              }}
+            >
+              {saving ? 'Registrando...' : 'Registrar movimentação'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
 
 function TabProdutos() {
   const { produtos, setProdutos, loading, refetch } = useProdutosAdmin();
@@ -252,6 +370,7 @@ function TabProdutos() {
   const [editing,  setEditing]  = useState(null);
   const [saving,   setSaving]   = useState(false);
   const [filterCat, setFilterCat] = useState('TODOS');
+  const [movProduto, setMovProduto] = useState(null);
 
   const handleImgChange = (e) => {
     const file = e.target.files[0];
@@ -341,6 +460,14 @@ function TabProdutos() {
           </button>
         ))}
       </div>
+
+      {movProduto && (
+        <MovimentacaoModal
+          produto={movProduto}
+          onClose={() => setMovProduto(null)}
+          onSaved={refetch}
+        />
+      )}
 
       {showForm && (
         <div className="adm-modal-bg">
@@ -469,6 +596,14 @@ function TabProdutos() {
                     </td>
                     <td>
                       <div style={{ display: 'flex', gap: 6 }}>
+                        <button
+                          className="adm-btn-sm"
+                          title="Movimentar estoque"
+                          onClick={() => setMovProduto(p)}
+                          style={{ background: '#e8f4fd', color: '#0c5460', border: '1px solid #bee5eb' }}
+                        >
+                          📦
+                        </button>
                         <button className="adm-btn-sm adm-btn-outline" onClick={() => handleEdit(p)}>✏️</button>
                         <button className="adm-btn-sm adm-btn-danger"  onClick={() => handleDelete(p.id)}>🗑️</button>
                       </div>
@@ -780,6 +915,134 @@ function TabSuporte() {
   );
 }
 
+function TabMovimentacoes() {
+  const [movs, setMovs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filtroTipo, setFiltroTipo] = useState('TODOS');
+  const [filtroProduto, setFiltroProduto] = useState('');
+
+  const carregar = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/movimentacoes`);
+      if (!res.ok) throw new Error();
+      setMovs(await res.json());
+    } catch {
+      setMovs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { carregar(); }, []);
+
+  const lista = movs.filter((m) => {
+    const matchTipo = filtroTipo === 'TODOS' || m.tipo === filtroTipo;
+    const matchProd = !filtroProduto || m.produtoNome.toLowerCase().includes(filtroProduto.toLowerCase());
+    return matchTipo && matchProd;
+  });
+
+  const totalEntradas = movs.filter((m) => m.tipo === 'ENTRADA').reduce((s, m) => s + m.quantidade, 0);
+  const totalSaidas   = movs.filter((m) => m.tipo === 'SAIDA').reduce((s, m) => s + m.quantidade, 0);
+
+  if (loading) return <p style={{ color: 'var(--gray-500)' }}>Carregando log de movimentações...</p>;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
+        <MetricCard icon="📋" label="Total de registros" value={movs.length}     color="#1B3A2D" />
+        <MetricCard icon="⬆"  label="Total entradas"     value={`${totalEntradas} un.`} color="#155724" />
+        <MetricCard icon="⬇"  label="Total saídas"       value={`${totalSaidas} un.`}   color="#721c24" />
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+        <div className="adm-filter-row" style={{ margin: 0 }}>
+          {['TODOS', 'ENTRADA', 'SAIDA'].map((t) => (
+            <button
+              key={t}
+              className={`adm-filter-btn ${filtroTipo === t ? 'active' : ''}`}
+              onClick={() => setFiltroTipo(t)}
+            >
+              {t === 'TODOS' ? 'Todos' : t === 'ENTRADA' ? '⬆ Entrada' : '⬇ Saída'}
+            </button>
+          ))}
+        </div>
+        <input
+          type="text"
+          placeholder="Filtrar por produto..."
+          value={filtroProduto}
+          onChange={(e) => setFiltroProduto(e.target.value)}
+          style={{
+            padding: '7px 13px', border: '1.5px solid #ddd', borderRadius: 8,
+            fontSize: 13, outline: 'none', minWidth: 200,
+          }}
+        />
+        <button
+          onClick={carregar}
+          style={{
+            padding: '7px 14px', background: '#f0faf3', color: '#1B3A2D',
+            border: '1px solid #c3e6cb', borderRadius: 8, fontSize: 13,
+            fontWeight: 600, cursor: 'pointer',
+          }}
+        >
+          ↻ Atualizar
+        </button>
+      </div>
+
+      {lista.length === 0 ? (
+        <p style={{ color: 'var(--gray-500)', fontSize: 14 }}>Nenhuma movimentação registrada ainda.</p>
+      ) : (
+        <div className="adm-table-wrap">
+          <table className="adm-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Produto</th>
+                <th>Tipo</th>
+                <th>Qtd</th>
+                <th>Antes</th>
+                <th>Depois</th>
+                <th>Observação</th>
+                <th>Data / Hora</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lista.map((m) => (
+                <tr key={m.id}>
+                  <td><span className="adm-order-id">#{String(m.id).padStart(4, '0')}</span></td>
+                  <td style={{ fontWeight: 500, fontSize: 13, maxWidth: 200 }}>{m.produtoNome}</td>
+                  <td>
+                    <span style={{
+                      background: m.tipo === 'ENTRADA' ? '#d4edda' : '#f8d7da',
+                      color:      m.tipo === 'ENTRADA' ? '#155724' : '#721c24',
+                      padding: '3px 10px', borderRadius: 20, fontSize: 12, fontWeight: 700,
+                    }}>
+                      {m.tipo === 'ENTRADA' ? '⬆ Entrada' : '⬇ Saída'}
+                    </span>
+                  </td>
+                  <td style={{ fontWeight: 700, textAlign: 'center' }}>{m.quantidade}</td>
+                  <td style={{ textAlign: 'center', color: '#888' }}>{m.estoqueAntes} un.</td>
+                  <td style={{ textAlign: 'center', fontWeight: 600, color: m.estoqueDepois < 5 ? '#856404' : '#155724' }}>
+                    {m.estoqueDepois} un.
+                  </td>
+                  <td style={{ fontSize: 12, color: '#666', maxWidth: 220, whiteSpace: 'pre-wrap' }}>
+                    {m.observacao || <span style={{ color: '#bbb' }}>—</span>}
+                  </td>
+                  <td style={{ fontSize: 12, color: '#777', whiteSpace: 'nowrap' }}>
+                    {m.criadoEm
+                      ? new Date(m.criadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                      : '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AdminLogin({ onLogin }) {
   const [code,    setCode]    = useState('');
   const [error,   setError]   = useState('');
@@ -829,13 +1092,14 @@ function AdminLogin({ onLogin }) {
 }
 
 const TABS = [
-  { id: 'dashboard', label: '📊 Dashboard' },
-  { id: 'pedidos',   label: '📦 Pedidos'   },
-  { id: 'entregas',  label: '🚚 Entregas'  },
-  { id: 'produtos',  label: '🌹 Produtos'  },
-  { id: 'avaliacoes', label: '⭐ Avaliações' },
-  { id: 'suporte',   label: '💬 Suporte'   },
-  { id: 'clientes',  label: '👥 Clientes'  },
+  { id: 'dashboard',     label: '📊 Dashboard'     },
+  { id: 'pedidos',       label: '📦 Pedidos'        },
+  { id: 'entregas',      label: '🚚 Entregas'       },
+  { id: 'produtos',      label: '🌹 Produtos'       },
+  { id: 'movimentacoes', label: '📋 Movimentações'  },
+  { id: 'avaliacoes',    label: '⭐ Avaliações'     },
+  { id: 'suporte',       label: '💬 Suporte'        },
+  { id: 'clientes',      label: '👥 Clientes'       },
 ];
 
 export default function AdminPage({ onNavigate }) {
@@ -878,13 +1142,14 @@ export default function AdminPage({ onNavigate }) {
           </span>
         </div>
         <div className="adm-main__body">
-          {tab === 'dashboard'  && <TabDashboard  />}
-          {tab === 'pedidos'    && <TabPedidos    />}
-          {tab === 'entregas'   && <TabEntregas   />}
-          {tab === 'produtos'   && <TabProdutos   />}
-          {tab === 'avaliacoes' && <TabAvaliacoes />}
-          {tab === 'suporte'    && <TabSuporte    />}
-          {tab === 'clientes'   && <TabClientes   />}
+          {tab === 'dashboard'     && <TabDashboard     />}
+          {tab === 'pedidos'       && <TabPedidos       />}
+          {tab === 'entregas'      && <TabEntregas      />}
+          {tab === 'produtos'      && <TabProdutos      />}
+          {tab === 'movimentacoes' && <TabMovimentacoes />}
+          {tab === 'avaliacoes'    && <TabAvaliacoes    />}
+          {tab === 'suporte'       && <TabSuporte       />}
+          {tab === 'clientes'      && <TabClientes      />}
         </div>
       </main>
     </div>
