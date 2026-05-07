@@ -73,8 +73,9 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
   };
 
   return (
-    <div className="product-page">
+    <>
 
+      <div className="product-page">
       {/* Breadcrumb */}
       <div className="breadcrumb">
         <button onClick={() => onNavigate('home')}>Início</button>
@@ -244,7 +245,9 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         </div>
       </div>
 
+      </div>
+
       <Footer onNavigate={onNavigate} />
-    </div>
+    </>
   );
 }

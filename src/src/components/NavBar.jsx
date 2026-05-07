@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 export default function NavBar({ currentPage, onNavigate, cartCount, searchTerm, onSearchChange, cliente, onLogout }) {
+    const [activeLabel, setActiveLabel] = useState(null);
+
     const navLinks = [
         { label: 'Buquês', page: 'home' },
         { label: 'Arranjos', page: 'home' },
@@ -76,8 +80,8 @@ export default function NavBar({ currentPage, onNavigate, cartCount, searchTerm,
                     {navLinks.map((link) => (
                         <button
                             key={link.label}
-                            className={`navbar__nav-link ${currentPage === link.page ? 'active' : ''}`}
-                            onClick={() => onNavigate(link.page)}
+                            className={`navbar__nav-link ${activeLabel === link.label ? 'active' : ''}`}
+                            onClick={() => { setActiveLabel(link.label); onNavigate(link.page); }}
                         >
                             {link.label}
                         </button>
