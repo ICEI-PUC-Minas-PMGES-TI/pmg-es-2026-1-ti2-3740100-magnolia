@@ -12,7 +12,7 @@ As principais **oportunidades de melhoria** identificadas para esse processo sã
 
 Em seguida, apresenta-se o modelo BPMN do processo de estoque.
 
-![Modelo BPMN do Processo 1](images/Processos/estoque-corrigido.svg)
+![Modelo BPMN do Processo 1](images/Processos/estoque.svg)
 
 #### Descrição do modelo BPMN
 
