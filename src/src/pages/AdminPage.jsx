@@ -95,10 +95,11 @@ function PedidosTable({ compact = false }) {
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error('Erro ao atualizar pedido');
-    } catch {}
-
-    const updated = updateAdminPedidoStatus(id, status);
-    setPedidos(updated);
+      setPedidos((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
+      updateAdminPedidoStatus(id, status);
+    } catch {
+      alert('Não foi possível atualizar o status no servidor.');
+    }
   };
 
   const excluirPedido = async (id) => {
@@ -202,9 +203,11 @@ function TabEntregas() {
         body: JSON.stringify({ status: 'ENTREGUE' }),
       });
       if (!res.ok) throw new Error('Erro ao confirmar entrega');
-    } catch {}
-    const updated = updateAdminPedidoStatus(id, 'ENTREGUE');
-    setPedidos(updated);
+      setPedidos((prev) => prev.map((p) => (p.id === id ? { ...p, status: 'ENTREGUE' } : p)));
+      updateAdminPedidoStatus(id, 'ENTREGUE');
+    } catch {
+      alert('Não foi possível confirmar a entrega no servidor.');
+    }
   };
 
   return (
@@ -689,7 +692,6 @@ function TabAvaliacoes() {
 function TabClientes() {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [senhaVisivel, setSenhaVisivel] = useState({});
   const [expandido, setExpandido] = useState({});
 
   useEffect(() => {
@@ -703,7 +705,6 @@ function TabClientes() {
       .finally(() => setLoading(false));
   }, []);
 
-  const toggleSenha  = (id) => setSenhaVisivel((prev) => ({ ...prev, [id]: !prev[id] }));
   const toggleExpand = (id) => setExpandido((prev) => ({ ...prev, [id]: !prev[id] }));
 
   if (loading) return <p style={{ color: 'var(--gray-500)' }}>Carregando clientes...</p>;
@@ -720,7 +721,7 @@ function TabClientes() {
               <th>#</th>
               <th>Nome</th>
               <th>E-mail</th>
-              <th>Senha</th>
+              <th>Cadastro</th>
               <th>Endereços</th>
             </tr>
           </thead>
@@ -738,18 +739,8 @@ function TabClientes() {
                     <td><span className="adm-order-id">{i + 1}</span></td>
                     <td style={{ fontWeight: 500 }}>{c.nome}</td>
                     <td style={{ color: '#555', fontSize: 13 }}>{c.email}</td>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontFamily: 'monospace', fontSize: 13 }}>
-                          {senhaVisivel[c.id] ? c.senha : '••••••••'}
-                        </span>
-                        <button
-                          onClick={() => toggleSenha(c.id)}
-                          style={{ background: 'none', border: '1px solid #ccc', borderRadius: 6, padding: '2px 8px', cursor: 'pointer', fontSize: 11 }}
-                        >
-                          {senhaVisivel[c.id] ? 'Ocultar' : 'Ver'}
-                        </button>
-                      </div>
+                    <td style={{ fontSize: 12, color: '#777' }}>
+                      {c.criadoEm ? new Date(c.criadoEm).toLocaleDateString('pt-BR') : '—'}
                     </td>
                     <td>
                       <button
