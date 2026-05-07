@@ -246,7 +246,7 @@ function TabEntregas() {
   );
 }
 
-const EMPTY = { nome: '', preco: '', estoque: '', descricao: '', categoria: 'BUQUES', imgFile: null, imgPreview: null };
+const EMPTY = { nome: '', preco: '', descricao: '', categoria: 'BUQUES', imgFile: null, imgPreview: null };
 const EMPTY_MOV = { tipo: 'ENTRADA', quantidade: '', observacao: '' };
 
 function MovimentacaoModal({ produto, onClose, onSaved }) {
@@ -386,7 +386,7 @@ function TabProdutos() {
   const handleEdit = (p) => {
     setEditing(p.id);
     setForm({
-      nome: p.name, preco: p.price, estoque: p.estoque,
+      nome: p.name, preco: p.price,
       descricao: p.descricao || '', categoria: p.categoria || 'BUQUES',
       imgFile: null, imgPreview: p.img,
     });
@@ -423,7 +423,6 @@ function TabProdutos() {
       fd.append('nome',      form.nome);
       fd.append('descricao', form.descricao);
       fd.append('preco',     form.preco);
-      fd.append('estoque',   form.estoque);
       fd.append('categoria', form.categoria);
       if (form.imgFile) fd.append('imagem', form.imgFile);
 
@@ -511,20 +510,22 @@ function TabProdutos() {
                 </select>
               </div>
 
-              <div className="adm-form__row">
-                <div className="adm-form__group">
-                  <label>Preço (R$) *</label>
-                  <input type="number" step="0.01" value={form.preco}
-                    onChange={(e) => setForm((f) => ({ ...f, preco: e.target.value }))}
-                    required placeholder="149.90" />
-                </div>
-                <div className="adm-form__group">
-                  <label>Estoque *</label>
-                  <input type="number" value={form.estoque}
-                    onChange={(e) => setForm((f) => ({ ...f, estoque: e.target.value }))}
-                    required placeholder="20" />
-                </div>
+              <div className="adm-form__group adm-form__group--full">
+                <label>Preço (R$) *</label>
+                <input type="number" step="0.01" value={form.preco}
+                  onChange={(e) => setForm((f) => ({ ...f, preco: e.target.value }))}
+                  required placeholder="149.90" />
               </div>
+
+              {editing && (
+                <div style={{
+                  background: '#fff8e1', border: '1px solid #ffe082', borderRadius: 8,
+                  padding: '10px 14px', fontSize: 13, color: '#7a5c00', display: 'flex', alignItems: 'center', gap: 8,
+                }}>
+                  <span>📦</span>
+                  <span>Para ajustar o estoque deste produto, use o botão <strong>📦</strong> na tabela de produtos.</span>
+                </div>
+              )}
 
               <div className="adm-form__group adm-form__group--full">
                 <label>Descrição</label>
