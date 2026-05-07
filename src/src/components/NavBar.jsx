@@ -15,7 +15,7 @@ export default function NavBar({ currentPage, onNavigate, cartCount, searchTerm,
                     <div className="navbar__logo" onClick={() => onNavigate('home')}>
                         <div className="navbar__logo-frame">
                             <img
-                                src="/src/assets/images/logo.png"
+                                src="/images/logo.png"
                                 alt="Jardim Magnólia"
                                 onError={(e) => {
                                     e.currentTarget.style.display = 'none';
