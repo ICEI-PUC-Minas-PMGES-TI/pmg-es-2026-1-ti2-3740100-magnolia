@@ -667,12 +667,20 @@ img { max-width: 100%; display: block; }
     gap: 6px;
 }
 
-.breadcrumb a {
+.breadcrumb a,
+.breadcrumb button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
     color: var(--green-700);
     transition: color 0.2s;
 }
 
-.breadcrumb a:hover { color: var(--green-800); }
+.breadcrumb a:hover,
+.breadcrumb button:hover { color: var(--green-800); }
 
 .breadcrumb span { color: var(--gray-500); }
 
