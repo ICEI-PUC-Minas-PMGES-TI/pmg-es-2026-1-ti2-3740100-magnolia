@@ -323,7 +323,6 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
         clienteEmail: dadosCliente.email,
         clienteTelefone: dadosCliente.telefone,
         enderecoEntrega,
-        metodoPagamento: 'DINHEIRO_NA_ENTREGA',
         total,
       };
 

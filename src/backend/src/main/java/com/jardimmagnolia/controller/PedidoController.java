@@ -56,9 +56,7 @@ public class PedidoController {
         }
 
         pedido.setStatus(StatusPedido.PENDENTE);
-        if (pedido.getMetodoPagamento() == null || pedido.getMetodoPagamento().isBlank()) {
-            pedido.setMetodoPagamento("DINHEIRO_NA_ENTREGA");
-        }
+        pedido.setMetodoPagamento(null);
         return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(pedido));
     }
 
