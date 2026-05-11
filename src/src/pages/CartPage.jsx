@@ -115,7 +115,7 @@ function CheckoutForm({ cliente, onChange, cepLoading, enderecos, enderecoSeleci
       )}
 
       <div className="cart-summary__tag" style={{ marginTop: 2 }}>
-        Pagamento: <strong>Dinheiro na hora da entrega</strong>
+        Pagamento: <strong>Cartão, PIX ou Dinheiro</strong>
       </div>
     </div>
   );
@@ -154,7 +154,9 @@ function OrderSummary({ items, cliente, onClienteChange, onCheckout, loading, er
       <div className="cart-summary__payments">
         <span className="cart-summary__pay-label">Aceitamos</span>
         <div className="cart-summary__pay-icons">
-          <div className="cart-summary__pay-chip">Dinheiro na entrega</div>
+          <div className="cart-summary__pay-chip">Cartão</div>
+          <div className="cart-summary__pay-chip">PIX</div>
+          <div className="cart-summary__pay-chip">Dinheiro</div>
         </div>
       </div>
     </div>
@@ -355,8 +357,8 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
           <div className="cart-success__icon">✅</div>
           <h2 className="cart-success__title">Pedido realizado!</h2>
           <p className="cart-success__sub">
-            Pedido #{pedidoId || '—'} aguardando aprovação do pagamento em dinheiro.<br />
-            Após aprovação, a administração marcará como <strong>Em rota</strong> e depois <strong>Entregue</strong>.
+            Pedido #{pedidoId || '—'} criado com sucesso! Conclua o pagamento na próxima etapa.<br />
+            Após confirmação, a administração marcará como <strong>Em rota</strong> e depois <strong>Entregue</strong>.
           </p>
           <button className="cart-success__btn" onClick={() => onNavigate('home')}>Continuar comprando</button>
         </div>

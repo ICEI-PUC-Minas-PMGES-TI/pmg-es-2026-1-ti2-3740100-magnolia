@@ -8,6 +8,15 @@ import {
 } from '../utils/adminStore.js';
 
 const fmt = (n = 0) => 'R$' + Number(n).toFixed(2).replace('.', ',');
+
+const METODO_LABEL = {
+  CARTAO_CREDITO:   'Cartão Crédito',
+  CARTAO_DEBITO:    'Cartão Débito',
+  PIX:              'PIX',
+  DINHEIRO:         'Dinheiro',
+  DINHEIRO_NA_ENTREGA: 'Dinheiro',
+};
+const fmtMetodo = (m) => METODO_LABEL[m] || m || '—';
 const STATUS_MAP = {
   pendente:  { label: 'Aguardando pagamento',  color: '#856404', bg: '#fff3cd' },
   em_rota:   { label: 'Em rota',   color: '#155724', bg: '#d4edda' },
@@ -137,6 +146,7 @@ function PedidosTable({ compact = false }) {
               <th>Total</th>
               <th>Data</th>
               <th>Status</th>
+              {!compact && <th>Pagamento</th>}
               {!compact && <th>Ação</th>}
             </tr>
           </thead>
@@ -150,6 +160,9 @@ function PedidosTable({ compact = false }) {
                   {p.criadoEm ? new Date(p.criadoEm).toLocaleDateString('pt-BR') : '—'}
                 </td>
                 <td><StatusBadge status={p.status} /></td>
+                {!compact && (
+                  <td style={{ fontSize: 12, color: '#444' }}>{fmtMetodo(p.metodoPagamento)}</td>
+                )}
                 {!compact && (
                   <td>
                     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
