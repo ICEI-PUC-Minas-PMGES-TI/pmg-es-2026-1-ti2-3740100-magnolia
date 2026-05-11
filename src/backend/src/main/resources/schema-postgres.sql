@@ -112,3 +112,21 @@ CREATE TABLE IF NOT EXISTS movimentacao_estoque (
 
 CREATE INDEX IF NOT EXISTS idx_mov_produto    ON movimentacao_estoque(produto_id);
 CREATE INDEX IF NOT EXISTS idx_mov_criado_em  ON movimentacao_estoque(criado_em DESC);
+
+
+-- ---- Pagamento ----
+CREATE TABLE IF NOT EXISTS pagamento (
+    id BIGSERIAL PRIMARY KEY,
+    pedido_id BIGINT NOT NULL REFERENCES pedido(id) ON DELETE CASCADE,
+    metodo VARCHAR(30) NOT NULL CHECK (metodo IN ('CARTAO_CREDITO', 'CARTAO_DEBITO', 'PIX', 'DINHEIRO')),
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE' CHECK (status IN ('PENDENTE', 'APROVADO', 'RECUSADO')),
+    valor NUMERIC(10,2) NOT NULL CHECK (valor > 0),
+    cartao_ultimos_digitos VARCHAR(4),
+    cartao_titular VARCHAR(255),
+    pix_codigo TEXT,
+    criado_em TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_pagamento_pedido ON pagamento(pedido_id);
+CREATE INDEX IF NOT EXISTS idx_pagamento_status ON pagamento(status);
+CREATE INDEX IF NOT EXISTS idx_pagamento_criado_em ON pagamento(criado_em DESC);
