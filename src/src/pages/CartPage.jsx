@@ -335,9 +335,10 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
       if (!res.ok) throw new Error(data.message || 'Não foi possível finalizar o pedido.');
 
       setPedidoId(data.id);
-      setOrdered(true);
       onOrderFinished?.();
-    } catch (err) {
+      onNavigate('pagamento', { pedidoId: data.id, total })
+    }
+    catch (err) {
       const msg = err?.message === 'Failed to fetch'
         ? 'Não foi possível conectar ao servidor. Verifique se o backend está em execução.'
         : (err.message || 'Erro inesperado ao criar pedido.');
