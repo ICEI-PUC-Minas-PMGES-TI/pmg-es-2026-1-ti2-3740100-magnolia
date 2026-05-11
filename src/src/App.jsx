@@ -12,6 +12,8 @@ import InstitutionalPage from './pages/InstitutionalPage.jsx';
 import TipsPage from './pages/TipsPage.jsx';
 import AddressLookupPage from './pages/AddressLookupPage.jsx';
 import ClientePage from './pages/ClientePage.jsx';
+import PagamentoPage from './pages/PagamentoPage.jsx';
+
 
 const FOOTER_PAGES = new Set(['ajuda', 'politica-privacidade', 'politica-cookies', 'termos']);
 
@@ -100,6 +102,7 @@ export default function App() {
                     onOrderFinished={clearCart}
                     cliente={cliente}
                 />
+                
             )}
             {page === 'presentes' && <PresentesPage onNavigate={navigate} onAddToCart={addToCart} initialCategoria={pageParams.categoria} />}
             {page === 'dicas' && <TipsPage onNavigate={navigate} />}
