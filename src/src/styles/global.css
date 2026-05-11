@@ -2919,3 +2919,190 @@ img { max-width: 100%; display: block; }
     display: grid;
     gap: 4px;
 }
+
+
+/* --- Pagina de Pagamento --- */
+.pag-page {
+ max-width: 1100px;
+ margin: 0 auto;
+ padding: 32px 24px 48px;
+ min-height: 60vh;
+}
+.pag-page__header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-bottom: 28px; 
+ flex-wrap: wrap;
+ gap: 12px;
+}
+
+.pag-page__title {
+ font-family: var(--font-title);
+ font-size: 26px;
+ font-weight: 600;
+ color: var(--green-800);
+}
+.pag-layout {
+ display: grid;
+ grid-template-columns: 1fr 320px;
+ gap: 28px;
+ align-items: start;
+}
+.pag-main { display: flex; flex-direction: column; gap: 20px; }
+.pag-summary {
+ background: var(--white);
+ border-radius: var(--radius-xl);
+ padding: 22px;
+ box-shadow: var(--shadow-md);
+ position: sticky;
+ top: 96px;
+}
+.pag-section {
+ background: var(--white);
+ border-radius: var(--radius-xl);
+ padding: 24px;
+ box-shadow: var(--shadow-sm);
+}
+.pag-section__title {
+ font-family: var(--font-title);
+ font-size: 17px;
+ color: var(--green-800);
+ margin-bottom: 16px;
+ font-weight: 600;
+}
+.pag-metodos {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 12px;
+}
+.pag-metodo {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 4px;
+ padding: 18px 12px;
+ border: 2px solid var(--gray-300);
+ border-radius: var(--radius-lg);
+ background: var(--white);
+ cursor: pointer;
+ transition: all 0.2s;
+ font-family: inherit;
+}
+.pag-metodo:hover {
+ border-color: var(--green-700);
+ transform: translateY(-2px);
+}
+.pag-metodo.active {
+ border-color: var(--green-800);
+ background: var(--green-50);
+ box-shadow: 0 4px 14px rgba(27,138,79,0.15);
+}
+
+
+.pag-metodo__emoji { font-size: 28px; }
+.pag-metodo__label {
+ font-size: 14px;
+ font-weight: 700;
+ color: var(--green-800);
+}
+.pag-metodo__desc {
+ font-size: 11px;
+ color: var(--gray-500);
+}
+.pag-card-form { display: grid; gap: 12px; }
+.pag-card-form__row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 12px;
+}
+.pag-card-form .form-input { margin-bottom: 0; }
+.pag-card-form__tipo {
+ display: flex;
+ gap: 10px;
+ margin-bottom: 4px;
+}
+.pag-card-form__tipo button {
+ flex: 1;
+ padding: 10px;
+ border: 2px solid var(--gray-300);
+ border-radius: 9px;
+ background: var(--white);
+ font-weight: 600;
+ font-size: 13px;
+ cursor: pointer;
+ color: var(--gray-700);
+ transition: all 0.18s;
+ font-family: inherit;
+}
+.pag-card-form__tipo button.active {
+ border-color: var(--green-800);
+ background: var(--green-50);
+ color: var(--green-800);
+}
+.pag-pix {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 16px;
+ padding: 16px;
+}
+.pag-pix__qr {
+ background: #fff;
+ border: 1.5px solid var(--gray-300);
+ border-radius: var(--radius-md);
+ padding: 12px;
+}
+.pag-pix__qr svg {
+ display: block;
+ width: 220px;
+ height: 220px;
+}
+.pag-pix__copy {
+ width: 100%;
+ background: var(--gray-100);
+ border: 1px dashed var(--gray-300);
+ border-radius: var(--radius-md);
+ padding: 10px 14px;
+ font-family: monospace;
+ font-size: 11px;
+ color: var(--gray-700);
+ word-break: break-all;
+ text-align: center;
+}
+.pag-pix__copy-btn {
+ background: var(--green-800);
+ color: #fff;
+ border: none;
+ padding: 6px 14px;
+ border-radius: 6px;
+ font-size: 12px;
+ cursor: pointer;
+ margin-top: 6px;
+ font-family: inherit;
+}
+.pag-dinheiro { text-align: center; padding: 16px; }
+.pag-dinheiro__icon { font-size: 48px; margin-bottom: 8px; }
+.pag-confirm-btn {
+ width: 100%;
+ background: #1B8A4F;
+ color: var(--white);
+ border: none;
+ border-radius: var(--radius-lg);
+ padding: 14px;
+ font-size: 15px;
+ font-weight: 600;
+ letter-spacing: 0.3px;
+ transition: background 0.2s;
+ margin-top: 14px;
+ cursor: pointer;
+ font-family: inherit;
+}
+.pag-confirm-btn:hover { background: #145c38; }
+.pag-confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+ .pag-layout { grid-template-columns: 1fr; }
+ .pag-summary { position: static; }
+ .pag-metodos { grid-template-columns: 1fr; }
+}
