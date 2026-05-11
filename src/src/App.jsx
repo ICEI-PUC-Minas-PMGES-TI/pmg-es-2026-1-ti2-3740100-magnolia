@@ -102,13 +102,23 @@ export default function App() {
                     onOrderFinished={clearCart}
                     cliente={cliente}
                 />
-                
+
+     
+
             )}
             {page === 'presentes' && <PresentesPage onNavigate={navigate} onAddToCart={addToCart} initialCategoria={pageParams.categoria} />}
             {page === 'dicas' && <TipsPage onNavigate={navigate} />}
             {page === 'address' && <AddressLookupPage onNavigate={navigate} />}
             {page === 'minha-conta' && <ClientePage onNavigate={navigate} cliente={cliente} onLogout={handleLogout} />}
             {FOOTER_PAGES.has(page) && <InstitutionalPage page={page} onNavigate={navigate} cliente={cliente} />}
+                
+                {page === 'pagamento' && (
+                <PagamentoPage
+                onNavigate={navigate}
+                pedidoId={pageParams.pedidoId}
+                total={pageParams.total}
+                />
+                )}
         </div>
     );
 }
