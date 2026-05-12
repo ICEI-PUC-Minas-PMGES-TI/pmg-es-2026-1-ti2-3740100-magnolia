@@ -103,7 +103,11 @@ function PedidosTable({ compact = false }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
-      if (!res.ok) throw new Error('Erro ao atualizar pedido');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data.message || 'Não foi possível atualizar o status no servidor.');
+        return;
+      }
       setPedidos((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
       updateAdminPedidoStatus(id, status);
     } catch {
@@ -215,11 +219,33 @@ function TabEntregas() {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'ENTREGUE' }),
       });
-      if (!res.ok) throw new Error('Erro ao confirmar entrega');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data.message || 'Não foi possível confirmar a entrega no servidor.');
+        return;
+      }
       setPedidos((prev) => prev.map((p) => (p.id === id ? { ...p, status: 'ENTREGUE' } : p)));
       updateAdminPedidoStatus(id, 'ENTREGUE');
     } catch {
       alert('Não foi possível confirmar a entrega no servidor.');
+    }
+  };
+
+  const moverParaRota = async (id) => {
+    try {
+      const res = await fetch(`${API}/pedidos/${id}/status`, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'EM_ROTA' }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        alert(data.message || 'Não foi possível atualizar o status.');
+        return;
+      }
+      setPedidos((prev) => prev.map((p) => (p.id === id ? { ...p, status: 'EM_ROTA' } : p)));
+      updateAdminPedidoStatus(id, 'EM_ROTA');
+    } catch {
+      alert('Não foi possível atualizar o status no servidor.');
     }
   };
 
@@ -236,20 +262,42 @@ function TabEntregas() {
         : (
           <div className="adm-deliveries">
             {pendentes.map((p) => (
-              <div key={p.id} className="adm-delivery-card">
-                <div className="adm-delivery-card__left">
-                  <span className="adm-order-id">#{String(p.id).padStart(5, '0')}</span>
-                  <div>
-                    <strong>{p.clienteNome}</strong>
-                    <p style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{p.enderecoEntrega || '—'}</p>
+              <div key={p.id} className="adm-delivery-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8 }}>
+                  <div className="adm-delivery-card__left">
+                    <span className="adm-order-id">#{String(p.id).padStart(5, '0')}</span>
+                    <div>
+                      <strong>{p.clienteNome}</strong>
+                      <p style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{p.enderecoEntrega || '—'}</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <StatusBadge status={p.status} />
+                    {p.status === 'PENDENTE' && (
+                      <button className="adm-btn-sm adm-btn-green" onClick={() => moverParaRota(p.id)}>
+                        Enviar para entrega
+                      </button>
+                    )}
+                    {p.status === 'EM_ROTA' && (
+                      <button className="adm-btn-sm adm-btn-green" onClick={() => confirmar(p.id)}>
+                        ✓ Confirmar entrega
+                      </button>
+                    )}
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <StatusBadge status={p.status} />
-                  <button className="adm-btn-sm adm-btn-green" onClick={() => confirmar(p.id)}>
-                    ✓ Confirmar entrega
-                  </button>
-                </div>
+                {p.itens && p.itens.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingTop: 6, borderTop: '1px solid #f0f0f0' }}>
+                    {p.itens.map((item) => (
+                      <span key={item.id} style={{
+                        background: '#f0faf3', color: '#1B3A2D',
+                        border: '1px solid #c3e6cb', borderRadius: 20,
+                        fontSize: 12, fontWeight: 600, padding: '3px 10px',
+                      }}>
+                        {item.produto?.nome || '—'} × {item.quantidade}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

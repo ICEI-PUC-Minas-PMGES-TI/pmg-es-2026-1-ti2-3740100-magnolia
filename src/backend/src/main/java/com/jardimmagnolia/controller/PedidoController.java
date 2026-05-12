@@ -1,10 +1,12 @@
 package com.jardimmagnolia.controller;
 
-import com.jardimmagnolia.model.Pedido;
-import com.jardimmagnolia.model.StatusPedido;
+import com.jardimmagnolia.model.*;
 import com.jardimmagnolia.repository.ClienteRepository;
+import com.jardimmagnolia.repository.MovimentacaoEstoqueRepository;
 import com.jardimmagnolia.repository.PedidoRepository;
+import com.jardimmagnolia.repository.ProdutoRepository;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +18,17 @@ public class PedidoController {
 
     private final PedidoRepository repo;
     private final ClienteRepository clienteRepository;
+    private final ProdutoRepository produtoRepo;
+    private final MovimentacaoEstoqueRepository movRepo;
 
-    public PedidoController(PedidoRepository repo, ClienteRepository clienteRepository) {
+    public PedidoController(PedidoRepository repo,
+                             ClienteRepository clienteRepository,
+                             ProdutoRepository produtoRepo,
+                             MovimentacaoEstoqueRepository movRepo) {
         this.repo = repo;
         this.clienteRepository = clienteRepository;
+        this.produtoRepo = produtoRepo;
+        this.movRepo = movRepo;
     }
 
     @GetMapping
@@ -49,6 +58,7 @@ public class PedidoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<?> criar(@RequestBody Pedido pedido) {
         if (pedido.getClienteId() == null || !clienteRepository.existsById(pedido.getClienteId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -57,18 +67,94 @@ public class PedidoController {
 
         pedido.setStatus(StatusPedido.PENDENTE);
         pedido.setMetodoPagamento(null);
+
+        if (pedido.getItens() != null) {
+            pedido.getItens().forEach(item -> item.setPedido(pedido));
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(pedido));
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Pedido> atualizarStatus(
+    @Transactional
+    public ResponseEntity<?> atualizarStatus(
             @PathVariable Long id,
             @RequestBody Map<String, String> body) {
 
         return repo.findById(id).map(p -> {
-            p.setStatus(StatusPedido.valueOf(body.get("status").toUpperCase()));
+            StatusPedido novoStatus;
+            try {
+                novoStatus = StatusPedido.valueOf(body.get("status").toUpperCase());
+            } catch (Exception e) {
+                return ResponseEntity.badRequest()
+                        .<Object>body(Map.of("message", "Status inválido."));
+            }
+
+            StatusPedido statusAnterior = p.getStatus();
+
+            // Baixa de estoque ao enviar para entrega
+            if (novoStatus == StatusPedido.EM_ROTA && statusAnterior != StatusPedido.EM_ROTA) {
+                List<PedidoItem> itens = p.getItens();
+                if (itens != null && !itens.isEmpty()) {
+                    // Verificar disponibilidade antes de debitar
+                    for (PedidoItem item : itens) {
+                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
+                        if (produto == null) continue;
+                        if (produto.getEstoque() < item.getQuantidade()) {
+                            return ResponseEntity.badRequest()
+                                    .<Object>body(Map.of("message",
+                                            "Estoque insuficiente para \"" + produto.getNome() + "\". "
+                                            + "Disponível: " + produto.getEstoque() + " un., necessário: " + item.getQuantidade() + " un."));
+                        }
+                    }
+                    // Debitar estoque e registrar movimentação
+                    for (PedidoItem item : itens) {
+                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
+                        if (produto == null) continue;
+                        int estoqueAntes = produto.getEstoque();
+                        int estoqueDepois = estoqueAntes - item.getQuantidade();
+                        produto.setEstoque(estoqueDepois);
+                        produtoRepo.save(produto);
+                        movRepo.save(MovimentacaoEstoque.builder()
+                                .produtoId(produto.getId())
+                                .produtoNome(produto.getNome())
+                                .tipo(TipoMovimentacao.SAIDA)
+                                .quantidade(item.getQuantidade())
+                                .estoqueAntes(estoqueAntes)
+                                .estoqueDepois(estoqueDepois)
+                                .observacao("Pedido #" + String.format("%05d", p.getId()) + " saiu para entrega")
+                                .build());
+                    }
+                }
+            }
+
+            // Restaurar estoque ao cancelar um pedido que já estava em rota
+            if (novoStatus == StatusPedido.CANCELADO && statusAnterior == StatusPedido.EM_ROTA) {
+                List<PedidoItem> itens = p.getItens();
+                if (itens != null && !itens.isEmpty()) {
+                    for (PedidoItem item : itens) {
+                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
+                        if (produto == null) continue;
+                        int estoqueAntes = produto.getEstoque();
+                        int estoqueDepois = estoqueAntes + item.getQuantidade();
+                        produto.setEstoque(estoqueDepois);
+                        produtoRepo.save(produto);
+                        movRepo.save(MovimentacaoEstoque.builder()
+                                .produtoId(produto.getId())
+                                .produtoNome(produto.getNome())
+                                .tipo(TipoMovimentacao.ENTRADA)
+                                .quantidade(item.getQuantidade())
+                                .estoqueAntes(estoqueAntes)
+                                .estoqueDepois(estoqueDepois)
+                                .observacao("Pedido #" + String.format("%05d", p.getId()) + " cancelado — estoque revertido")
+                                .build());
+                    }
+                }
+            }
+
+            p.setStatus(novoStatus);
             return ResponseEntity.ok(repo.save(p));
-        }).orElse(ResponseEntity.notFound().build());
+        }).orElse(ResponseEntity.notFound().<Object>build());
     }
 
     @PostMapping("/{id}/devolucao")

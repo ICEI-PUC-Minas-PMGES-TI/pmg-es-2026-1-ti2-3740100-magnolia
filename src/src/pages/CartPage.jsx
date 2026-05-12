@@ -324,6 +324,11 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
         clienteTelefone: dadosCliente.telefone,
         enderecoEntrega,
         total,
+        itens: cart.map((item) => ({
+          produto: { id: item.id },
+          quantidade: item.qty,
+          precoUnitario: item.price,
+        })),
       };
 
       const res = await fetch(`${API}/pedidos`, {
