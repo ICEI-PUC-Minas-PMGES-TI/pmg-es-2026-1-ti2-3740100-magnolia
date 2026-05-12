@@ -113,6 +113,56 @@ public class AuthController {
         return ResponseEntity.ok(lista);
     }
 
+    @PatchMapping("/clientes/{clienteId}")
+    public ResponseEntity<?> atualizarConta(
+            @PathVariable Long clienteId,
+            @RequestBody Map<String, String> payload) {
+
+        String senhaAtual = value(payload.get("senhaAtual"));
+        String novoEmail  = value(payload.get("novoEmail")).toLowerCase();
+        String novaSenha  = value(payload.get("novaSenha"));
+
+        if (senhaAtual.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "A senha atual é obrigatória."));
+        }
+        if (novoEmail.isBlank() && novaSenha.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message", "Informe um novo e-mail ou uma nova senha."));
+        }
+
+        return clienteRepository.findById(clienteId)
+                .map(cliente -> {
+                    if (!cliente.getSenhaHash().equals(hashSenha(senhaAtual))) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body(Map.of("message", "Senha atual incorreta."));
+                    }
+
+                    if (!novoEmail.isBlank()) {
+                        if (clienteRepository.existsByEmailIgnoreCase(novoEmail)
+                                && !cliente.getEmail().equalsIgnoreCase(novoEmail)) {
+                            return ResponseEntity.status(HttpStatus.CONFLICT)
+                                    .body(Map.of("message", "Este e-mail já está em uso por outra conta."));
+                        }
+                        cliente.setEmail(novoEmail);
+                    }
+
+                    if (!novaSenha.isBlank()) {
+                        cliente.setSenhaHash(hashSenha(novaSenha));
+                    }
+
+                    clienteRepository.save(cliente);
+                    return ResponseEntity.ok(Map.of(
+                            "id",    cliente.getId(),
+                            "nome",  cliente.getNome(),
+                            "email", cliente.getEmail(),
+                            "message", "Dados atualizados com sucesso."
+                    ));
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("message", "Cliente não encontrado.")));
+    }
+
     @DeleteMapping("/clientes/{clienteId}")
     public ResponseEntity<?> excluirConta(@PathVariable Long clienteId) {
         if (!clienteRepository.existsById(clienteId)) {

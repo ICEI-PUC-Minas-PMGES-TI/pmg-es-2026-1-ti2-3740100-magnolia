@@ -20,7 +20,7 @@ const currency = (v) => Number(v || 0).toLocaleString('pt-BR', { style: 'currenc
 
 const ENDERECO_VAZIO = { apelido: '', cep: '', rua: '', bairro: '', numero: '', complemento: '', cidade: '', uf: '' };
 
-export default function ClientePage({ cliente, onNavigate, onLogout }) {
+export default function ClientePage({ cliente, onNavigate, onLogout, onUpdateCliente }) {
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError]   = useState('');
@@ -42,6 +42,51 @@ export default function ClientePage({ cliente, onNavigate, onLogout }) {
   const [erroEndereco, setErroEndereco]         = useState('');
   const [cepLoading, setCepLoading]             = useState(false);
   const [ultimoCepBuscado, setUltimoCepBuscado] = useState('');
+
+  // Edição de conta
+  const [showFormConta, setShowFormConta]     = useState(false);
+  const [formConta, setFormConta]             = useState({ senhaAtual: '', novoEmail: '', novaSenha: '', confirmarSenha: '' });
+  const [salvandoConta, setSalvandoConta]     = useState(false);
+  const [erroConta, setErroConta]             = useState('');
+  const [sucessoConta, setSucessoConta]       = useState('');
+
+  const salvarConta = async (e) => {
+    e.preventDefault();
+    setErroConta('');
+    setSucessoConta('');
+
+    if (formConta.novaSenha && formConta.novaSenha !== formConta.confirmarSenha) {
+      setErroConta('As senhas não coincidem.');
+      return;
+    }
+    if (!formConta.novoEmail && !formConta.novaSenha) {
+      setErroConta('Informe um novo e-mail ou uma nova senha.');
+      return;
+    }
+
+    setSalvandoConta(true);
+    try {
+      const res = await fetch(`${API}/auth/clientes/${cliente.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          senhaAtual:  formConta.senhaAtual,
+          novoEmail:   formConta.novoEmail  || undefined,
+          novaSenha:   formConta.novaSenha  || undefined,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || 'Não foi possível atualizar os dados.');
+      onUpdateCliente?.({ email: data.email });
+      setSucessoConta(data.message || 'Dados atualizados com sucesso.');
+      setFormConta({ senhaAtual: '', novoEmail: '', novaSenha: '', confirmarSenha: '' });
+      setShowFormConta(false);
+    } catch (err) {
+      setErroConta(err.message || 'Erro ao atualizar dados.');
+    } finally {
+      setSalvandoConta(false);
+    }
+  };
 
   const carregarPedidos = async () => {
     if (!cliente?.id) return;
@@ -468,6 +513,94 @@ export default function ClientePage({ cliente, onNavigate, onLogout }) {
             )}
           </section>
         )}
+
+        {/* Editar dados da conta */}
+        <section style={{ marginBottom: 40 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 700, color: '#1B3A2D' }}>Dados da conta</h2>
+            {!showFormConta && (
+              <button className="btn-login" style={{ padding: '8px 18px', fontSize: 13 }} onClick={() => { setShowFormConta(true); setErroConta(''); setSucessoConta(''); }}>
+                Editar dados
+              </button>
+            )}
+          </div>
+
+          {sucessoConta && !showFormConta && (
+            <p style={{ color: '#155724', fontSize: 14, marginBottom: 12 }}>{sucessoConta}</p>
+          )}
+
+          {!showFormConta && (
+            <div style={{ background: '#f9f6f0', borderRadius: 12, padding: '16px 20px', fontSize: 14 }}>
+              <p style={{ marginBottom: 6 }}><span style={{ color: '#888', marginRight: 8 }}>Nome:</span><strong>{cliente.nome}</strong></p>
+              <p><span style={{ color: '#888', marginRight: 8 }}>E-mail:</span><strong>{cliente.email}</strong></p>
+            </div>
+          )}
+
+          {showFormConta && (
+            <form onSubmit={salvarConta} style={{ background: '#f9f6f0', borderRadius: 12, padding: '20px 22px' }}>
+              <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14, color: '#1B3A2D' }}>Alterar e-mail ou senha</h3>
+              <div style={{ display: 'grid', gap: 10 }}>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Senha atual *</label>
+                  <input
+                    className="form-input"
+                    type="password"
+                    placeholder="Digite sua senha atual"
+                    value={formConta.senhaAtual}
+                    onChange={(e) => setFormConta((f) => ({ ...f, senhaAtual: e.target.value }))}
+                    required
+                    style={{ marginBottom: 0 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Novo e-mail</label>
+                  <input
+                    className="form-input"
+                    type="email"
+                    placeholder={`Atual: ${cliente.email}`}
+                    value={formConta.novoEmail}
+                    onChange={(e) => setFormConta((f) => ({ ...f, novoEmail: e.target.value }))}
+                    style={{ marginBottom: 0 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Nova senha</label>
+                  <input
+                    className="form-input"
+                    type="password"
+                    placeholder="Deixe em branco para não alterar"
+                    value={formConta.novaSenha}
+                    onChange={(e) => setFormConta((f) => ({ ...f, novaSenha: e.target.value }))}
+                    style={{ marginBottom: 0 }}
+                  />
+                </div>
+                {formConta.novaSenha && (
+                  <div>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Confirmar nova senha *</label>
+                    <input
+                      className="form-input"
+                      type="password"
+                      placeholder="Repita a nova senha"
+                      value={formConta.confirmarSenha}
+                      onChange={(e) => setFormConta((f) => ({ ...f, confirmarSenha: e.target.value }))}
+                      required
+                      style={{ marginBottom: 0 }}
+                    />
+                  </div>
+                )}
+              </div>
+              {erroConta && <p style={{ color: '#9f1239', fontSize: 13, marginTop: 8 }}>{erroConta}</p>}
+              <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+                <button type="button" className="btn-register" style={{ marginTop: 0 }} onClick={() => { setShowFormConta(false); setErroConta(''); setFormConta({ senhaAtual: '', novoEmail: '', novaSenha: '', confirmarSenha: '' }); }}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-login" disabled={salvandoConta}>
+                  {salvandoConta ? 'Salvando...' : 'Salvar alterações'}
+                </button>
+              </div>
+            </form>
+          )}
+        </section>
 
         {/* Ações da conta */}
         <section>

@@ -56,6 +56,12 @@ export default function App() {
         setPage('home');
     };
 
+    const handleUpdateCliente = (data) => {
+        const atualizado = { ...cliente, ...data };
+        setCliente(atualizado);
+        window.localStorage.setItem('jm_cliente', JSON.stringify(atualizado));
+    };
+
     const clearCart = () => setCart([]);
 
     const changeQty = (id, delta) => {
@@ -109,7 +115,7 @@ export default function App() {
             {page === 'presentes' && <PresentesPage onNavigate={navigate} onAddToCart={addToCart} initialCategoria={pageParams.categoria} />}
             {page === 'dicas' && <TipsPage onNavigate={navigate} />}
             {page === 'address' && <AddressLookupPage onNavigate={navigate} />}
-            {page === 'minha-conta' && <ClientePage onNavigate={navigate} cliente={cliente} onLogout={handleLogout} />}
+            {page === 'minha-conta' && <ClientePage onNavigate={navigate} cliente={cliente} onLogout={handleLogout} onUpdateCliente={handleUpdateCliente} />}
             {FOOTER_PAGES.has(page) && <InstitutionalPage page={page} onNavigate={navigate} cliente={cliente} />}
                 
                 {page === 'pagamento' && (
