@@ -66,7 +66,7 @@ public class PedidoController {
         }
 
         pedido.setStatus(StatusPedido.PENDENTE);
-        pedido.setMetodoPagamento(null);
+        pedido.setMetodoPagamento("PENDENTE");
 
         if (pedido.getItens() != null) {
             pedido.getItens().forEach(item -> item.setPedido(pedido));

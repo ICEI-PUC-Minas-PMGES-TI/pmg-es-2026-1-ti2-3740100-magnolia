@@ -1,5 +1,6 @@
 package com.jardimmagnolia.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class PedidoItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pedido_id", nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private Pedido pedido;
 
     @ManyToOne(fetch = FetchType.EAGER)
