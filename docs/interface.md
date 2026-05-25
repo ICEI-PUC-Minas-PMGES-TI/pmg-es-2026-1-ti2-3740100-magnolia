@@ -7,7 +7,8 @@ _Visão geral da interação do usuário por meio das telas do sistema. Apresent
 
 _Descrição da tela principal do sistema._
 
-Tela principal do sistema
+<img width="1366" height="720" alt="image" src="https://github.com/user-attachments/assets/09de2707-b55d-48fb-8fc0-6c6e7c7b6966" />
+
 
 
 ## 6.2. Telas do processo 1
