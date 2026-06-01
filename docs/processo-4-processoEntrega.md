@@ -2,7 +2,7 @@
 
 _O processo de entrega contempla desde a confirmação do pedido até a finalização da entrega ao cliente._
 
-![Modelo BPMN](images/Processos/entrDiagrama.png)
+![Modelo BPMN](images/Processos/entreDiagrama.png)
 
 
 #### Detalhamento das atividades
