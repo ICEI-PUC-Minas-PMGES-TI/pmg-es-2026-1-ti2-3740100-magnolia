@@ -99,6 +99,7 @@ CREATE INDEX IF NOT EXISTS idx_avaliacao_status ON avaliacao(status);
 
 
 
+
 -- ─── Movimentação de Estoque ──────────────────────────────────
 CREATE TABLE IF NOT EXISTS movimentacao_estoque (
     id              BIGSERIAL     PRIMARY KEY,
