@@ -2,7 +2,8 @@
 
 _O processo de pagamento contempla a seleção do método de pagamento, validação da transação e confirmação do pagamento para liberação do pedido._
 
-![ Modelo BPMN](images/Processos/Pagamento.svg)
+<img width="708" height="558" alt="image" src="https://github.com/user-attachments/assets/67d6d1be-4e9b-42ed-a87b-68fb257db2a2" />
+
 
 #### Detalhamento das atividades
 
