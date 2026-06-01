@@ -1,13 +1,10 @@
 ## 5. Indicadores de desempenho
 
-_Apresente aqui os principais indicadores de desempenho e algumas metas para o processo. Atenção: as informações necessárias para gerar os indicadores devem estar contempladas no modelo relacional. Defina no mínimo 3 indicadores de desempenho._
-
-_Usar o seguinte modelo:_
-
 | **Indicador** | **Objetivos** | **Descrição** | **Fonte de dados** | **Fórmula de cálculo** |
-| ---           | ---           | ---           | ---             | ---             |
-| Percentual de reclamações | Avaliar quantitativamente as reclamações | Percentual de reclamações em relação ao total de atendimentos | Tabela Reclamações | número total de reclamações / número total de atendimentos |
-| Taxa de requisições atendidas | Melhorar a prestação de serviços medindo a porcentagem de requisições atendidas| Mede a % de requisições atendidas na semana | Tabela Solicitações | (número de requisições atendidas / número total de requisições) * 100 |
-| Taxa de entrega de material | Manter controle sobre os materiais que estão sendo entregues | Mede % de material entregue dentro do mês | Tabela Pedidos | (número de pedidos entregues / número total de pedidos) * 100 |
-
-_Obs.: todas as informações para gerar os indicadores devem estar no modelo relacional._
+| --- | --- | --- | --- | --- |
+| Taxa de pedidos entregues com sucesso | Avaliar a eficiência do processo de entrega e identificar falhas operacionais | Mede o percentual de pedidos com status "entregue" em relação ao total de pedidos registrados no período | Tabela Pedidos | (número de pedidos com status "entregue" / número total de pedidos) × 100 |
+| Taxa de aprovação de pagamento | Monitorar a eficiência do processo de pagamento e reduzir perdas por transações recusadas | Mede o percentual de tentativas de pagamento aprovadas em relação ao total de tentativas realizadas | Tabela Pagamentos | (número de pagamentos com status "aprovado" / número total de tentativas de pagamento) × 100 |
+| Taxa de reembolso | Controlar a qualidade do serviço e identificar causas recorrentes de insatisfação | Mede o percentual de pedidos que geraram solicitação de reembolso em relação ao total de pedidos concluídos | Tabela Pedidos / Tabela Reembolsos | (número de reembolsos solicitados / número total de pedidos concluídos) × 100 |
+| Avaliação média dos pedidos | Monitorar continuamente a satisfação dos clientes com o serviço prestado | Mede a nota média das avaliações (escala de 1 a 5) registradas pelos clientes após a conclusão dos pedidos | Tabela Pedidos (campo avaliação) | soma de todas as avaliações registradas / número total de avaliações |
+| Taxa de cancelamento por indisponibilidade de estoque | Identificar gaps no controle de estoque e reduzir perdas de venda por ruptura | Mede o percentual de pedidos cancelados por falta de produto disponível em relação ao total de pedidos realizados | Tabela Pedidos / Tabela Produtos | (número de pedidos cancelados por indisponibilidade / número total de pedidos) × 100 |
+| Taxa de conversão de carrinho | Avaliar a efetividade da jornada de compra e identificar pontos de abandono | Mede o percentual de sessões com carrinho iniciado que resultaram em pedido finalizado | Tabela Pedidos / Tabela Carrinho | (número de pedidos finalizados / número total de carrinhos iniciados) × 100 |
