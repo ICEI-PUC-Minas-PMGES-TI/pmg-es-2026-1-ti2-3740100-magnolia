@@ -21,16 +21,21 @@ A tela principal do Jardim Magnólia é o ponto de entrada da plataforma e está
 
 ## 6.2. Telas do processo 1 (Estoque)
 
-_Descrição da tela relativa à atividade 1._
+_Tela de autenticação e listagem de produtos._
+
+A tela de **Login Admin** exibe um formulário centralizado com campos de e-mail e senha. Somente usuários com perfil de administrador têm acesso liberado; credenciais inválidas encerram o fluxo com mensagem de acesso negado.
 
 ![Login Admin](images/Telas/Admin.png)
+
+Após autenticação bem-sucedida, a tela de **Produtos** apresenta a listagem completa do catálogo em formato de tabela, com as colunas: imagem, nome, categoria, preço, quantidade em estoque e status (ativo/inativo). Um botão de edição em cada linha permite selecionar o produto para ajuste de estoque.
+
 ![Produtos](images/Telas/Produtos.png)
+
+_Tela de movimentação de estoque._
+
+A tela de **Movimentação de Estoque** é exibida ao selecionar um produto para edição. Ela apresenta o nome do produto e o estoque atual em modo somente leitura, um campo numérico para informar a nova quantidade (valor obrigatório, maior ou igual a zero) e os botões **Salvar** — que valida e persiste a alteração no backend — e **Cancelar** — que retorna à listagem sem modificações. Após salvar com sucesso, a listagem é recarregada exibindo o estoque atualizado.
+
 ![Movimentação Estoque](images/Telas/Mov-estoque.png)
-
-
-_Descrição da tela relativa à atividade 2._
-
-Tela da atividade 2
 
 
 ## 6.3. Telas do processo 2
