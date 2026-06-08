@@ -24,6 +24,8 @@ A tela principal do Jardim Magnólia é o ponto de entrada da plataforma e está
 _Descrição da tela relativa à atividade 1._
 
 ![Login Admin](images/Telas/Admin.png)
+![Produtos](images/Telas/Produtos.png)
+![Movimentação Estoque](images/Telas/Mov-estoque.png)
 
 
 _Descrição da tela relativa à atividade 2._
