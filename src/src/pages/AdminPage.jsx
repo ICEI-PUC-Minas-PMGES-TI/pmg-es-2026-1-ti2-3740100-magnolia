@@ -7,6 +7,8 @@ import {
   writeAdminPedidos,
 } from '../utils/adminStore.js';
 
+import IndicadoresChart from '../components/IndicadoresChart.jsx';
+
 const fmt = (n = 0) => 'R$' + Number(n).toFixed(2).replace('.', ',');
 
 const METODO_LABEL = {
@@ -63,17 +65,60 @@ function TabDashboard() {
       .catch(() => setDash(getDashboardMetrics()));
   }, []);
 
-  if (!dash) return <p style={{ color: 'var(--gray-500)' }}>Carregando métricas...</p>;
+  if (!dash)
+    return (
+      <p style={{ color: 'var(--gray-500)' }}>
+        Carregando métricas...
+      </p>
+    );
 
   return (
     <div>
       <div className="adm-metrics-grid">
-        <MetricCard icon="💰" label="Vendas do mês"      value={fmt(dash.vendasMes)}        sub="+14,3% vs mês anterior" color="#1B8A4F" />
-        <MetricCard icon="📦" label="Pedidos do mês"     value={dash.pedidosMes}             sub={`Ticket médio ${fmt(dash.ticketMedio)}`} color="#1B3A2D" />
-        <MetricCard icon="🚚" label="Entregas pendentes" value={dash.entregasPendentes}      sub="Hoje" color="#856404" />
-        <MetricCard icon="📈" label="Lucro do mês"       value={fmt(dash.lucroMes)}          sub="53,2% de margem" color="#0c5460" />
+        <MetricCard
+          icon="💰"
+          label="Vendas do mês"
+          value={fmt(dash.vendasMes)}
+          sub="+14,3% vs mês anterior"
+          color="#1B8A4F"
+        />
+
+        <MetricCard
+          icon="📦"
+          label="Pedidos do mês"
+          value={dash.pedidosMes}
+          sub={`Ticket médio ${fmt(dash.ticketMedio)}`}
+          color="#1B3A2D"
+        />
+
+        <MetricCard
+          icon="🚚"
+          label="Entregas pendentes"
+          value={dash.entregasPendentes}
+          sub="Hoje"
+          color="#856404"
+        />
+
+        <MetricCard
+          icon="📈"
+          label="Lucro do mês"
+          value={fmt(dash.lucroMes)}
+          sub="53,2% de margem"
+          color="#0c5460"
+        />
       </div>
-      <div className="adm-section-title" style={{ marginTop: 32 }}>Últimos pedidos</div>
+
+      <div style={{ marginTop: 24 }}>
+        <IndicadoresChart />
+      </div>
+
+      <div
+        className="adm-section-title"
+        style={{ marginTop: 32 }}
+      >
+        Últimos pedidos
+      </div>
+
       <PedidosTable compact />
     </div>
   );
