@@ -65,6 +65,41 @@ public class PedidoController {
                     .body(Map.of("message", "Você precisa estar logado para finalizar a compra."));
         }
 
+        if (pedido.getItens() != null && !pedido.getItens().isEmpty()) {
+            java.util.Map<Long, Integer> totalPorProduto = new java.util.HashMap<>();
+            for (PedidoItem item : pedido.getItens()) {
+                if (item.getProduto() == null || item.getProduto().getId() == null) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Item do pedido sem produto identificado."));
+                }
+                int qtd = item.getQuantidade() == null ? 0 : item.getQuantidade();
+                if (qtd <= 0) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Quantidade inválida no carrinho."));
+                }
+                totalPorProduto.merge(item.getProduto().getId(), qtd, Integer::sum);
+            }
+
+            for (java.util.Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
+                Produto produto = produtoRepo.findById(e.getKey()).orElse(null);
+                if (produto == null) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("message", "Produto não encontrado (id " + e.getKey() + ")."));
+                }
+                int disponivel = produto.getEstoque() == null ? 0 : produto.getEstoque();
+                if (disponivel < e.getValue()) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                            .body(Map.of(
+                                    "message", "Estoque insuficiente para \"" + produto.getNome() + "\". "
+                                            + "Disponível: " + disponivel + " un., necessário: " + e.getValue() + " un.",
+                                    "produtoId", produto.getId(),
+                                    "disponivel", disponivel,
+                                    "solicitado", e.getValue()
+                            ));
+                }
+            }
+        }
+
         pedido.setStatus(StatusPedido.PENDENTE);
         pedido.setMetodoPagamento("PENDENTE");
 
