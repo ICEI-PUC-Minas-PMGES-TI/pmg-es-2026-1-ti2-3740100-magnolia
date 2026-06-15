@@ -35,4 +35,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT p.status, COUNT(p) FROM Pedido p GROUP BY p.status")
     List<Object[]> countAgrupadoPorStatus();
+
+    @Query("SELECT p FROM Pedido p WHERE p.criadoEm >= :inicio ORDER BY p.criadoEm ASC")
+    List<Pedido> findCriadosDesde(@Param("inicio") LocalDateTime inicio);
 }

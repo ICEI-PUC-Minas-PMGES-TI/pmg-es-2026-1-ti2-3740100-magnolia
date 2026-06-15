@@ -17,4 +17,7 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
 
     @Query("SELECT COALESCE(AVG(a.nota), 0) FROM Avaliacao a")
     BigDecimal mediaNotas();
+
+    @Query("SELECT a.nota, COUNT(a) FROM Avaliacao a GROUP BY a.nota")
+    List<Object[]> countAgrupadoPorNota();
 }

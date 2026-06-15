@@ -2,6 +2,7 @@ package com.jardimmagnolia.dto;
 
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -11,7 +12,6 @@ import java.util.Map;
 public class IndicadoresDTO {
 
     private Map<String, Long> pedidosPorStatus;
-
     private Map<String, Long> pagamentosPorStatus;
 
     private BigDecimal taxaEntrega;
@@ -21,4 +21,12 @@ public class IndicadoresDTO {
 
     private long totalPedidos;
     private long totalPagamentos;
+
+    private Map<String, Long> distribuicaoNotas;
+
+    private BigDecimal taxaReembolso;
+    private BigDecimal taxaCancelamentoEstoque;
+    private BigDecimal taxaConversaoCarrinho;
+
+    private List<Map<String, Object>> pedidosUltimos7Dias;
 }

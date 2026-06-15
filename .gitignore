@@ -29,6 +29,7 @@ src/dist/
 
 # ─── Claude Code (configurações locais) ───────────────────────
 .claude/settings.local.json
+CLAUDE.md
 
 # ─── Variáveis de ambiente ────────────────────────────────────
 .env

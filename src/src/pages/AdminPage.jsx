@@ -8,6 +8,7 @@ import {
 } from '../utils/adminStore.js';
 
 import IndicadoresChart from '../components/IndicadoresChart.jsx';
+import IndicadoresPanel from '../components/IndicadoresPanel.jsx';
 
 const fmt = (n = 0) => 'R$' + Number(n).toFixed(2).replace('.', ',');
 
@@ -1191,6 +1192,7 @@ function AdminLogin({ onLogin }) {
 
 const TABS = [
   { id: 'dashboard',     label: '📊 Dashboard'     },
+  { id: 'indicadores',   label: '📈 Indicadores'    },
   { id: 'pedidos',       label: '📦 Pedidos'        },
   { id: 'entregas',      label: '🚚 Entregas'       },
   { id: 'produtos',      label: '🌹 Produtos'       },
@@ -1241,6 +1243,7 @@ export default function AdminPage({ onNavigate }) {
         </div>
         <div className="adm-main__body">
           {tab === 'dashboard'     && <TabDashboard     />}
+          {tab === 'indicadores'   && <IndicadoresPanel />}
           {tab === 'pedidos'       && <TabPedidos       />}
           {tab === 'entregas'      && <TabEntregas      />}
           {tab === 'produtos'      && <TabProdutos      />}

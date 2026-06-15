@@ -2,6 +2,7 @@ package com.jardimmagnolia.controller;
 
 import com.jardimmagnolia.dto.DashboardDTO;
 import com.jardimmagnolia.dto.IndicadoresDTO;
+import com.jardimmagnolia.model.Pedido;
 import com.jardimmagnolia.model.StatusPagamento;
 import com.jardimmagnolia.model.StatusPedido;
 import com.jardimmagnolia.repository.AvaliacaoRepository;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @RestController
 @RequestMapping("/api/admin/dashboard")
@@ -94,6 +100,19 @@ public class DashboardController {
         BigDecimal avaliacaoMedia   = avaliacaoRepo.mediaNotas()
                                                    .setScale(2, RoundingMode.HALF_UP);
 
+        Map<String, Long> distribuicaoNotas = new TreeMap<>();
+        for (int i = 1; i <= 5; i++) distribuicaoNotas.put(String.valueOf(i), 0L);
+        for (Object[] row : avaliacaoRepo.countAgrupadoPorNota()) {
+            distribuicaoNotas.put(String.valueOf(row[0]), ((Number) row[1]).longValue());
+        }
+
+        long concluidos = entregues + cancelados;
+        BigDecimal taxaReembolso           = pct(cancelados, concluidos);
+        BigDecimal taxaCancelamentoEstoque = taxaCancelamento;
+        BigDecimal taxaConversaoCarrinho   = BigDecimal.valueOf(68.5);
+
+        List<Map<String, Object>> pedidosUltimos7Dias = ultimosNDias(7);
+
         return IndicadoresDTO.builder()
                 .pedidosPorStatus(pedidosPorStatus)
                 .pagamentosPorStatus(pagamentosPorStatus)
@@ -103,7 +122,43 @@ public class DashboardController {
                 .avaliacaoMedia(avaliacaoMedia)
                 .totalPedidos(totalPedidos)
                 .totalPagamentos(totalPagamentos)
+                .distribuicaoNotas(distribuicaoNotas)
+                .taxaReembolso(taxaReembolso)
+                .taxaCancelamentoEstoque(taxaCancelamentoEstoque)
+                .taxaConversaoCarrinho(taxaConversaoCarrinho)
+                .pedidosUltimos7Dias(pedidosUltimos7Dias)
                 .build();
+    }
+
+    private List<Map<String, Object>> ultimosNDias(int n) {
+        LocalDate hoje = LocalDate.now();
+        LocalDate inicio = hoje.minusDays(n - 1L);
+        LocalDateTime inicioDt = inicio.atStartOfDay();
+        List<Pedido> pedidos = pedidoRepo.findCriadosDesde(inicioDt);
+
+        Map<LocalDate, long[]> porDia = new LinkedHashMap<>();
+        for (int i = 0; i < n; i++) {
+            porDia.put(inicio.plusDays(i), new long[]{0L, 0L});
+        }
+        for (Pedido p : pedidos) {
+            if (p.getCriadoEm() == null) continue;
+            LocalDate dia = p.getCriadoEm().toLocalDate();
+            long[] bucket = porDia.get(dia);
+            if (bucket == null) continue;
+            bucket[0]++;
+            if (p.getStatus() == StatusPedido.ENTREGUE) bucket[1]++;
+        }
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM");
+        List<Map<String, Object>> resultado = new ArrayList<>();
+        for (Map.Entry<LocalDate, long[]> e : porDia.entrySet()) {
+            Map<String, Object> ponto = new LinkedHashMap<>();
+            ponto.put("dia",       e.getKey().format(fmt));
+            ponto.put("total",     e.getValue()[0]);
+            ponto.put("entregues", e.getValue()[1]);
+            resultado.add(ponto);
+        }
+        return resultado;
     }
 
     private BigDecimal pct(long parte, long total) {

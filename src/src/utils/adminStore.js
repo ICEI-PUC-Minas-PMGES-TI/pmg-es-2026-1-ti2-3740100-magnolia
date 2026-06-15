@@ -98,20 +98,34 @@ export function getDashboardMetrics(pedidos = readAdminPedidos()) {
         lucroMes,
         ticketMedio,
     };
-    export function getIndicadoresFallback() {
-return {
-pedidosPorStatus: {
-PENDENTE: 12, EM_ROTA: 9, ENTREGUE: 20, CANCELADO: 4,
-},
-pagamentosPorStatus: {
-APROVADO: 22, PENDENTE: 11, RECUSADO: 5,
-},
-taxaEntrega: 44.44,
-taxaAprovacaoPagamento: 57.89,
-taxaCancelamento: 8.89,
-avaliacaoMedia: 4.3,
-totalPedidos: 45,
-totalPagamentos: 38,
-};
 }
+
+export function getIndicadoresFallback() {
+    return {
+        pedidosPorStatus: {
+            PENDENTE: 12, EM_ROTA: 9, ENTREGUE: 20, CANCELADO: 4,
+        },
+        pagamentosPorStatus: {
+            APROVADO: 22, PENDENTE: 11, RECUSADO: 5,
+        },
+        taxaEntrega: 44.44,
+        taxaAprovacaoPagamento: 57.89,
+        taxaCancelamento: 8.89,
+        avaliacaoMedia: 4.3,
+        totalPedidos: 45,
+        totalPagamentos: 38,
+        distribuicaoNotas: { '1': 1, '2': 2, '3': 4, '4': 9, '5': 14 },
+        taxaReembolso: 16.66,
+        taxaCancelamentoEstoque: 8.89,
+        taxaConversaoCarrinho: 68.5,
+        pedidosUltimos7Dias: [
+            { dia: '09/06', total: 3, entregues: 2 },
+            { dia: '10/06', total: 5, entregues: 4 },
+            { dia: '11/06', total: 2, entregues: 1 },
+            { dia: '12/06', total: 6, entregues: 5 },
+            { dia: '13/06', total: 4, entregues: 3 },
+            { dia: '14/06', total: 7, entregues: 4 },
+            { dia: '15/06', total: 3, entregues: 1 },
+        ],
+    };
 }
