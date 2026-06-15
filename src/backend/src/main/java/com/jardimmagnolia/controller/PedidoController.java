@@ -9,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,6 +111,16 @@ public class PedidoController {
 
         Pedido salvo = repo.save(pedido);
 
+        String numeroPedido = String.format("%05d", salvo.getId());
+        String nomeCliente  = salvo.getClienteNome() == null || salvo.getClienteNome().isBlank()
+                ? "cliente #" + salvo.getClienteId()
+                : salvo.getClienteNome();
+        String dataCompra   = salvo.getCriadoEm() == null
+                ? ""
+                : salvo.getCriadoEm().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        String observacao   = "Pedido #" + numeroPedido + " — compra de " + nomeCliente
+                + (dataCompra.isEmpty() ? "" : " em " + dataCompra);
+
         for (Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
             Produto produto = produtoRepo.findById(e.getKey()).orElseThrow();
             int antes  = produto.getEstoque();
@@ -123,7 +134,7 @@ public class PedidoController {
                     .quantidade(e.getValue())
                     .estoqueAntes(antes)
                     .estoqueDepois(depois)
-                    .observacao("Pedido #" + String.format("%05d", salvo.getId()) + " confirmado — estoque abatido")
+                    .observacao(observacao)
                     .build());
         }
 
