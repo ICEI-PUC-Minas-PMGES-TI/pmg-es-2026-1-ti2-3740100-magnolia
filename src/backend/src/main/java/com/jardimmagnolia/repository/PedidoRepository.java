@@ -32,4 +32,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     boolean existsByClienteIdAndStatusNot(Long clienteId, StatusPedido status);
 
     void deleteByClienteId(Long clienteId);
+
+    @Query("SELECT p.status, COUNT(p) FROM Pedido p GROUP BY p.status")
+    List<Object[]> countAgrupadoPorStatus();
 }
