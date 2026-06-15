@@ -9,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +66,8 @@ public class PedidoController {
                     .body(Map.of("message", "Você precisa estar logado para finalizar a compra."));
         }
 
+        Map<Long, Integer> totalPorProduto = new HashMap<>();
         if (pedido.getItens() != null && !pedido.getItens().isEmpty()) {
-            java.util.Map<Long, Integer> totalPorProduto = new java.util.HashMap<>();
             for (PedidoItem item : pedido.getItens()) {
                 if (item.getProduto() == null || item.getProduto().getId() == null) {
                     return ResponseEntity.badRequest()
@@ -80,7 +81,7 @@ public class PedidoController {
                 totalPorProduto.merge(item.getProduto().getId(), qtd, Integer::sum);
             }
 
-            for (java.util.Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
+            for (Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
                 Produto produto = produtoRepo.findById(e.getKey()).orElse(null);
                 if (produto == null) {
                     return ResponseEntity.badRequest()
@@ -107,7 +108,26 @@ public class PedidoController {
             pedido.getItens().forEach(item -> item.setPedido(pedido));
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(pedido));
+        Pedido salvo = repo.save(pedido);
+
+        for (Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
+            Produto produto = produtoRepo.findById(e.getKey()).orElseThrow();
+            int antes  = produto.getEstoque();
+            int depois = antes - e.getValue();
+            produto.setEstoque(depois);
+            produtoRepo.save(produto);
+            movRepo.save(MovimentacaoEstoque.builder()
+                    .produtoId(produto.getId())
+                    .produtoNome(produto.getNome())
+                    .tipo(TipoMovimentacao.SAIDA)
+                    .quantidade(e.getValue())
+                    .estoqueAntes(antes)
+                    .estoqueDepois(depois)
+                    .observacao("Pedido #" + String.format("%05d", salvo.getId()) + " confirmado — estoque abatido")
+                    .build());
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
     @PatchMapping("/{id}/status")
@@ -127,64 +147,8 @@ public class PedidoController {
 
             StatusPedido statusAnterior = p.getStatus();
 
-            // Baixa de estoque ao enviar para entrega
-            if (novoStatus == StatusPedido.EM_ROTA && statusAnterior != StatusPedido.EM_ROTA) {
-                List<PedidoItem> itens = p.getItens();
-                if (itens != null && !itens.isEmpty()) {
-                    // Verificar disponibilidade antes de debitar
-                    for (PedidoItem item : itens) {
-                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
-                        if (produto == null) continue;
-                        if (produto.getEstoque() < item.getQuantidade()) {
-                            return ResponseEntity.badRequest()
-                                    .<Object>body(Map.of("message",
-                                            "Estoque insuficiente para \"" + produto.getNome() + "\". "
-                                            + "Disponível: " + produto.getEstoque() + " un., necessário: " + item.getQuantidade() + " un."));
-                        }
-                    }
-                    // Debitar estoque e registrar movimentação
-                    for (PedidoItem item : itens) {
-                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
-                        if (produto == null) continue;
-                        int estoqueAntes = produto.getEstoque();
-                        int estoqueDepois = estoqueAntes - item.getQuantidade();
-                        produto.setEstoque(estoqueDepois);
-                        produtoRepo.save(produto);
-                        movRepo.save(MovimentacaoEstoque.builder()
-                                .produtoId(produto.getId())
-                                .produtoNome(produto.getNome())
-                                .tipo(TipoMovimentacao.SAIDA)
-                                .quantidade(item.getQuantidade())
-                                .estoqueAntes(estoqueAntes)
-                                .estoqueDepois(estoqueDepois)
-                                .observacao("Pedido #" + String.format("%05d", p.getId()) + " saiu para entrega")
-                                .build());
-                    }
-                }
-            }
-
-            // Restaurar estoque ao cancelar um pedido que já estava em rota
-            if (novoStatus == StatusPedido.CANCELADO && statusAnterior == StatusPedido.EM_ROTA) {
-                List<PedidoItem> itens = p.getItens();
-                if (itens != null && !itens.isEmpty()) {
-                    for (PedidoItem item : itens) {
-                        Produto produto = produtoRepo.findById(item.getProduto().getId()).orElse(null);
-                        if (produto == null) continue;
-                        int estoqueAntes = produto.getEstoque();
-                        int estoqueDepois = estoqueAntes + item.getQuantidade();
-                        produto.setEstoque(estoqueDepois);
-                        produtoRepo.save(produto);
-                        movRepo.save(MovimentacaoEstoque.builder()
-                                .produtoId(produto.getId())
-                                .produtoNome(produto.getNome())
-                                .tipo(TipoMovimentacao.ENTRADA)
-                                .quantidade(item.getQuantidade())
-                                .estoqueAntes(estoqueAntes)
-                                .estoqueDepois(estoqueDepois)
-                                .observacao("Pedido #" + String.format("%05d", p.getId()) + " cancelado — estoque revertido")
-                                .build());
-                    }
-                }
+            if (novoStatus == StatusPedido.CANCELADO && statusAnterior != StatusPedido.CANCELADO) {
+                restaurarEstoque(p, "cancelado pelo admin");
             }
 
             p.setStatus(novoStatus);
@@ -193,6 +157,7 @@ public class PedidoController {
     }
 
     @PostMapping("/{id}/devolucao")
+    @Transactional
     public ResponseEntity<?> solicitarDevolucao(
             @PathVariable Long id,
             @RequestBody Map<String, String> body) {
@@ -213,6 +178,7 @@ public class PedidoController {
                 return ResponseEntity.badRequest()
                         .body(Map.of("message", "Este pedido já está cancelado."));
             }
+            restaurarEstoque(pedido, "devolução solicitada pelo cliente");
             pedido.setStatus(StatusPedido.CANCELADO);
             repo.save(pedido);
             return ResponseEntity.ok(Map.of("message", "Solicitação de devolução registrada."));
@@ -221,11 +187,15 @@ public class PedidoController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<?> deletar(@PathVariable Long id) {
-        if (!repo.existsById(id))
-            return ResponseEntity.notFound().build();
-        repo.deleteById(id);
-        return ResponseEntity.ok(Map.of("message", "Pedido removido."));
+        return repo.findById(id).map(p -> {
+            if (p.getStatus() != StatusPedido.CANCELADO) {
+                restaurarEstoque(p, "pedido removido");
+            }
+            repo.delete(p);
+            return ResponseEntity.ok(Map.of("message", "Pedido removido."));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/cart/add")
@@ -234,5 +204,36 @@ public class PedidoController {
                 "ok",      true,
                 "message", "Item adicionado ao carrinho."
         ));
+    }
+
+    private void restaurarEstoque(Pedido p, String motivo) {
+        List<PedidoItem> itens = p.getItens();
+        if (itens == null || itens.isEmpty()) return;
+
+        Map<Long, Integer> totalPorProduto = new HashMap<>();
+        for (PedidoItem item : itens) {
+            if (item.getProduto() == null || item.getProduto().getId() == null) continue;
+            int qtd = item.getQuantidade() == null ? 0 : item.getQuantidade();
+            if (qtd <= 0) continue;
+            totalPorProduto.merge(item.getProduto().getId(), qtd, Integer::sum);
+        }
+
+        for (Map.Entry<Long, Integer> e : totalPorProduto.entrySet()) {
+            Produto produto = produtoRepo.findById(e.getKey()).orElse(null);
+            if (produto == null) continue;
+            int antes  = produto.getEstoque() == null ? 0 : produto.getEstoque();
+            int depois = antes + e.getValue();
+            produto.setEstoque(depois);
+            produtoRepo.save(produto);
+            movRepo.save(MovimentacaoEstoque.builder()
+                    .produtoId(produto.getId())
+                    .produtoNome(produto.getNome())
+                    .tipo(TipoMovimentacao.ENTRADA)
+                    .quantidade(e.getValue())
+                    .estoqueAntes(antes)
+                    .estoqueDepois(depois)
+                    .observacao("Pedido #" + String.format("%05d", p.getId()) + " — " + motivo + " (estoque revertido)")
+                    .build());
+        }
     }
 }
