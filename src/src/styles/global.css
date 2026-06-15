@@ -3106,3 +3106,109 @@ img { max-width: 100%; display: block; }
  .pag-summary { position: static; }
  .pag-metodos { grid-template-columns: 1fr; }
 }
+
+.ind-card {
+    background: #fff;
+    border: 1px solid #e1e8e3;
+    border-radius: 10px; 
+    padding: 18px 20px; 
+    box-shadow: 0 2px 6px rgba(27, 58, 45, 0.06);
+     }
+
+     .ind-card__head { 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+         margin-bottom: 12px; 
+        }
+
+
+        .ind-card__head h3 {
+             margin: 0; 
+             color: #1B3A2D; 
+             font-size: 16px; 
+            }
+             
+             
+            .ind-warn {
+             font-size: 11px;
+             color: #856404;
+             background: #fff3cd;
+             padding: 2px 8px;
+             border-radius: 10px; 
+             }
+
+.ind-taxa-grid { 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+     }
+
+
+.ind-taxa { 
+    background: #f4faf6;
+     border: 1px solid #d6ead9;
+      border-radius: 8px;
+      padding: 10px 12px; 
+      text-align: center;
+     }
+
+.ind-taxa__label { margin: 0 0 4px 0; font-size: 11px; color: #555; }
+.ind-taxa__valor { margin: 0; font-size: 20px; font-weight: 700; }
+
+
+
+
+.ind-section { margin-top: 14px; }
+.ind-section__title {
+ font-size: 12px;
+ font-weight: 600;
+ color: #1B3A2D; 
+ margin: 0 0 6px 0; 
+ text-transform: uppercase;
+ letter-spacing: 0.4px; }
+
+
+
+
+.ind-bar-row { 
+display: flex;
+align-items: center;
+margin: 6px 0; 
+font-size: 12px;
+ }
+
+
+.ind-bar-label {
+width: 200px;
+color: #333; 
+} 
+
+
+.ind-bar-track {
+     flex: 1; 
+     background: #eef3ef;
+      height: 16px; 
+      border-radius: 8px; 
+      overflow: hidden; 
+    }
+
+    .ind-bar-fill { 
+        height: 100%;
+         border-radius: 8px;
+          transition: width .4s ease;
+         }
+
+
+.ind-bar-value {
+    width: 50px;
+     text-align: right;
+      font-weight: 600;
+       color: #1B3A2D;
+     }      
+     
+     @media (max-width: 900px) {
+         .ind-taxa-grid { grid-template-columns: repeat(2, 1fr); }
+          .ind-bar-label { width: 130px; font-size: 11px; }
+         }
