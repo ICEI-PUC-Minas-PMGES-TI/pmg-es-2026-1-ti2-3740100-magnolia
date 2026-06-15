@@ -98,4 +98,20 @@ export function getDashboardMetrics(pedidos = readAdminPedidos()) {
         lucroMes,
         ticketMedio,
     };
+    export function getIndicadoresFallback() {
+return {
+pedidosPorStatus: {
+PENDENTE: 12, EM_ROTA: 9, ENTREGUE: 20, CANCELADO: 4,
+},
+pagamentosPorStatus: {
+APROVADO: 22, PENDENTE: 11, RECUSADO: 5,
+},
+taxaEntrega: 44.44,
+taxaAprovacaoPagamento: 57.89,
+taxaCancelamento: 8.89,
+avaliacaoMedia: 4.3,
+totalPedidos: 45,
+totalPagamentos: 38,
+};
+}
 }
