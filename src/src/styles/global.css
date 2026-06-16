@@ -3362,3 +3362,72 @@ color: #333;
 @media (max-width: 700px) {
   .kpi-grid { grid-template-columns: 1fr; }
 }
+
+/* ============ Galeria de imagens do produto (admin) ============ */
+.adm-img-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 10px;
+  margin-top: 6px;
+}
+.adm-img-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f7faf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.adm-img-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.adm-img-thumb--add {
+  border-style: dashed;
+  border-color: #1B8A4F;
+  background: #f4faf6;
+  color: #1B8A4F;
+  flex-direction: column;
+  cursor: pointer;
+}
+.adm-img-thumb--add:hover {
+  background: #e5f2ea;
+}
+.adm-img-thumb--nova {
+  border-color: #1B8A4F;
+}
+.adm-img-thumb__del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.adm-img-thumb__del:hover { background: #c0392b; }
+.adm-img-thumb__badge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 9px;
+  background: #1B8A4F;
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}

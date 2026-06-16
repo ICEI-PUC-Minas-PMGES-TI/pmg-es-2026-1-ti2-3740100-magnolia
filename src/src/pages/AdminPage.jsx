@@ -353,7 +353,12 @@ function TabEntregas() {
   );
 }
 
-const EMPTY = { nome: '', preco: '', descricao: '', categoria: 'BUQUES', imgFile: null, imgPreview: null };
+const EMPTY = {
+  nome: '', preco: '', descricao: '', categoria: 'BUQUES',
+  imagensExistentes: [],
+  imagensNovas: [],
+  imagensNovasPreviews: [],
+};
 const EMPTY_MOV = { tipo: 'ENTRADA', quantidade: '', observacao: '' };
 
 function MovimentacaoModal({ produto, onClose, onSaved }) {
@@ -483,19 +488,50 @@ function TabProdutos() {
   const [movProduto, setMovProduto] = useState(null);
 
   const handleImgChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => setForm((f) => ({ ...f, imgFile: file, imgPreview: ev.target.result }));
-    reader.readAsDataURL(file);
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    Promise.all(files.map((file) => new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => resolve({ file, preview: ev.target.result });
+      reader.readAsDataURL(file);
+    }))).then((novas) => {
+      setForm((f) => ({
+        ...f,
+        imagensNovas: [...f.imagensNovas, ...novas.map((n) => n.file)],
+        imagensNovasPreviews: [...f.imagensNovasPreviews, ...novas.map((n) => n.preview)],
+      }));
+    });
+    e.target.value = '';
   };
 
-  const handleEdit = (p) => {
+  const removeImagemExistente = (imagemId) => {
+    setForm((f) => ({
+      ...f,
+      imagensExistentes: f.imagensExistentes.filter((img) => img.id !== imagemId),
+    }));
+  };
+
+  const removeImagemNova = (idx) => {
+    setForm((f) => ({
+      ...f,
+      imagensNovas:        f.imagensNovas.filter((_, i) => i !== idx),
+      imagensNovasPreviews: f.imagensNovasPreviews.filter((_, i) => i !== idx),
+    }));
+  };
+
+  const handleEdit = async (p) => {
     setEditing(p.id);
+    let imagensExistentes = [];
+    try {
+      const res = await fetch(`${API}/produtos/${p.id}/imagens`);
+      if (res.ok) imagensExistentes = await res.json();
+    } catch {}
     setForm({
       nome: p.name, preco: p.price,
       descricao: p.descricao || '', categoria: p.categoria || 'BUQUES',
-      imgFile: null, imgPreview: p.img,
+      imagensExistentes,
+      imagensNovas: [],
+      imagensNovasPreviews: [],
     });
     setShowForm(true);
   };
@@ -531,7 +567,13 @@ function TabProdutos() {
       fd.append('descricao', form.descricao);
       fd.append('preco',     form.preco);
       fd.append('categoria', form.categoria);
-      if (form.imgFile) fd.append('imagem', form.imgFile);
+
+      form.imagensNovas.forEach((file) => fd.append('imagens', file));
+
+      if (editing) {
+        const mantidasIds = form.imagensExistentes.map((img) => img.id).join(',');
+        fd.append('imagensMantidas', mantidasIds);
+      }
 
       const url = editing ? `${API}/produtos/${editing}` : `${API}/produtos`;
       const method = editing ? 'PUT' : 'POST';
@@ -586,16 +628,34 @@ function TabProdutos() {
               <button className="adm-modal__close" onClick={() => setShowForm(false)}>✕</button>
             </div>
             <form onSubmit={handleSave} className="adm-form">
-              <div className="adm-form__img-upload">
-                {form.imgPreview
-                  ? <img src={form.imgPreview} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 10 }} />
-                  : <div className="adm-form__img-placeholder">
-                      <span style={{ fontSize: 32 }}>🌹</span>
-                      <span style={{ fontSize: 12, color: '#999', marginTop: 6 }}>Clique para adicionar foto</span>
+              <div className="adm-form__group adm-form__group--full">
+                <label>Imagens do produto</label>
+                <div className="adm-img-gallery">
+                  {form.imagensExistentes.map((img) => (
+                    <div key={`ex-${img.id}`} className="adm-img-thumb">
+                      <img src={`${API.replace('/api', '')}${img.url}`} alt="" />
+                      <button type="button" className="adm-img-thumb__del"
+                        title="Remover" onClick={() => removeImagemExistente(img.id)}>✕</button>
                     </div>
-                }
-                <input type="file" accept="image/*" onChange={handleImgChange}
-                  style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }} />
+                  ))}
+                  {form.imagensNovasPreviews.map((src, i) => (
+                    <div key={`new-${i}`} className="adm-img-thumb adm-img-thumb--nova">
+                      <img src={src} alt="" />
+                      <span className="adm-img-thumb__badge">nova</span>
+                      <button type="button" className="adm-img-thumb__del"
+                        title="Remover" onClick={() => removeImagemNova(i)}>✕</button>
+                    </div>
+                  ))}
+                  <label className="adm-img-thumb adm-img-thumb--add">
+                    <span style={{ fontSize: 26 }}>＋</span>
+                    <span style={{ fontSize: 10, color: '#777' }}>adicionar</span>
+                    <input type="file" accept="image/*" multiple onChange={handleImgChange}
+                      style={{ display: 'none' }} />
+                  </label>
+                </div>
+                <p style={{ margin: '6px 0 0', fontSize: 11, color: '#777' }}>
+                  A primeira imagem é exibida como capa do produto. Você pode adicionar várias.
+                </p>
               </div>
 
               <div className="adm-form__group adm-form__group--full">

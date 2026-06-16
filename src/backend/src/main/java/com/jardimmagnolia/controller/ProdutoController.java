@@ -2,15 +2,16 @@ package com.jardimmagnolia.controller;
 
 import com.jardimmagnolia.model.CategoriaProduto;
 import com.jardimmagnolia.model.Produto;
+import com.jardimmagnolia.model.ProdutoImagem;
+import com.jardimmagnolia.repository.ProdutoImagemRepository;
 import com.jardimmagnolia.repository.ProdutoRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,12 +20,11 @@ import java.util.stream.Collectors;
 public class ProdutoController {
 
     private final ProdutoRepository repo;
+    private final ProdutoImagemRepository imagemRepo;
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
-
-    public ProdutoController(ProdutoRepository repo) {
+    public ProdutoController(ProdutoRepository repo, ProdutoImagemRepository imagemRepo) {
         this.repo = repo;
+        this.imagemRepo = imagemRepo;
     }
 
     @GetMapping
@@ -54,23 +54,46 @@ public class ProdutoController {
         return repo.findByNomeContainingIgnoreCaseAndAtivoTrue(nome);
     }
 
+    @GetMapping("/{id}/imagens")
+    public List<Map<String, Object>> listarImagensDoProduto(@PathVariable Long id) {
+        return imagemRepo.findByProdutoIdOrderByOrdemAsc(id).stream()
+                .map(img -> {
+                    Map<String, Object> m = new LinkedHashMap<>();
+                    m.put("id", img.getId());
+                    m.put("ordem", img.getOrdem());
+                    m.put("principal", img.getPrincipal());
+                    m.put("contentType", img.getContentType());
+                    m.put("nomeOriginal", img.getNomeOriginal());
+                    m.put("url", "/api/produtos/imagens/" + img.getId());
+                    return m;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/imagens/{imagemId}")
+    public ResponseEntity<byte[]> servirImagem(@PathVariable Long imagemId) {
+        return imagemRepo.findById(imagemId)
+                .map(img -> {
+                    MediaType tipo = img.getContentType() == null
+                            ? MediaType.IMAGE_JPEG
+                            : MediaType.parseMediaType(img.getContentType());
+                    return ResponseEntity.ok()
+                            .contentType(tipo)
+                            .cacheControl(org.springframework.http.CacheControl.maxAge(java.time.Duration.ofDays(7)).cachePublic())
+                            .body(img.getDados());
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
     public ResponseEntity<Produto> cadastrar(
             @RequestParam("nome")       String nome,
             @RequestParam("descricao")  String descricao,
             @RequestParam("preco")      BigDecimal preco,
             @RequestParam("categoria")  CategoriaProduto categoria,
-            @RequestParam(value = "imagem", required = false) MultipartFile imagem,
-            @RequestParam(value = "imagensExtras", required = false) List<MultipartFile> imagensExtras,
-            @RequestParam(value = "imagensExtrasExistentes", required = false) String imagensExtrasExistentes
+            @RequestParam(value = "imagens", required = false) List<MultipartFile> imagens
     ) throws IOException {
-
-        String imagemUrl = null;
-        if (imagem != null && !imagem.isEmpty()) {
-            imagemUrl = salvarImagem(imagem);
-        }
-
-        String extrasUrl = processarExtras(imagensExtras, imagensExtrasExistentes);
 
         Produto p = Produto.builder()
                 .nome(nome)
@@ -79,44 +102,49 @@ public class ProdutoController {
                 .estoque(0)
                 .categoria(categoria)
                 .ativo(true)
-                .imagemUrl(imagemUrl)
-                .imagensExtras(extrasUrl)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(p));
+        Produto salvo = repo.save(p);
+        salvarImagens(salvo.getId(), imagens, true);
+        sincronizarImagemUrl(salvo);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(repo.save(salvo));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
     public ResponseEntity<Produto> editar(
             @PathVariable Long id,
             @RequestParam("nome")       String nome,
             @RequestParam("descricao")  String descricao,
             @RequestParam("preco")      BigDecimal preco,
             @RequestParam("categoria")  CategoriaProduto categoria,
-            @RequestParam(value = "imagem", required = false) MultipartFile imagem,
-            @RequestParam(value = "imagensExtras", required = false) List<MultipartFile> imagensExtras,
-            @RequestParam(value = "imagensExtrasExistentes", required = false) String imagensExtrasExistentes
+            @RequestParam(value = "imagens", required = false) List<MultipartFile> imagens,
+            @RequestParam(value = "imagensMantidas", required = false) String imagensMantidas
     ) throws IOException {
 
         return repo.findById(id).map(p -> {
             p.setNome(nome);
             p.setDescricao(descricao);
             p.setPreco(preco);
-            // estoque não é alterado aqui — exclusivo da movimentação de estoque
             p.setCategoria(categoria);
 
-            if (imagem != null && !imagem.isEmpty()) {
-                try { p.setImagemUrl(salvarImagem(imagem)); }
-                catch (IOException e) { throw new RuntimeException("Erro ao salvar imagem", e); }
+            Set<Long> idsParaManter = parseIds(imagensMantidas);
+            List<ProdutoImagem> atuais = imagemRepo.findByProdutoIdOrderByOrdemAsc(id);
+            for (ProdutoImagem atual : atuais) {
+                if (!idsParaManter.contains(atual.getId())) {
+                    imagemRepo.delete(atual);
+                }
             }
 
             try {
-                String extrasUrl = processarExtras(imagensExtras, imagensExtrasExistentes);
-                p.setImagensExtras(extrasUrl);
+                boolean naoSobrouNenhuma = idsParaManter.isEmpty();
+                salvarImagens(id, imagens, naoSobrouNenhuma);
             } catch (IOException e) {
-                throw new RuntimeException("Erro ao salvar imagens extras", e);
+                throw new RuntimeException("Erro ao salvar imagens", e);
             }
 
+            sincronizarImagemUrl(p);
             return ResponseEntity.ok(repo.save(p));
         }).orElse(ResponseEntity.notFound().build());
     }
@@ -130,42 +158,67 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         if (!repo.existsById(id)) return ResponseEntity.notFound().build();
+        imagemRepo.deleteByProdutoId(id);
         repo.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    private String salvarImagem(MultipartFile file) throws IOException {
-        Path dir = Paths.get(uploadDir);
-        Files.createDirectories(dir);
-        String ext = Optional.ofNullable(file.getOriginalFilename())
-                .filter(f -> f.contains("."))
-                .map(f -> f.substring(f.lastIndexOf(".")))
-                .orElse(".jpg");
-        String filename = UUID.randomUUID() + ext;
-        Files.copy(file.getInputStream(), dir.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-        return "/uploads/produtos/" + filename;
+    @DeleteMapping("/imagens/{imagemId}")
+    @Transactional
+    public ResponseEntity<Void> removerImagem(@PathVariable Long imagemId) {
+        return imagemRepo.findById(imagemId).map(img -> {
+            imagemRepo.delete(img);
+            repo.findById(img.getProdutoId()).ifPresent(this::sincronizarImagemUrl);
+            return ResponseEntity.noContent().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 
-    private String processarExtras(List<MultipartFile> novasExtras, String existentesRaw) throws IOException {
-        List<String> urls = new ArrayList<>();
+    private void salvarImagens(Long produtoId, List<MultipartFile> imagens, boolean primeiraVirarPrincipal) throws IOException {
+        if (imagens == null || imagens.isEmpty()) return;
 
-        if (existentesRaw != null && !existentesRaw.isBlank()) {
-            Arrays.stream(existentesRaw.split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .forEach(urls::add);
+        long existentes = imagemRepo.countByProdutoId(produtoId);
+        int ordem = (int) existentes;
+        boolean jaTemPrincipal = imagemRepo.findByProdutoIdOrderByOrdemAsc(produtoId).stream()
+                .anyMatch(ProdutoImagem::getPrincipal);
+
+        for (MultipartFile f : imagens) {
+            if (f == null || f.isEmpty()) continue;
+            boolean principal = primeiraVirarPrincipal && !jaTemPrincipal && ordem == (int) existentes;
+            ProdutoImagem img = ProdutoImagem.builder()
+                    .produtoId(produtoId)
+                    .contentType(f.getContentType())
+                    .nomeOriginal(f.getOriginalFilename())
+                    .ordem(ordem++)
+                    .principal(principal)
+                    .dados(f.getBytes())
+                    .build();
+            imagemRepo.save(img);
+            if (principal) jaTemPrincipal = true;
         }
+    }
 
-        if (novasExtras != null) {
-            for (MultipartFile f : novasExtras) {
-                if (f != null && !f.isEmpty()) {
-                    urls.add(salvarImagem(f));
-                }
-            }
+    private void sincronizarImagemUrl(Produto p) {
+        List<ProdutoImagem> imagens = imagemRepo.findByProdutoIdOrderByOrdemAsc(p.getId());
+        if (imagens.isEmpty()) {
+            p.setImagemUrl(null);
+            return;
         }
+        ProdutoImagem principal = imagens.stream()
+                .filter(ProdutoImagem::getPrincipal)
+                .findFirst()
+                .orElse(imagens.get(0));
+        p.setImagemUrl("/api/produtos/imagens/" + principal.getId());
+    }
 
-        return urls.isEmpty() ? null : String.join(",", urls);
+    private Set<Long> parseIds(String raw) {
+        if (raw == null || raw.isBlank()) return Set.of();
+        Set<Long> ids = new HashSet<>();
+        for (String s : raw.split(",")) {
+            try { ids.add(Long.parseLong(s.trim())); } catch (Exception ignored) {}
+        }
+        return ids;
     }
 }
