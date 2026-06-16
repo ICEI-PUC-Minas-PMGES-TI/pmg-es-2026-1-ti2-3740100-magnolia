@@ -1,6 +1,7 @@
 package com.jardimmagnolia.controller;
 
 import com.jardimmagnolia.model.*;
+import com.jardimmagnolia.repository.CarrinhoRepository;
 import com.jardimmagnolia.repository.ClienteRepository;
 import com.jardimmagnolia.repository.MovimentacaoEstoqueRepository;
 import com.jardimmagnolia.repository.PedidoRepository;
@@ -22,15 +23,18 @@ public class PedidoController {
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepo;
     private final MovimentacaoEstoqueRepository movRepo;
+    private final CarrinhoRepository carrinhoRepo;
 
     public PedidoController(PedidoRepository repo,
                              ClienteRepository clienteRepository,
                              ProdutoRepository produtoRepo,
-                             MovimentacaoEstoqueRepository movRepo) {
+                             MovimentacaoEstoqueRepository movRepo,
+                             CarrinhoRepository carrinhoRepo) {
         this.repo = repo;
         this.clienteRepository = clienteRepository;
         this.produtoRepo = produtoRepo;
         this.movRepo = movRepo;
+        this.carrinhoRepo = carrinhoRepo;
     }
 
     @GetMapping
@@ -110,6 +114,18 @@ public class PedidoController {
         }
 
         Pedido salvo = repo.save(pedido);
+
+        if (pedido.getCarrinhoId() != null) {
+            carrinhoRepo.findById(pedido.getCarrinhoId()).ifPresent(carrinho -> {
+                if (carrinho.getClienteId() != null
+                        && carrinho.getClienteId().equals(salvo.getClienteId())
+                        && carrinho.getStatus() == StatusCarrinho.ABERTO) {
+                    carrinho.setStatus(StatusCarrinho.FINALIZADO);
+                    carrinho.setPedidoId(salvo.getId());
+                    carrinhoRepo.save(carrinho);
+                }
+            });
+        }
 
         String numeroPedido = String.format("%05d", salvo.getId());
         String nomeCliente  = salvo.getClienteNome() == null || salvo.getClienteNome().isBlank()

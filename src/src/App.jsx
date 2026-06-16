@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { API } from './hooks/useProdutos.js';
 import NavBar from './components/NavBar.jsx';
 import HomePage from './pages/HomePage.jsx';
 import ProductPage from './pages/ProductPage.jsx';
@@ -37,7 +38,23 @@ export default function App() {
 
     const cartCount = cart.reduce((acc, i) => acc + i.qty, 0);
 
+    const iniciarCarrinhoSeNecessario = () => {
+        if (!cliente?.id) return;
+        if (window.localStorage.getItem('jm_carrinho_id')) return;
+        fetch(`${API}/carrinhos/iniciar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clienteId: cliente.id }),
+        })
+            .then((r) => (r.ok ? r.json() : null))
+            .then((c) => {
+                if (c?.id) window.localStorage.setItem('jm_carrinho_id', String(c.id));
+            })
+            .catch(() => {});
+    };
+
     const addToCart = (item) => {
+        iniciarCarrinhoSeNecessario();
         setCart((prev) => {
             const exists = prev.find((i) => i.id === item.id);
             if (exists) return prev.map((i) => i.id === item.id ? { ...i, qty: i.qty + (item.qty ?? 1) } : i);
@@ -62,7 +79,10 @@ export default function App() {
         window.localStorage.setItem('jm_cliente', JSON.stringify(atualizado));
     };
 
-    const clearCart = () => setCart([]);
+    const clearCart = () => {
+        setCart([]);
+        window.localStorage.removeItem('jm_carrinho_id');
+    };
 
     const changeQty = (id, delta) => {
         setCart((prev) =>

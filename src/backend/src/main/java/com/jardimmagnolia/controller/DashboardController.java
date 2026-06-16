@@ -6,6 +6,7 @@ import com.jardimmagnolia.model.Pedido;
 import com.jardimmagnolia.model.StatusPagamento;
 import com.jardimmagnolia.model.StatusPedido;
 import com.jardimmagnolia.repository.AvaliacaoRepository;
+import com.jardimmagnolia.repository.CarrinhoRepository;
 import com.jardimmagnolia.repository.PagamentoRepository;
 import com.jardimmagnolia.repository.PedidoRepository;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +30,16 @@ public class DashboardController {
     private final PedidoRepository pedidoRepo;
     private final PagamentoRepository pagamentoRepo;
     private final AvaliacaoRepository avaliacaoRepo;
+    private final CarrinhoRepository carrinhoRepo;
 
     public DashboardController(PedidoRepository pedidoRepo,
                                PagamentoRepository pagamentoRepo,
-                               AvaliacaoRepository avaliacaoRepo) {
+                               AvaliacaoRepository avaliacaoRepo,
+                               CarrinhoRepository carrinhoRepo) {
         this.pedidoRepo    = pedidoRepo;
         this.pagamentoRepo = pagamentoRepo;
         this.avaliacaoRepo = avaliacaoRepo;
+        this.carrinhoRepo  = carrinhoRepo;
     }
 
     @GetMapping
@@ -109,7 +113,11 @@ public class DashboardController {
         long concluidos = entregues + cancelados;
         BigDecimal taxaReembolso           = pct(cancelados, concluidos);
         BigDecimal taxaCancelamentoEstoque = taxaCancelamento;
-        BigDecimal taxaConversaoCarrinho   = BigDecimal.valueOf(68.5);
+
+        LocalDateTime corteCarrinho = LocalDateTime.now().minusHours(1);
+        long carrinhosMaduros     = carrinhoRepo.countMaduros(corteCarrinho);
+        long carrinhosFinalizados = carrinhoRepo.countFinalizadosMaduros(corteCarrinho);
+        BigDecimal taxaConversaoCarrinho = pct(carrinhosFinalizados, carrinhosMaduros);
 
         List<Map<String, Object>> pedidosUltimos7Dias = ultimosNDias(7);
 

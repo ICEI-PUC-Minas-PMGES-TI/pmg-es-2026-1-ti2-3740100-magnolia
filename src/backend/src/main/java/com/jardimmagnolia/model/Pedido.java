@@ -56,6 +56,9 @@ public class Pedido {
     @Column(name = "criado_em", updatable = false)
     private LocalDateTime criadoEm;
 
+    @Transient
+    private Long carrinhoId;
+
     @PrePersist
     protected void onCreate() {
         criadoEm = LocalDateTime.now();

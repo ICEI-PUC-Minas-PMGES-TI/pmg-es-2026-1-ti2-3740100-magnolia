@@ -171,10 +171,9 @@ export default function IndicadoresPanel() {
 
         <KpiCard
           titulo="Taxa de conversão de carrinho"
-          descricao="(pedidos finalizados / carrinhos iniciados) × 100"
-          badge={{ tipo: 'mock', texto: 'mock: carrinho não persistido' }}
+          descricao="(carrinhos finalizados / carrinhos iniciados há +1h) × 100"
         >
-          <Donut pct={data.taxaConversaoCarrinho} color="#5bc0de" label="exemplo" />
+          <Donut pct={data.taxaConversaoCarrinho} color="#5bc0de" label="últimas horas" />
         </KpiCard>
       </div>
 

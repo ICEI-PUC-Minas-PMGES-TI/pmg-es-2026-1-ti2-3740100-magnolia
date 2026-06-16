@@ -317,6 +317,7 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
         `CEP: ${dadosCliente.cep}`,
       ].filter(Boolean).join(' | ');
 
+      const carrinhoIdLocal = window.localStorage.getItem('jm_carrinho_id');
       const payload = {
         clienteId: cliente.id,
         clienteNome: dadosCliente.nome,
@@ -324,6 +325,7 @@ export default function CartPage({ cart, onNavigate, onQtyChange, onRemove, onOr
         clienteTelefone: dadosCliente.telefone,
         enderecoEntrega,
         total,
+        carrinhoId: carrinhoIdLocal ? Number(carrinhoIdLocal) : null,
         itens: cart.map((item) => ({
           produto: { id: item.id },
           quantidade: item.qty,
