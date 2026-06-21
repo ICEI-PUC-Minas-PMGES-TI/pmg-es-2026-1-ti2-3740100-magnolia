@@ -2,7 +2,7 @@
 
 _O processo de entrega contempla desde a confirmação do pedido até a finalização da entrega ao cliente._
 
-![Modelo BPMN](images/Processos/entreDiagrama.png)
+![Modelo BPMN](images/Processos/entregaatualizado.png)
 
 
 ### 3.3.5 Processo 4.2 – Processo de Reembolso
