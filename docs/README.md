@@ -133,7 +133,27 @@ _A sessão a seguir apresenta a descrição do produto de software desenvolvido.
 
 ## 7. Conclusão
 
-_Apresente aqui a conclusão do seu trabalho. Deve ser apresentada aqui uma discussão dos resultados obtidos no trabalho, local em que se verifica as observações pessoais de cada aluno. Essa seção poderá também apresentar sugestões de novas linhas de estudo._
+A consolidação deste projeto permitiu o desenvolvimento de uma solução web completa e funcional para a gestão de vendas e estoque do e-commerce **Jardim Magnólia**. Ao longo do trabalho, os objetivos iniciais propostos foram alcançados, entregando uma plataforma com integração eficiente entre o front-end (desenvolvido em React) e o back-end (construído em Java com Spring Boot). O sistema demonstrou eficácia ao gerenciar catálogos de produtos, controle de clientes, fluxo de carrinho de compras, simulação de pagamentos e a movimentação do estoque.
+
+### Discussão dos Resultados
+
+A implementação da arquitetura separada entre front-end e back-end garantiu uma boa modularidade, facilitando a manutenção e a escalabilidade do software. O uso do banco de dados relacional atendeu perfeitamente aos requisitos de integridade de dados exigidos para as transações de e-commerce. As validações realizadas nas principais jornadas do usuário (como navegação de produtos, checkout e controle administrativo) apresentaram resultados satisfatórios, comprovando a viabilidade técnica e a utilidade da solução desenvolvida para o contexto de uma loja botânica/floricultura.
+
+### Observações Pessoais
+
+* **Cauã Thomarco:** "O projeto proporcionou um aprofundamento prático significativo no desenvolvimento de APIs RESTful e no mapeamento objeto-relacional. A principal dificuldade superada foi a integração de ponta a ponta, ligando os componentes do front-end com as rotas do back-end de forma segura e performática."
+* **Sofia Figueiredo:** "Trabalhar com a interface do usuário e o gerenciamento de estados no React foi um desafio enriquecedor. Pude compreender a importância de criar interfaces intuitivas, responsivas e amigáveis para o cliente final, além de aprender muito sobre o trabalho colaborativo utilizando o Git."
+* **Julia Fonseca:** "A experiência de estruturar um sistema completo de e-commerce permitiu aplicar diversos conceitos de Engenharia de Software vistos em sala. Entender as regras de negócio de um carrinho de compras e do fluxo de estoque trouxe uma visão muito realista dos desafios do mercado de TI."
+
+### Sugestões de Novas Linhas de Estudo e Trabalhos Futuros
+
+Para evoluções futuras deste sistema, sugerem-se as seguintes melhorias e novas linhas de pesquisa:
+
+1.  **Desenvolvimento de um Aplicativo Mobile:** Criação de uma versão mobile da loja (utilizando React Native, por exemplo) para expandir a presença digital e otimizar a experiência do usuário em smartphones.
+2.  **Sistemas de Recomendação Baseados em IA:** Estudo e implementação de algoritmos de inteligência artificial para analisar o histórico do cliente e recomendar produtos personalizados (ex: sugerir fertilizantes ou vasos específicos para quem compra determinadas plantas).
+3.  **Integração com Logística e Rastreamento:** Pesquisa sobre o consumo de APIs externas (como Correios ou transportadoras) para cálculo dinâmico de frete e rastreamento em tempo real das entregas.
+4.  **Dashboards Analíticos Avançados:** Expansão do painel do administrador com ferramentas de *Business Intelligence* (BI) para gerar relatórios preditivos sobre demanda de estoque e sazonalidade de vendas.
+5.  **Pipeline de CI/CD e Testes Automatizados:** Aprofundamento no estudo de DevOps, com a implementação de testes automatizados (unitários e de integração) e criação de uma esteira de entrega contínua para tornar o software mais resiliente e seguro contra falhas em atualizações futuras.
 
 # REFERÊNCIAS
 
