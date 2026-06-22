@@ -35,10 +35,9 @@ public class ProdutoImagem {
     @Column(name = "principal", nullable = false)
     private Boolean principal = false;
 
-    @Lob
     @JsonIgnore
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "dados", nullable = false, columnDefinition = "BLOB")
+    @Column(name = "dados", nullable = false)
     private byte[] dados;
 
     @Column(name = "criado_em", updatable = false)
