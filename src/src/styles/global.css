@@ -37,7 +37,7 @@
     --shadow-hover: 0 20px 48px rgba(27,58,45,0.22);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
     font-family: var(--font-sans);
@@ -46,7 +46,10 @@ body {
     line-height: 1.6;
     font-size: 15px;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
+
+img { max-width: 100%; }
 
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: inherit; }
@@ -3504,4 +3507,177 @@ color: #333;
   padding: 1px 6px;
   border-radius: 10px;
   font-weight: 600;
+}
+
+/* ============================================================
+   RESPONSIVO – Mobile & Tablet
+   ============================================================ */
+
+/* Tablet e abaixo */
+@media (max-width: 1024px) {
+    .product-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+    .gifts-grid { grid-template-columns: repeat(3, 1fr); }
+    .related__grid { grid-template-columns: repeat(3, 1fr); }
+    .pres-layout {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin: 20px auto;
+        padding: 0 16px;
+    }
+    .cart-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .login-page { grid-template-columns: 1fr 420px; }
+}
+
+/* Phablet / phone landscape */
+@media (max-width: 768px) {
+    .container { padding: 0 16px; }
+    .section { padding: 24px 0; }
+    .section__title { font-size: 18px; }
+
+    /* NavBar */
+    .navbar__inner { padding: 8px 14px; }
+    .navbar__top {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+    .navbar__logo { min-width: auto; order: 1; }
+    .navbar__logo-frame { width: 110px; height: 56px; }
+    .navbar__icons { order: 2; margin-left: auto; gap: 10px; }
+    .navbar__user span:not(:only-child) { display: none; }
+    .navbar__logout-btn { display: none; }
+    .navbar__search {
+        order: 3;
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+    .navbar__search input {
+        padding: 8px 36px 8px 12px;
+        font-size: 13px;
+    }
+    .navbar__address-btn {
+        order: 4;
+        flex: 1 1 100%;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    .navbar__nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 16px;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+    }
+    .navbar__nav::-webkit-scrollbar { display: none; }
+    .navbar__nav-link { font-size: 12.5px; white-space: nowrap; }
+
+    /* Quando encolhido por scroll, ainda mantém o search visível */
+    .navbar.scrolled .navbar__logo-frame { width: 80px; height: 40px; }
+
+    /* Footer */
+    .footer { padding: 24px 16px; }
+    .footer__inner {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+    .footer__logo img { height: 80px; }
+    .footer__links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px 18px;
+    }
+
+    /* Grades */
+    .reviews-grid { grid-template-columns: 1fr; }
+    .gifts-grid { grid-template-columns: repeat(2, 1fr); }
+    .related__grid { grid-template-columns: repeat(2, 1fr); }
+    .pres-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+
+    /* Cards do carrossel */
+    .card { flex: 0 0 160px; min-width: 160px; }
+    .card__img { aspect-ratio: 1 / 1; }
+
+    /* Login */
+    .login-page {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+    .login-page__left {
+        min-height: 180px;
+        max-height: 220px;
+    }
+    .login-page__left-content { padding: 24px; }
+    .login-page__tagline { font-size: 28px; }
+    .login-page__sub { font-size: 13px; }
+    .login-page__right { padding: 32px 24px; }
+
+    /* Produto */
+    .breadcrumb { font-size: 12px; flex-wrap: wrap; }
+    .product-gallery__main img { max-height: 360px; object-fit: contain; }
+    .purchase-panel { position: static; }
+    .dates { flex-wrap: wrap; }
+
+    /* Carrinho / Pagamento */
+    .cart-page { padding: 20px 16px 32px; }
+    .cart-page__title { font-size: 20px; }
+
+    /* Admin */
+    .adm-layout {
+        grid-template-columns: 1fr;
+    }
+    .adm-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    /* Tabelas — permitir rolagem horizontal */
+    table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+/* Phone pequeno */
+@media (max-width: 540px) {
+    .container { padding: 0 12px; }
+
+    .navbar__logo-frame { width: 92px; height: 48px; }
+    .navbar__address-btn svg { width: 11px; height: 11px; }
+    .navbar__user svg { width: 18px; height: 18px; }
+    .navbar__cart svg { width: 20px; height: 20px; }
+
+    .hero__title { font-size: 20px; line-height: 1.25; }
+    .hero__sub { font-size: 12.5px; }
+    .hero__btn { padding: 10px 18px; font-size: 13px; }
+
+    .section__title { font-size: 16px; }
+
+    .gifts-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .related__grid { grid-template-columns: 1fr; }
+    .pres-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    .card { flex: 0 0 150px; min-width: 150px; }
+    .card__name { font-size: 12px; }
+    .card__price { font-size: 13px; }
+
+    .login-page__tagline { font-size: 24px; }
+    .login-page__right { padding: 24px 18px; }
+
+    .product-gallery__main img { max-height: 280px; }
+    .purchase-panel__name { font-size: 18px; }
+    .purchase-panel__price { font-size: 22px; }
+
+    .footer__logo img { height: 64px; }
+    .footer__links { font-size: 12px; }
+    .footer__social a { width: 32px; height: 32px; }
+    .footer__social svg { width: 17px; height: 17px; }
 }
