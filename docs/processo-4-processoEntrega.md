@@ -2,14 +2,14 @@
 
 _O processo de entrega contempla desde a confirmação do pedido até a finalização da entrega ao cliente._
 
-![Modelo BPMN](images/Processos/entreDiagrama.png)
+![Modelo BPMN](images/Processos/entregaatualizado.png)
 
 
 ### 3.3.5 Processo 4.2 – Processo de Reembolso
 
 *O processo de reembolso contempla desde a solicitação de reembolso realizada pelo cliente até a conclusão ou recusa do reembolso, incluindo a análise da solicitação, autorização do estorno e atualização dos respectivos status no sistema.*
 
-![Modelo BPMN](images/Processos/reembolsoDiagrama.png)
+![Modelo BPMN](images/Processos/reembolsodiag.png)
 
 
 #### Detalhamento das atividades
