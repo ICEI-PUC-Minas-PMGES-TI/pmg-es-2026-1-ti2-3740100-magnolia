@@ -211,7 +211,7 @@ export default function PresentesPage({ onNavigate, onAddToCart, initialCategori
                 <div key={item.id} className="pres-card-wrap">
                   <MiniCard
                     item={item}
-                    onClick={() => onNavigate('product')}
+                    onClick={() => onNavigate('product', { productId: item.id, product: item })}
                     onAddToCart={handleAddToCart}
                   />
 

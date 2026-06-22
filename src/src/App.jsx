@@ -115,7 +115,7 @@ export default function App() {
             />
 
             {page === 'home' && <HomePage onNavigate={navigate} onAddToCart={addToCart} searchTerm={searchTerm} cliente={cliente} />}
-            {page === 'product' && <ProductPage onNavigate={navigate} onAddToCart={addToCart} cliente={cliente} />}
+            {page === 'product' && <ProductPage onNavigate={navigate} onAddToCart={addToCart} cliente={cliente} productId={pageParams.productId} initialProduct={pageParams.product} />}
             {page === 'login' && <LoginPage onNavigate={navigate} onLoginCliente={handleLoginCliente} />}
             {page === 'cadastro' && <CadastroPage onNavigate={navigate} onCadastroRealizado={handleLoginCliente} />}
             {page === 'contact' && <ContactPage onNavigate={navigate} cliente={cliente} />}

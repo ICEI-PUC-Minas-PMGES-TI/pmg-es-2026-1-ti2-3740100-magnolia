@@ -96,7 +96,7 @@ export default function HomePage({ onNavigate, onAddToCart, searchTerm = '' }) {
               key={cat}
               title={CATEGORIA_LABELS[cat] || cat}
               items={items}
-              onItemClick={() => onNavigate('product')}
+              onItemClick={(item) => onNavigate('product', { productId: item.id, product: item })}
               onAddToCart={onAddToCart}
             />
           );

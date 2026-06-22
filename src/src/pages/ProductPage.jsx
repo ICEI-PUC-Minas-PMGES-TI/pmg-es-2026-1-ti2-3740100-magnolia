@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Stars from '../components/Stars.jsx';
 import MiniCard from '../components/MiniCard.jsx';
 import Footer from '../components/Footer.jsx';
-import { API } from '../hooks/useProdutos.js';
+import { API, normalizeProduto } from '../hooks/useProdutos.js';
 import { IMAGES, RELATED } from '../data/index.js';
 
 const DAY_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -18,9 +18,16 @@ function buildDates(offset) {
   });
 }
 
-const THUMBS = [IMAGES.rose6, IMAGES.rose12, IMAGES.rose14];
+const FALLBACK_THUMBS = [IMAGES.rose6, IMAGES.rose12, IMAGES.rose14];
 
-const PRODUCT = {
+const API_ORIGIN = API.replace('/api', '');
+const resolveUrl = (u) => {
+  if (!u) return '';
+  if (u.startsWith('data:') || u.startsWith('http://') || u.startsWith('https://')) return u;
+  return `${API_ORIGIN}${u}`;
+};
+
+const FALLBACK_PRODUCT = {
   id: 1,
   name: 'Buquê com 6 Rosas Colombianas Vermelhas',
   price: 149.90,
@@ -30,7 +37,23 @@ const PRODUCT = {
 
 const fmt = (n) => 'R$ ' + Number(n).toFixed(2).replace('.', ',');
 
-export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
+export default function ProductPage({ onNavigate, onAddToCart, cliente, productId, initialProduct }) {
+  const [product, setProduct] = useState(() => {
+    if (initialProduct) {
+      return {
+        id:          initialProduct.id,
+        name:        initialProduct.name,
+        price:       initialProduct.price,
+        img:         initialProduct.img,
+        description: initialProduct.descricao || initialProduct.description || '',
+      };
+    }
+    return productId ? null : FALLBACK_PRODUCT;
+  });
+  const [thumbs, setThumbs] = useState(() => {
+    if (initialProduct?.img) return [initialProduct.img];
+    return productId ? [] : FALLBACK_THUMBS;
+  });
   const [activeThumb, setActiveThumb] = useState(0);
   const [qty, setQty]                 = useState(1);
   const [selectedDate, setSelectedDate] = useState(0);
@@ -43,18 +66,58 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
   const [reviewError, setReviewError] = useState('');
 
   useEffect(() => {
-    fetch(`${API}/avaliacoes/produto/${PRODUCT.id}`)
+    if (!productId) return;
+    fetch(`${API}/produtos/${productId}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data) return;
+        const norm = normalizeProduto(data);
+        setProduct({
+          id:          norm.id,
+          name:        norm.name,
+          price:       norm.price,
+          img:         norm.img,
+          description: norm.descricao || '',
+        });
+      })
+      .catch(() => {});
+  }, [productId]);
+
+  useEffect(() => {
+    if (!productId) return;
+    setActiveThumb(0);
+    fetch(`${API}/produtos/${productId}/imagens`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (!Array.isArray(data) || data.length === 0) return;
+        const urls = data
+          .slice()
+          .sort((a, b) => (a.ordem ?? 0) - (b.ordem ?? 0))
+          .map((img) => resolveUrl(img.url))
+          .filter(Boolean);
+        if (urls.length > 0) setThumbs(urls);
+      })
+      .catch(() => {});
+  }, [productId]);
+
+  const currentProduct = product || FALLBACK_PRODUCT;
+  const currentThumbs  = thumbs.length > 0 ? thumbs : (currentProduct.img ? [currentProduct.img] : []);
+  const safeActive     = Math.min(activeThumb, Math.max(0, currentThumbs.length - 1));
+
+  useEffect(() => {
+    if (!currentProduct.id) return;
+    fetch(`${API}/avaliacoes/produto/${currentProduct.id}`)
       .then((r) => (r.ok ? r.json() : []))
       .then((data) => setAvaliacoes(Array.isArray(data) ? data : []))
       .catch(() => {});
-  }, []);
+  }, [currentProduct.id]);
 
   const avgNota = avaliacoes.length
     ? Math.round(avaliacoes.reduce((s, a) => s + (a.nota ?? 5), 0) / avaliacoes.length)
     : 5;
 
   const handleBuy = () => {
-    onAddToCart({ ...PRODUCT, img: THUMBS[activeThumb], qty });
+    onAddToCart({ ...currentProduct, img: currentThumbs[safeActive] || currentProduct.img, qty });
     onNavigate('cart');
   };
 
@@ -69,7 +132,7 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          produtoId:   PRODUCT.id,
+          produtoId:   currentProduct.id,
           clienteId:   cliente.id,
           clienteNome: cliente.nome,
           nota,
@@ -97,7 +160,7 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         <span> / </span>
         <span>Buquês</span>
         <span> / </span>
-        <span>{PRODUCT.name}</span>
+        <span>{currentProduct.name}</span>
       </div>
 
       <div className="product-layout">
@@ -106,7 +169,9 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         <div>
           {/* Galeria */}
           <div className="product-gallery__main">
-            <img src={THUMBS[activeThumb]} alt={PRODUCT.name} />
+            {currentThumbs[safeActive] && (
+              <img src={currentThumbs[safeActive]} alt={currentProduct.name} />
+            )}
             <div className="product-gallery__badge">
               <div className="product-gallery__badge-stars">
                 <Stars n={avgNota} size={13} />
@@ -118,22 +183,24 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
             </div>
           </div>
 
-          <div className="product-gallery__thumbs">
-            {THUMBS.map((src, i) => (
-              <div
-                key={i}
-                className={`product-gallery__thumb ${activeThumb === i ? 'active' : ''}`}
-                onClick={() => setActiveThumb(i)}
-              >
-                <img src={src} alt={`Foto ${i + 1}`} />
-              </div>
-            ))}
-          </div>
+          {currentThumbs.length > 1 && (
+            <div className="product-gallery__thumbs">
+              {currentThumbs.map((src, i) => (
+                <div
+                  key={i}
+                  className={`product-gallery__thumb ${safeActive === i ? 'active' : ''}`}
+                  onClick={() => setActiveThumb(i)}
+                >
+                  <img src={src} alt={`Foto ${i + 1}`} />
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Descrição */}
           <div className="product-desc">
             <h2 className="product-desc__title">Sobre o produto</h2>
-            <p className="product-desc__text">{PRODUCT.description}</p>
+            <p className="product-desc__text">{currentProduct.description}</p>
           </div>
 
           {/* Avaliações */}
@@ -202,10 +269,10 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         <div>
           <div className="purchase-panel">
             <div className="purchase-panel__source">Flores Online</div>
-            <h1 className="purchase-panel__name">{PRODUCT.name}</h1>
-            <div className="purchase-panel__price">{fmt(PRODUCT.price)}</div>
+            <h1 className="purchase-panel__name">{currentProduct.name}</h1>
+            <div className="purchase-panel__price">{fmt(currentProduct.price)}</div>
             <div className="purchase-panel__price-sub">
-              ou 2x de {fmt(PRODUCT.price / 2)} sem juros
+              ou 2x de {fmt(currentProduct.price / 2)} sem juros
             </div>
 
             <hr className="panel-divider" />
@@ -268,7 +335,7 @@ export default function ProductPage({ onNavigate, onAddToCart, cliente }) {
         <div className="related__divider" />
         <div className="related__grid">
           {RELATED.map((p) => (
-            <MiniCard key={p.id} item={p} onAddToCart={onAddToCart} onClick={() => onNavigate('product')} />
+            <MiniCard key={p.id} item={p} onAddToCart={onAddToCart} onClick={() => onNavigate('product', { productId: p.id, product: p })} />
           ))}
         </div>
       </div>
