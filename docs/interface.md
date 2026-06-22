@@ -38,13 +38,17 @@ A tela de **Movimentação de Estoque** é exibida ao selecionar um produto para
 ![Movimentação Estoque](images/Telas/Mov-estoque.png)
 
 
-## 6.3. Telas do processo 2
+## 6.3. Telas do processo 2 (Venda)
 
-_Descrição da tela relativa à atividade 1._
+_Tela de visualização do produto._
 
-Tela da atividade 1
+A tela de **Visualização do Produto** é exibida quando o cliente clica em um item nos carrosséis da home ou na página de presentes. Ela apresenta a galeria de imagens cadastradas pelo administrador (com thumbnails clicáveis quando há mais de uma foto), o nome do produto, a descrição, o preço com opção de parcelamento, a seleção de data de entrega, o controle de quantidade e o botão **Comprar agora**, que adiciona o item ao carrinho e direciona o cliente para a próxima etapa do fluxo de venda. Abaixo da galeria, são exibidas as avaliações dos clientes e um formulário para que o usuário logado possa registrar sua própria avaliação.
 
-_Descrição da tela relativa à atividade 2._
+![Visualização do Produto](images/Telas/visualizar-produto.png)
 
-Tela da atividade 2
+_Tela do carrinho de compras._
+
+A tela do **Carrinho** apresenta a lista dos itens adicionados, com nome, imagem, preço unitário e controles de quantidade e remoção, além do resumo do pedido (subtotal, frete e total). Nessa tela o cliente preenche os dados necessários para a entrega — CEP, endereço completo, número, complemento e tipo de frete — e, após confirmar as informações, avança para a tela de **Pagamento**, onde escolhe a forma de pagamento (cartão, Pix ou boleto) e finaliza a compra. Concluída essa etapa, o pedido é registrado no sistema e encaminhado para o subprocesso de pagamento, dando continuidade ao processo de venda.
+
+![Carrinho](images/Telas/carrinho.png)
 

@@ -4,7 +4,7 @@ const U = (id, w = 500, q = 82) =>
 
 export const IMAGES = {
   hero:    '/images/banner/banner.png',
-  login:   U('1548469782-1ca0f7d6f296', 600, 85),
+  login:   '/images/login/Pagina-login.jpg',
   contact: U('1490750967868-88df5691cc2f', 600, 85),
   rose6:   U('1548198471-a99ba4f98f70', 400, 80),
   rose12:  U('1508610048-dc41f08ca5c8', 400, 80),

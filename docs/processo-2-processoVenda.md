@@ -1,4 +1,4 @@
-### 3.3.2 Processo 2 – Processo de Venda
+nã### 3.3.2 Processo 2 – Processo de Venda
 
 
 <img width="1230" height="537" alt="image" src="https://github.com/user-attachments/assets/8770ce6b-0001-44e0-86ed-665a825c3a6b" />
