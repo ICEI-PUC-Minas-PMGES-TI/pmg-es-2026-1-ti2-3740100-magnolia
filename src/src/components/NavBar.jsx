@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function NavBar({ currentPage, onNavigate, cartCount, searchTerm, onSearchChange, cliente, onLogout }) {
     const [activeLabel, setActiveLabel] = useState(null);
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 50);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
 
     const navLinks = [
         { label: 'Buquês', page: 'home' },
@@ -13,7 +21,7 @@ export default function NavBar({ currentPage, onNavigate, cartCount, searchTerm,
     ];
 
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="navbar__inner">
                 <div className="navbar__top">
                     <div className="navbar__logo" onClick={() => onNavigate('home')}>

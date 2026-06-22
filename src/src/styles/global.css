@@ -70,12 +70,23 @@ img { max-width: 100%; display: block; }
     position: sticky;
     top: 0;
     z-index: 200;
+    transition: box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.navbar.scrolled {
+    background: rgba(245, 240, 228, 0.98);
+    box-shadow: 0 2px 12px rgba(27, 58, 45, 0.08);
 }
 
 .navbar__inner {
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px 24px;
+    transition: padding 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__inner {
+    padding: 4px 24px;
 }
 
 .navbar__top {
@@ -83,6 +94,12 @@ img { max-width: 100%; display: block; }
     align-items: center;
     gap: 14px;
     margin-bottom: 8px;
+    transition: margin-bottom 0.3s ease-in-out, gap 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__top {
+    margin-bottom: 2px;
+    gap: 12px;
 }
 
 .navbar__logo {
@@ -90,6 +107,11 @@ img { max-width: 100%; display: block; }
     align-items: center;
     cursor: pointer;
     min-width: 200px;
+    transition: min-width 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__logo {
+    min-width: 120px;
 }
 
 .navbar__logo-frame {
@@ -102,6 +124,12 @@ img { max-width: 100%; display: block; }
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__logo-frame {
+    width: 120px;
+    height: 56px;
 }
 
 .navbar__logo-frame img {
@@ -123,7 +151,12 @@ img { max-width: 100%; display: block; }
     font-size: 14px;
     background: var(--white);
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, padding 0.3s ease-in-out, font-size 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__search input {
+    padding: 6px 36px 6px 12px;
+    font-size: 13px;
 }
 
 .navbar__search input:focus { border-color: var(--green-700); }
@@ -149,7 +182,12 @@ img { max-width: 100%; display: block; }
     padding: 10px 16px;
     font-size: 13px;
     white-space: nowrap;
-    transition: background 0.2s;
+    transition: background 0.2s, padding 0.3s ease-in-out, font-size 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__address-btn {
+    padding: 6px 12px;
+    font-size: 12px;
 }
 
 .navbar__address-btn:hover { background: var(--green-700); }
@@ -200,6 +238,16 @@ img { max-width: 100%; display: block; }
 .navbar__nav {
     display: flex;
     gap: 28px;
+    max-height: 60px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, gap 0.3s ease-in-out;
+}
+
+.navbar.scrolled .navbar__nav {
+    max-height: 0;
+    opacity: 0;
+    gap: 0;
 }
 
 .navbar__nav-link {
