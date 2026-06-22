@@ -52,3 +52,39 @@ A tela do **Carrinho** apresenta a lista dos itens adicionados, com nome, imagem
 
 ![Carrinho](images/Telas/carrinho.png)
 
+
+## 6.4. Telas do processo 3 (Pagamento)
+
+_Tela de seleção do método de pagamento._
+
+Após confirmar os dados do carrinho, o cliente é direcionado para a tela de **Pagamento**, que exibe o resumo do pedido (itens, subtotal, frete e total a pagar) e as três formas de pagamento disponíveis: **Cartão** (crédito ou débito), **PIX** (com aprovação imediata) e **Dinheiro** (pagamento na entrega). Cada opção é apresentada como um card clicável com ícone, nome e descrição curta. Ao selecionar um método, a tela exibe dinamicamente o formulário ou as instruções correspondentes à forma escolhida.
+
+![Tela de Pagamento](images/Telas/tela-pagamento.png)
+
+_Tela de pagamento por cartão._
+
+Ao escolher **Cartão**, o sistema apresenta um formulário para o cliente informar os dados do cartão: tipo (crédito ou débito, alternáveis por botões), número do cartão (com máscara automática de 16 dígitos agrupados em blocos de 4), nome impresso no cartão, validade no formato MM/AA e CVV. Todos os campos são validados localmente antes do envio — número com pelo menos 13 dígitos, validade com 5 caracteres e CVV com no mínimo 3 dígitos. Após o preenchimento e confirmação, o pedido é enviado ao backend que registra o pagamento com status **APROVADO** e atualiza o pedido para **EM ROTA**.
+
+![Pagamento Cartão](images/Telas/cartao-pagamento.png)
+
+_Tela de pagamento por PIX._
+
+Ao escolher **PIX**, a tela exibe um QR Code gerado dinamicamente, o valor total da compra e o código copia-e-cola da chave PIX. O cliente pode escanear o QR Code com o aplicativo do banco ou copiar o código para realizar o pagamento manualmente. Ao concluir a transferência, o cliente clica em **Já paguei – confirmar** e o sistema registra o pagamento como **APROVADO**, atualizando o pedido para **EM ROTA**. Por se tratar de uma simulação acadêmica, o QR Code e o código são gerados aleatoriamente, sem integração real com o sistema bancário.
+
+![Pagamento PIX](images/Telas/pic-pagamento.png)
+
+
+## 6.5. Telas do processo 4 (Entrega)
+
+_Tela administrativa de gestão das entregas._
+
+A tela **Entregas** do painel administrativo concentra a gestão das entregas em aberto. No topo são exibidos três cards de métricas — **Pendentes**, **Em rota** e **Entregues hoje** — que apresentam, em tempo real, a contagem de pedidos em cada estado. Abaixo, a seção **Entregas em aberto** lista os pedidos pendentes ou em rota com número do pedido (#00001), nome do cliente, endereço de entrega, badge colorido de status e os itens do pedido. Para cada pedido, o administrador tem dois botões de ação: **Enviar para entrega**, exibido quando o status é PENDENTE — que aciona o endpoint `PATCH /api/pedidos/{id}/status` movendo o pedido para EM ROTA; e **✓ Confirmar entrega**, exibido quando o status é EM ROTA — que conclui o fluxo marcando o pedido como ENTREGUE. Após a confirmação, o pedido sai da lista de pendências e passa a contar nas métricas de entregues do dia.
+
+![Gestão de Entregas (Admin)](images/Telas/entrega-admin.png)
+
+_Painel do cliente para acompanhamento da entrega._
+
+A tela **Minha Conta** do cliente apresenta o histórico completo de pedidos com o status atualizado de cada um. No cabeçalho, são exibidos os totalizadores **Pedidos realizados**, **Pedidos entregues** e **Total gasto**. Cada pedido é apresentado em um card com número do pedido, data, valor total, lista de itens e um badge colorido indicando o estado da entrega — **Aguardando pagamento** (amarelo), **Em rota** (verde), **Entregue** (azul) ou **Cancelado** (vermelho) — refletindo em tempo real as atualizações feitas pelo administrador no painel de entregas. Para pedidos com status **EM ROTA** ou **ENTREGUE**, fica disponível ainda a opção de solicitar devolução, que registra a abertura do processo de reembolso no backend.
+
+![Painel do Cliente (Entregas)](images/Telas/entrega-painel.png)
+
