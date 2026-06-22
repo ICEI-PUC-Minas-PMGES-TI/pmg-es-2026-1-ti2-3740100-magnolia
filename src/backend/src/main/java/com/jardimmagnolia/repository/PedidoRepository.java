@@ -38,4 +38,13 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT p FROM Pedido p WHERE p.criadoEm >= :inicio ORDER BY p.criadoEm ASC")
     List<Pedido> findCriadosDesde(@Param("inicio") LocalDateTime inicio);
+
+    @Query("SELECT p.status, COUNT(p) FROM Pedido p " +
+           "WHERE p.criadoEm >= :inicio AND p.criadoEm <= :fim GROUP BY p.status")
+    List<Object[]> countAgrupadoPorStatusNoPeriodo(@Param("inicio") LocalDateTime inicio,
+                                                    @Param("fim")    LocalDateTime fim);
+
+    @Query("SELECT p FROM Pedido p WHERE p.criadoEm >= :inicio AND p.criadoEm <= :fim ORDER BY p.criadoEm ASC")
+    List<Pedido> findCriadosEntre(@Param("inicio") LocalDateTime inicio,
+                                   @Param("fim")    LocalDateTime fim);
 }
