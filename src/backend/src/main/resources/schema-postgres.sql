@@ -83,6 +83,20 @@ INSERT INTO produto (nome, descricao, preco, estoque, ativo) VALUES
                                                                   349.90, 5,  true)
     ON CONFLICT DO NOTHING;
 
+-- ─── Imagens do Produto ──────────────────────────────────────
+CREATE TABLE IF NOT EXISTS produto_imagem (
+    id              BIGSERIAL    PRIMARY KEY,
+    produto_id      BIGINT       NOT NULL REFERENCES produto(id) ON DELETE CASCADE,
+    content_type    VARCHAR(80),
+    nome_original   VARCHAR(255),
+    ordem           INTEGER      NOT NULL DEFAULT 0,
+    principal       BOOLEAN      NOT NULL DEFAULT FALSE,
+    dados           BYTEA        NOT NULL,
+    criado_em       TIMESTAMP    NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_produto_imagem_produto ON produto_imagem(produto_id);
+
 -- ─── Avaliação ───────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS avaliacao (
                                          id            BIGSERIAL PRIMARY KEY,
