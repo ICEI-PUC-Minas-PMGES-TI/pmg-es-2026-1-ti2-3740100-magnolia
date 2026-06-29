@@ -14,18 +14,22 @@ authors:
     given-names: Sofia
   - family-names: Fonseca
     given-names: Júlia
-  - name-suffix: Lucca Soares de Paiva Lacerda
+  - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: Alonso Veloso
-    given-names: Eveline 
-  - name-suffix: Michelle Hanne Soares de Andrade
+    family-names: Soares de Paiva Lacerda
+    given-names: Lucca
+  - name-suffix: Professor
     affiliation: PUC Minas
-    family-names: Baroni De Carvalho
-    given-names: Juliana Amaral 
+    family-names: Soares de Andrade
+    given-names: Michelle Hanne  
+  - name-suffix: Professor
+    affiliation: PUC Minas
+    family-names: da Silva
+    given-names: Luiz Carlos
 keywords:
   - Jardim
   - Flores
-repository-code: 
+repository-code: https://github.com/ICEI-PUC-Minas-PMGES-TI/pmg-es-2026-1-ti2-3740100-magnolia
 license: CC-BY-4.0
 version: 1.0.0
-date-released:
+date-released:2026-06-29
