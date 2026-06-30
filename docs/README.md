@@ -196,6 +196,8 @@ _Atualizar os links e adicionar novos links para que a estrutura do código este
 
 [Vídeo da apresentação final](https://youtu.be/1KZ0NhcqF-g)
 
+[Link do Site](https://pmg-es-2026-1-ti2-3740100-magnolia-neon.vercel.app/)
+
 
 
 
