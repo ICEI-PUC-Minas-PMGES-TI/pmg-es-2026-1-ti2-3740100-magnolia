@@ -191,7 +191,7 @@ _Atualizar os links e adicionar novos links para que a estrutura do código este
 ## Apêndice B - Apresentação final
 
 
-[Slides da apresentação final](presentations/Projeto-Magnólia (1).pdf)
+[Slides da apresentação final](presentations/Projeto-Magnólia(1).pdf)
 
 
 [Vídeo da apresentação final](https://youtu.be/1KZ0NhcqF-g)
