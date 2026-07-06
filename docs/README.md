@@ -193,6 +193,8 @@ _Atualizar os links e adicionar novos links para que a estrutura do código este
 
 [Slides da apresentação final](presentations/Projeto-Magnólia.pdf)
 
+[Slides da última apresentação (Canva)](https://canva.link/z8z08azogrxlyjj)
+
 
 [Vídeo da apresentação final](https://youtu.be/1KZ0NhcqF-g)
 
