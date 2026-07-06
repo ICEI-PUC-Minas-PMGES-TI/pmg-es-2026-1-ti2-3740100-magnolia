@@ -1,5 +1,4 @@
 {
-  "rootDirectory": "src/src",
   "installCommand": "npm install",
   "buildCommand": "vite build",
   "outputDirectory": "dist"
