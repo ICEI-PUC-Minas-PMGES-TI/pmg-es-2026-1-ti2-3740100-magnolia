@@ -199,6 +199,16 @@ _Atualizar os links e adicionar novos links para que a estrutura do código este
 [Link do Site](https://pmg-es-2026-1-ti2-3740100-magnolia-neon.vercel.app/)
 
 
+## Apêndice C - Infraestrutura de Implantação
+
+| Componente | Serviço | Observações |
+|---|---|---|
+| Frontend (React + Vite) | [Vercel](https://vercel.com) | Deploy automático a partir da branch `main` |
+| Backend (Spring Boot) | [Render](https://render.com) | API REST exposta em `/api/...` |
+| Banco de dados (produção) | [Render](https://render.com) | PostgreSQL gerenciado |
+| Banco de dados (desenvolvimento local) | [TablePlus](https://tableplus.com) | Acesso local ao banco H2 / PostgreSQL |
+
+
 
 
 
